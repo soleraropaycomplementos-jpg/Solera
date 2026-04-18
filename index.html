@@ -124,13 +124,14 @@ h2 {
     border-radius: 5px;
 }
 
-/* 🌟 NOVEDADES CON FLECHAS */
+/* 🌟 NOVEDADES */
 .novedades-wrapper {
     position: relative;
     display: flex;
     align-items: center;
 }
 
+/* CARRUSEL */
 .novedades-slider {
     display: flex;
     gap: 15px;
@@ -138,16 +139,18 @@ h2 {
     scroll-behavior: smooth;
     padding: 10px;
     width: 100%;
+    -webkit-overflow-scrolling: touch;
+    scroll-snap-type: x mandatory;
 }
 
 .novedades-slider::-webkit-scrollbar {
     display: none;
 }
 
-/* TARJETAS EN CARRUSEL */
 .novedades-slider .categoria-card {
     min-width: 200px;
     flex: 0 0 auto;
+    scroll-snap-align: start;
 }
 
 /* FLECHAS */
@@ -166,7 +169,7 @@ h2 {
     background: rgba(0,0,0,0.8);
 }
 
-/* SOLO PC */
+/* ❌ OCULTAR EN MÓVIL */
 @media (max-width: 768px) {
     .flecha {
         display: none;
@@ -256,99 +259,100 @@ footer {
 <!-- NOVEDADES -->
 <section id="novedades">
 
-    <h2>Novedades</h2>
+<h2>Novedades</h2>
 
-    <div class="novedades-wrapper">
+<div class="novedades-wrapper">
 
-        <button class="flecha" onclick="moverNovedades(-1)">&#10094;</button>
+    <button class="flecha" onclick="moverNovedades(-1)">&#10094;</button>
 
-        <div class="novedades-slider"></div>
+    <div class="novedades-slider"></div>
 
-        <button class="flecha" onclick="moverNovedades(1)">&#10095;</button>
+    <button class="flecha" onclick="moverNovedades(1)">&#10095;</button>
 
-    </div>
+</div>
 
 </section>
 
 <!-- CATEGORÍAS -->
 <section id="categorias">
 
-    <h2>Categorías</h2>
+<h2>Categorías</h2>
 
-    <div class="categorias-grid">
+<div class="categorias-grid">
 
-        <a href="#ropa" class="categoria-card">
-            <img src="ropa.jpg">
-            <h3>Ropa</h3>
-        </a>
+<a href="#ropa" class="categoria-card">
+    <img src="ropa.jpg">
+    <h3>Ropa</h3>
+</a>
 
-        <a href="#complementos" class="categoria-card">
-            <img src="complementos.jpg">
-            <h3>Complementos</h3>
-        </a>
+<a href="#complementos" class="categoria-card">
+    <img src="complementos.jpg">
+    <h3>Complementos</h3>
+</a>
 
-        <a href="#zapatos" class="categoria-card">
-            <img src="zapatos.jpg">
-            <h3>Zapatos</h3>
-        </a>
+<a href="#zapatos" class="categoria-card">
+    <img src="zapatos.jpg">
+    <h3>Zapatos</h3>
+</a>
 
-    </div>
+</div>
+
 </section>
 
 <!-- ROPA -->
 <section id="ropa">
 
-    <h2>Ropa</h2>
+<h2>Ropa</h2>
 
-    <div class="caja nuevo">
-        <a href="#vestido1">
-            <img src="vestido1.jpg" style="width:140px;">
-        </a>
-        <p>Vestido playa verano</p>
-        <p><strong>22,99€</strong></p>
-    </div>
+<div class="caja nuevo">
+    <a href="#vestido1">
+        <img src="vestido1.jpg" style="width:140px;">
+    </a>
+    <p>Vestido playa verano</p>
+    <p><strong>22,99€</strong></p>
+</div>
 
 </section>
 
 <!-- COMPLEMENTOS -->
 <section id="complementos">
 
-    <h2>Complementos</h2>
+<h2>Complementos</h2>
 
-    <div class="caja nuevo">
-        <a href="#bolso2">
-            <img src="bolso2.jpg" style="width:140px;">
-        </a>
-        <p>Bolso verano elegante</p>
-        <p><strong>18,99€</strong></p>
-    </div>
+<div class="caja nuevo">
+    <a href="#bolso2">
+        <img src="bolso2.jpg" style="width:140px;">
+    </a>
+    <p>Bolso verano elegante</p>
+    <p><strong>18,99€</strong></p>
+</div>
 
 </section>
 
 <!-- ZAPATOS -->
 <section id="zapatos">
-    <h2>Zapatos</h2>
+<h2>Zapatos</h2>
 </section>
 
 <!-- MODALES -->
 <div id="vestido1" class="modal">
-    <div class="modal-contenido">
-        <a href="#ropa" class="cerrar">✖</a>
-        <img src="vestido1.jpg" style="width:300px;">
-        <h2>Vestido playa verano</h2>
-        <p>Vestido ligero</p>
-        <p>22,99€</p>
-    </div>
+<div class="modal-contenido">
+<a href="#ropa" class="cerrar">✖</a>
+<img src="vestido1.jpg" style="width:300px;">
+<h2>Vestido playa verano</h2>
+<p>Vestido ligero</p>
+<p>22,99€</p>
+</div>
 </div>
 
 <div id="bolso2" class="modal">
-    <div class="modal-contenido">
-        <a href="#complementos" class="cerrar">✖</a>
-        <img src="bolso2.jpg" style="width:300px;">
-        <h2>Bolso verano elegante</h2>
-        <p>Bolso moderno</p>
-        <p>18,99€</p>
-    </div>
+<div class="modal-contenido">
+<a href="#complementos" class="cerrar">✖</a>
+<img src="bolso2.jpg" style="width:300px;">
+<h2>Bolso verano elegante</h2>
+<p>Bolso moderno</p>
+<p>18,99€</p>
+</div>
 </div>
 
 <!-- CONTACTO -->
