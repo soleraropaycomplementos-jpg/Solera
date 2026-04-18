@@ -15,33 +15,6 @@ body {
     padding-top: 60px;
 }
 
-/* 🌊 PORTADA */
-header {
-    position: relative;
-    height: 320px;
-}
-
-header img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    filter: brightness(60%);
-}
-
-header .texto {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%,-50%);
-    color: white;
-    text-align: center;
-}
-
-header h1 {
-    font-size: 55px;
-    margin: 0;
-}
-
 /* 🔗 NAV FIJO */
 nav {
     background: #055160;
@@ -61,26 +34,81 @@ nav a {
     font-weight: 600;
 }
 
-/* 📦 SECCIONES */
-section {
-    padding: 30px;
+/* 🌊 PORTADA */
+header {
+    position: relative;
+    height: 340px;
 }
 
-/* 🧱 TARJETAS CATEGORÍAS */
+header img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(55%);
+}
+
+header .texto {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    color: white;
+    text-align: center;
+}
+
+header h1 {
+    font-size: 58px;
+    margin: 0;
+    letter-spacing: 1px;
+}
+
+header p {
+    font-size: 16px;
+    margin-top: 5px;
+}
+
+.btn-home {
+    display: inline-block;
+    margin-top: 15px;
+    padding: 10px 22px;
+    background: white;
+    color: #055160;
+    text-decoration: none;
+    font-weight: 600;
+    border-radius: 25px;
+    transition: 0.2s;
+}
+
+.btn-home:hover {
+    transform: scale(1.05);
+}
+
+/* 📦 SECCIONES */
+section {
+    padding: 40px 25px;
+}
+
+h2 {
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* 🛍️ GRID ESTILO TIENDA */
 .categorias-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
     gap: 20px;
 }
 
+/* 🧱 TARJETAS */
 .categoria-card {
     background: white;
     border-radius: 15px;
     overflow: hidden;
     text-decoration: none;
     color: black;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    transition: transform 0.2s;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.1);
+    transition: transform 0.25s;
 }
 
 .categoria-card:hover {
@@ -99,55 +127,58 @@ section {
     margin: 0;
 }
 
-/* 🧱 PRODUCTOS */
+/* 🧾 PRODUCTOS */
 .caja {
     background: white;
     padding: 15px;
-    margin: 10px 0;
-    border-radius: 10px;
-}
-
-/* 🌟 MODAL */
-.modal {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.6);
-    display: none;
-    justify-content: center;
-    align-items: center;
-}
-
-.modal:target {
-    display: flex;
-}
-
-.modal-contenido {
-    background: white;
-    padding: 20px;
+    margin: 10px auto;
     border-radius: 12px;
+    max-width: 500px;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+}
+
+/* 📱 REDES */
+.social-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 15px;
+    margin-top: 15px;
+}
+
+.social-card {
+    background: white;
+    border-radius: 14px;
+    text-align: center;
+    padding: 15px;
+    text-decoration: none;
+    color: black;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    transition: 0.2s;
+}
+
+.social-card:hover {
+    transform: scale(1.05);
+}
+
+.social-card img {
+    width: 45px;
+    height: 45px;
+    object-fit: contain;
+    margin-bottom: 5px;
+}
+
+/* 📞 CONTACTO */
+#contacto {
     text-align: center;
 }
 
-.cerrar {
-    display: block;
-    text-align: right;
-    font-size: 22px;
-    text-decoration: none;
-}
-
-html {
-    scroll-behavior: smooth;
-}
-
-/* 📞 FOOTER */
+/* 🌟 FOOTER */
 footer {
     background: #055160;
     color: white;
     text-align: center;
     padding: 20px;
+    margin-top: 30px;
 }
 </style>
 </head>
@@ -159,20 +190,45 @@ footer {
     <img src="playa.jpg">
     <div class="texto">
         <h1>Solera</h1>
-        <p>Tienda de complementos en Chipiona</p>
+        <p>Moda y complementos de verano</p>
+        <a href="#novedades" class="btn-home">Ver colección</a>
     </div>
 </header>
 
 <!-- 🔗 MENÚ -->
 <nav>
     <a href="#inicio">Inicio</a>
+    <a href="#novedades">Novedades</a>
     <a href="#categorias">Categorías</a>
     <a href="#contacto">Contacto</a>
 </nav>
 
+<!-- 🛍️ NOVEDADES -->
+<section id="novedades">
+    <h2>Novedades</h2>
+
+    <div class="categorias-grid">
+
+        <div class="categoria-card">
+            <img src="ropa1.jpg">
+            <h3>Vestido verano</h3>
+        </div>
+
+        <div class="categoria-card">
+            <img src="sandalia1.jpg">
+            <h3>Sandalia Boho</h3>
+        </div>
+
+        <div class="categoria-card">
+            <img src="bolso1.jpg">
+            <h3>Bolso playa</h3>
+        </div>
+
+    </div>
+</section>
+
 <!-- 📌 CATEGORÍAS -->
 <section id="categorias">
-
     <h2>Categorías</h2>
 
     <div class="categorias-grid">
@@ -199,8 +255,8 @@ footer {
 <section id="ropa">
     <h2>Ropa</h2>
     <div class="caja">
-        <img src="ropa1.jpg" style="width:140px; border-radius:10px;">
-        <p>Vestido playero de verano</p>
+        <img src="ropa1.jpg" style="width:140px;">
+        <p>Vestido playero</p>
         <p><strong>19,99€</strong></p>
     </div>
 </section>
@@ -209,8 +265,8 @@ footer {
 <section id="complementos">
     <h2>Complementos</h2>
     <div class="caja">
-        <img src="bolso1.jpg" style="width:140px; border-radius:10px;">
-        <p>Bolso de playa grande</p>
+        <img src="bolso1.jpg" style="width:140px;">
+        <p>Bolso playa</p>
         <p><strong>14,99€</strong></p>
     </div>
 </section>
@@ -218,42 +274,48 @@ footer {
 <!-- 👡 ZAPATOS -->
 <section id="zapatos">
     <h2>Zapatos</h2>
-
     <div class="caja">
-        <a href="#producto1">
-            <img src="sandalia1.jpg" style="width:140px; border-radius:10px;">
-        </a>
-
-        <h3>Sandalia Boho Chic</h3>
-        <p>Sandalia cómoda estilo playero</p>
+        <img src="sandalia1.jpg" style="width:140px;">
+        <p>Sandalia Boho</p>
         <p><strong>24,99€</strong></p>
     </div>
 </section>
 
-<!-- 🌟 MODAL -->
-<div id="producto1" class="modal">
-
-    <div class="modal-contenido">
-
-        <a href="#zapatos" class="cerrar">✖</a>
-
-        <img src="sandalia1.jpg" style="width:300px; border-radius:10px;">
-
-        <h2>Sandalia Boho Chic</h2>
-        <p>Sandalia ideal para verano y playa.</p>
-        <p><strong>24,99€</strong></p>
-
-    </div>
-</div>
-
-<!-- 📞 CONTACTO -->
+<!-- 📱 CONTACTO -->
 <section id="contacto">
-    <h2>Contacto</h2>
 
-    <div class="caja">
-        <p>Email: soleraycomplementos@gmail.com</p>
-        <p>Tel: 643 319 232</p>
+    <h2>Contacto</h2>
+    <p>Habla con nosotros directamente</p>
+
+    <div class="social-grid">
+
+        <a href="https://instagram.com/solerashopp" target="_blank" class="social-card">
+            <img src="instagram.png">
+            <p>Instagram</p>
+        </a>
+
+        <a href="https://tiktok.com/@solerashop8" target="_blank" class="social-card">
+            <img src="tiktok.png">
+            <p>TikTok</p>
+        </a>
+
+        <a href="https://facebook.com/share/1Ay1WQhBA1/?mibextid=wwXIfr" target="_blank" class="social-card">
+            <img src="facebook.png">
+            <p>Facebook</p>
+        </a>
+
+        <a href="mailto:soleraycomplementos@gmail.com?subject=Información%20Solera&body=Hola%20👋%20quiero%20información" class="social-card">
+            <img src="gmail.png">
+            <p>Email</p>
+        </a>
+
+        <a href="https://wa.me/34XXXXXXXXX?text=Hola%20👋%20quiero%20información%20sobre%20Solera" class="social-card">
+            <img src="whatsapp.png">
+            <p>WhatsApp</p>
+        </a>
+
     </div>
+
 </section>
 
 <footer>
