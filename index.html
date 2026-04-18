@@ -12,7 +12,6 @@ body {
     color: #333;
 }
 
-/* 🌊 PORTADA */
 header {
     position: relative;
     height: 300px;
@@ -35,53 +34,30 @@ header .texto {
     color: white;
 }
 
-header h1 {
-    margin: 0;
-    font-size: 50px;
-}
-
-header h2 {
-    margin: 5px 0 0 0;
-    font-size: 18px;
-}
-
-/* 🔗 MENÚ */
 nav {
     background-color: #055160;
-    padding: 12px;
     text-align: center;
+    padding: 12px;
 }
 
 nav a {
-    color: #eaf6f6;
+    color: white;
     margin: 0 15px;
     text-decoration: none;
     font-weight: bold;
 }
 
-nav a:hover {
-    text-decoration: underline;
-}
-
-/* 📦 SECCIONES */
 section {
     padding: 25px;
 }
 
-h2 {
-    color: #055160;
-}
-
-/* 🧱 PRODUCTOS */
-.categoria {
-    background-color: white;
+.caja {
+    background: white;
+    padding: 15px;
     margin: 15px 0;
-    padding: 20px;
     border-radius: 12px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
 }
 
-/* ✨ SCROLL SUAVE */
 html {
     scroll-behavior: smooth;
 }
@@ -100,24 +76,97 @@ footer {
 <!-- 🌊 PORTADA -->
 <header id="inicio">
     <img src="playa.jpg" alt="Solera">
-
     <div class="texto">
         <h1>Solera</h1>
-        <h2>Tienda de complementos en Chipiona</h2>
+        <h2>Tienda de complementos</h2>
     </div>
 </header>
 
 <!-- 🔗 MENÚ -->
 <nav>
-    <a href="#inicio">Inicio</a>
     <a href="#categorias">Categorías</a>
     <a href="#contacto">Contacto</a>
 </nav>
 
-<!-- 📌 CATEGORÍAS -->
+<!-- 📦 CATEGORÍAS -->
 <section id="categorias">
+
     <h2>Categorías</h2>
 
-    <p><a href="#ropa">Ropa</a></p>
-    <p><a href="#complementos">Complementos</a></p>
-    <p><a href="#zap
+    <div class="caja">
+        <a href="#ropa">Ropa</a> |
+        <a href="#complementos">Complementos</a> |
+        <a href="#zapatos">Zapatos</a>
+    </div>
+
+</section>
+
+<!-- 👗 ROPA -->
+<section id="ropa">
+    <h2>Ropa</h2>
+    <div class="caja">
+        <p>Próximamente productos de ropa</p>
+    </div>
+</section>
+
+<!-- 👜 COMPLEMENTOS -->
+<section id="complementos">
+    <h2>Complementos</h2>
+    <div class="caja">
+        <p>Próximamente productos de complementos</p>
+    </div>
+</section>
+
+<!-- 👡 ZAPATOS -->
+<section id="zapatos">
+    <h2>Zapatos</h2>
+
+    <div class="caja">
+
+        <a href="#sandalia_detalle">
+            <img src="sandalia1.jpg" style="width:150px; border-radius:10px;">
+        </a>
+
+        <h3>Sandalia Boho Chic</h3>
+        <p>Sandalia cómoda estilo playero</p>
+        <p><strong>Precio:</strong> 24,99€</p>
+
+    </div>
+</section>
+
+<!-- 🔍 DETALLE PRODUCTO -->
+<section id="sandalia_detalle">
+    <h2>Sandalia Boho Chic</h2>
+
+    <div class="caja">
+
+        <img src="sandalia1.jpg" style="width:250px; border-radius:10px;">
+
+        <p>
+            Sandalia boho chic ideal para verano, playa y uso diario.
+            Muy cómoda y ligera.
+        </p>
+
+        <p><strong>Precio:</strong> 24,99€</p>
+
+        <p><a href="#zapatos">⬅ Volver</a></p>
+
+    </div>
+</section>
+
+<!-- 📞 CONTACTO -->
+<section id="contacto">
+    <h2>Contacto</h2>
+    <div class="caja">
+        <p>Email: soleraycomplementos@gmail.com</p>
+        <p>Tel: 643 319 232</p>
+    </div>
+</section>
+
+<!-- FOOTER -->
+<footer>
+    <p>© 2026 Solera</p>
+</footer>
+
+</body>
+</html>
