@@ -19,7 +19,7 @@ body {
     padding-top: 60px;
 }
 
-/* NAV FIJO */
+/* NAV */
 nav {
     background: #055160;
     text-align: center;
@@ -134,7 +134,7 @@ h2 {
     align-items: center;
 }
 
-/* CARRUSEL */
+/* CARRUSEL SWIPE REAL */
 .novedades-slider {
     display: flex;
     gap: 15px;
@@ -156,7 +156,7 @@ h2 {
     scroll-snap-align: start;
 }
 
-/* FLECHAS SOLO PC */
+/* FLECHAS PC */
 .flecha {
     background: rgba(0,0,0,0.6);
     color: white;
@@ -171,7 +171,7 @@ h2 {
     background: rgba(0,0,0,0.8);
 }
 
-/* SOLO MÓVIL: SIN FLECHAS */
+/* ❌ OCULTAR FLECHAS EN MÓVIL (REAL) */
 @media (max-width: 768px) {
     .flecha {
         display: none !important;
@@ -243,7 +243,7 @@ footer {
 
 <body>
 
-<!-- 🔥 SIEMPRE EMPIEZA ARRIBA -->
+<!-- 🔥 SIEMPRE ARRIBA AL ENTRAR -->
 <script>
 window.onload = function () {
     window.scrollTo(0, 0);
@@ -282,7 +282,7 @@ window.onload = function () {
 
 </section>
 
-<!-- CATEGORÍAS (RESTAURADAS COMPLETAS) -->
+<!-- CATEGORÍAS (NO TOCADAS) -->
 <section id="categorias">
 
 <h2>Categorías</h2>
@@ -350,7 +350,7 @@ window.onload = function () {
 
 </section>
 
-<!-- MODALES -->
+<!-- MODALES (NO TOCADOS) -->
 <div id="vestido1" class="modal">
 <div class="modal-contenido">
 <a href="#ropa" class="cerrar">✖</a>
@@ -403,13 +403,33 @@ document.querySelectorAll(".nuevo").forEach(p => {
     const card = document.createElement("a");
     card.href = enlace;
     card.className = "categoria-card";
-
     card.innerHTML = `<img src="${img}"><h3>${nombre}</h3>`;
 
     slider.prepend(card);
 });
 
 function moverNovedades(dir) {
+    const maxScroll = slider.scrollWidth - slider.clientWidth;
+    const next = slider.scrollLeft + (dir * 220);
+
+    if (next < 0 || next > maxScroll) {
+        const aviso = document.createElement("div");
+        aviso.innerText = "No hay más productos disponibles";
+        aviso.style.position = "fixed";
+        aviso.style.bottom = "20px";
+        aviso.style.left = "50%";
+        aviso.style.transform = "translateX(-50%)";
+        aviso.style.background = "rgba(0,0,0,0.8)";
+        aviso.style.color = "white";
+        aviso.style.padding = "10px 20px";
+        aviso.style.borderRadius = "10px";
+        aviso.style.zIndex = "9999";
+        document.body.appendChild(aviso);
+
+        setTimeout(() => aviso.remove(), 2000);
+        return;
+    }
+
     slider.scrollBy({
         left: dir * 220,
         behavior: "smooth"
