@@ -35,7 +35,7 @@ nav a {
     font-weight: 600;
 }
 
-/* PORTADA */
+/* HEADER */
 header {
     position: relative;
     height: 340px;
@@ -111,6 +111,7 @@ h2 {
     border-radius: 12px;
     max-width: 500px;
     box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+    text-align: center;
 }
 
 /* NUEVO */
@@ -122,27 +123,6 @@ h2 {
     padding: 3px 6px;
     margin-left: 6px;
     border-radius: 5px;
-}
-
-/* REDES */
-.social-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-    gap: 15px;
-}
-
-.social-card {
-    background: white;
-    border-radius: 14px;
-    text-align: center;
-    padding: 15px;
-    text-decoration: none;
-    color: black;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-}
-
-.social-card img {
-    width: 45px;
 }
 
 /* MODAL */
@@ -167,6 +147,7 @@ h2 {
     padding: 20px;
     border-radius: 12px;
     text-align: center;
+    max-width: 90%;
 }
 
 .cerrar {
@@ -174,6 +155,27 @@ h2 {
     text-align: right;
     font-size: 22px;
     text-decoration: none;
+}
+
+/* REDES */
+.social-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 15px;
+}
+
+.social-card {
+    background: white;
+    border-radius: 14px;
+    text-align: center;
+    padding: 15px;
+    text-decoration: none;
+    color: black;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
+.social-card img {
+    width: 45px;
 }
 
 /* FOOTER */
@@ -234,110 +236,132 @@ footer {
     </div>
 </section>
 
-<!-- ROPA -->
+<!-- 👗 ROPA -->
 <section id="ropa">
     <h2>Ropa</h2>
 
-    <!-- 👗 VESTIDO PLAYA -->
-    <div class="caja nuevo">
-
-        <a href="#vestido1">
-            <img src="vestido1.jpg" style="width:140px; border-radius:10px;">
+    <div class="caja">
+        <a href="#ropa1">
+            <img src="ropa1.jpg" style="width:140px;">
         </a>
+        <p>Vestido playero</p>
+        <p><strong>19,99€</strong></p>
+    </div>
 
+    <div class="caja nuevo">
+        <a href="#vestido1">
+            <img src="vestido1.jpg" style="width:140px;">
+        </a>
         <p>Vestido playa verano</p>
         <p><strong>22,99€</strong></p>
-
     </div>
 
 </section>
 
-<!-- COMPLEMENTOS -->
+<!-- 👜 COMPLEMENTOS -->
 <section id="complementos">
+
     <h2>Complementos</h2>
-</section>
 
-<!-- ZAPATOS -->
-<section id="zapatos">
-    <h2>Zapatos</h2>
-</section>
-
-<!-- MODAL VESTIDO -->
-<div id="vestido1" class="modal">
-
-    <div class="modal-contenido">
-
-        <a href="#ropa" class="cerrar">✖</a>
-
-        <img src="vestido1.jpg" style="width:300px; border-radius:10px;">
-
-        <h2>Vestido playa verano</h2>
-
-        <p>Vestido ligero ideal para verano y playa</p>
-
-        <p><strong>22,99€</strong></p>
-
+    <div class="caja">
+        <a href="#bolso1">
+            <img src="bolso1.jpg" style="width:140px;">
+        </a>
+        <p>Bolso playa</p>
+        <p><strong>14,99€</strong></p>
     </div>
 
-</div>
+    <div class="caja nuevo">
+        <a href="#bolso2">
+            <img src="bolso2.jpg" style="width:140px;">
+        </a>
+        <p>Bolso verano elegante</p>
+        <p><strong>18,99€</strong></p>
+    </div>
+
+</section>
+
+<!-- 👡 ZAPATOS -->
+<section id="zapatos">
+
+    <h2>Zapatos</h2>
+
+    <div class="caja">
+        <a href="#sandalia1">
+            <img src="sandalia1.jpg" style="width:140px;">
+        </a>
+        <p>Sandalia Boho</p>
+        <p><strong>24,99€</strong></p>
+    </div>
+
+</section>
+
+<!-- MODALES -->
+
+<div id="ropa1" class="modal"><div class="modal-contenido">
+<a href="#ropa" class="cerrar">✖</a>
+<img src="ropa1.jpg" style="width:300px;">
+<h2>Vestido playero</h2><p>Vestido de verano</p><p>19,99€</p>
+</div></div>
+
+<div id="vestido1" class="modal"><div class="modal-contenido">
+<a href="#ropa" class="cerrar">✖</a>
+<img src="vestido1.jpg" style="width:300px;">
+<h2>Vestido playa verano</h2><p>Nuevo vestido de playa</p><p>22,99€</p>
+</div></div>
+
+<div id="bolso1" class="modal"><div class="modal-contenido">
+<a href="#complementos" class="cerrar">✖</a>
+<img src="bolso1.jpg" style="width:300px;">
+<h2>Bolso playa</h2><p>Bolso grande verano</p><p>14,99€</p>
+</div></div>
+
+<div id="bolso2" class="modal"><div class="modal-contenido">
+<a href="#complementos" class="cerrar">✖</a>
+<img src="bolso2.jpg" style="width:300px;">
+<h2>Bolso verano elegante</h2><p>Nuevo diseño elegante</p><p>18,99€</p>
+</div></div>
+
+<div id="sandalia1" class="modal"><div class="modal-contenido">
+<a href="#zapatos" class="cerrar">✖</a>
+<img src="sandalia1.jpg" style="width:300px;">
+<h2>Sandalia Boho</h2><p>Estilo playa cómodo</p><p>24,99€</p>
+</div></div>
 
 <!-- CONTACTO -->
 <section id="contacto">
 
-    <h2>Contacto</h2>
+<h2>Contacto</h2>
 
-    <div class="social-grid">
+<div class="social-grid">
 
-        <a href="https://www.instagram.com/solerashopp?igsh=bzdndTJlaGxpNXpl&utm_source=qr" class="social-card">
-            <img src="instagram.png">
-            <p>Instagram</p>
-        </a>
+<a href="https://instagram.com" class="social-card"><img src="instagram.png"><p>Instagram</p></a>
+<a href="https://tiktok.com" class="social-card"><img src="tiktok.png"><p>TikTok</p></a>
+<a href="https://facebook.com" class="social-card"><img src="facebook.png"><p>Facebook</p></a>
+<a href="mailto:soleraycomplementos@gmail.com" class="social-card"><img src="gmail.png"><p>Email</p></a>
+<a href="https://api.whatsapp.com/send?phone=34643319232&text=Hola%20quiero%20informacion%20sobre%20Solera" class="social-card"><img src="whatsapp.png"><p>WhatsApp</p></a>
 
-        <a href="https://www.tiktok.com/@solerashop8?_r=1&_t=ZN-95eM5tYia5m" class="social-card">
-            <img src="tiktok.png">
-            <p>TikTok</p>
-        </a>
-
-        <a href="https://www.facebook.com/share/1Ay1WQhBA1/?mibextid=wwXIfr" class="social-card">
-            <img src="facebook.png">
-            <p>Facebook</p>
-        </a>
-
-        <a href="mailto:soleraycomplementos@gmail.com" class="social-card">
-            <img src="gmail.png">
-            <p>Email</p>
-        </a>
-
-        <a href="https://api.whatsapp.com/send?phone=34643319232&text=Hola%20quiero%20informacion%20sobre%20Solera" class="social-card">
-            <img src="whatsapp.png">
-            <p>WhatsApp</p>
-        </a>
-
-    </div>
+</div>
 
 </section>
 
 <footer>
-    <p>© 2026 Solera</p>
+<p>© 2026 Solera</p>
 </footer>
 
 <script>
 const novedades = document.querySelector("#novedades .categorias-grid");
 
-document.querySelectorAll(".nuevo").forEach(producto => {
-
-    const img = producto.querySelector("img").src;
-    const nombre = producto.querySelector("p").innerText;
-    const enlace = producto.querySelector("a").getAttribute("href");
+document.querySelectorAll(".nuevo").forEach(p => {
+    const img = p.querySelector("img").src;
+    const nombre = p.querySelector("p").innerText;
+    const enlace = p.querySelector("a").getAttribute("href");
 
     const card = document.createElement("a");
     card.href = enlace;
     card.className = "categoria-card";
 
-    card.innerHTML = `
-        <img src="${img}">
-        <h3>${nombre}</h3>
-    `;
+    card.innerHTML = `<img src="${img}"><h3>${nombre}</h3>`;
 
     novedades.prepend(card);
 });
