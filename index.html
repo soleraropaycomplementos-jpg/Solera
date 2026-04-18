@@ -12,7 +12,6 @@
             color: #333;
         }
 
-        /* 🌊 PORTADA */
         header {
             position: relative;
             height: 300px;
@@ -85,25 +84,16 @@
             padding: 20px;
         }
 
-        .boton {
-            display: inline-block;
-            background-color: #4fc3dc;
-            color: white;
-            padding: 12px 18px;
-            text-decoration: none;
-            border-radius: 6px;
-            margin-top: 10px;
-        }
-
-        .boton:hover {
-            background-color: #38a9c4;
+        html {
+            scroll-behavior: smooth;
         }
     </style>
 </head>
 
 <body>
 
-<header>
+<!-- 🟦 PORTADA -->
+<header id="inicio">
     <img src="playa.jpg" alt="Solera">
 
     <div class="texto">
@@ -112,41 +102,58 @@
     </div>
 </header>
 
+<!-- 🟦 MENÚ -->
 <nav>
-    <a href="#descripcion">Inicio</a>
+    <a href="#inicio">Inicio</a>
     <a href="#categorias">Categorías</a>
     <a href="#contacto">Contacto</a>
 </nav>
 
+<!-- 🟨 DESCRIPCIÓN -->
 <section id="descripcion">
     <h2>Sobre nosotros</h2>
     <p>
         En Solera ofrecemos productos de estilo playero y boho chic, ideales para disfrutar del verano y la playa.
         Disponemos de ropa, complementos y zapatos con un toque fresco, cómodo y con mucha personalidad.
-        Aquí encontrarás bolsos, sandalias y todo tipo de accesorios con estilo playero para cualquier ocasión.
     </p>
 </section>
 
+<!-- 🟩 CATEGORÍAS -->
 <section id="categorias">
     <h2>Categorías</h2>
 
     <div class="categoria">
-        <h3>Ropa</h3>
-        <p>Vestidos, camisetas y ropa fresca con estilo playero y boho chic.</p>
+        <h3><a href="#ropa">Ropa</a></h3>
+        <p>Vestidos, camisetas y ropa fresca.</p>
     </div>
 
     <div class="categoria">
-        <h3>Complementos</h3>
-        <p>Bolsos, gafas y accesorios para completar tu look veraniego.</p>
+        <h3><a href="#complementos">Complementos</a></h3>
+        <p>Bolsos, gafas y accesorios.</p>
     </div>
 
     <div class="categoria">
-        <h3>Zapatos</h3>
-        <p>Sandalias y calzado cómodo perfecto para la playa.</p>
+        <h3><a href="#zapatos">Zapatos</a></h3>
+        <p>Sandalias cómodas de verano.</p>
     </div>
-
 </section>
 
+<!-- 👗 ROPA -->
+<section id="ropa">
+    <h2>Ropa</h2>
+</section>
+
+<!-- 👜 COMPLEMENTOS -->
+<section id="complementos">
+    <h2>Complementos</h2>
+</section>
+
+<!-- 👡 ZAPATOS -->
+<section id="zapatos">
+    <h2>Zapatos</h2>
+</section>
+
+<!-- 📞 CONTACTO -->
 <section id="contacto">
     <h2>Contacto</h2>
 
@@ -155,18 +162,10 @@
     <p><strong>Email:</strong> soleraycomplementos@gmail.com</p>
 </section>
 
-<!-- 💳 SECCIÓN MÉTODO DE PAGO (VACÍA PREPARADA) -->
+<!-- 💳 PAGO (RESERVADO) -->
 <section id="pago">
     <h2>Método de pago</h2>
-
-    <p>Aquí podrás realizar el pago de tus pedidos.</p>
-    <p>Próximamente se habilitarán los métodos de pago disponibles.</p>
-
-    <!-- Espacio reservado para futuro botón de pago -->
-    <div class="categoria">
-        <h3>Pago</h3>
-        <p>Sección preparada para Bizum, tarjeta u otros métodos.</p>
-    </div>
+    <p>Sección preparada para pagos futuros.</p>
 </section>
 
 <footer>
