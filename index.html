@@ -7,9 +7,7 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
 <style>
-html {
-    scroll-behavior: smooth;
-}
+html { scroll-behavior: smooth; }
 
 body {
     margin: 0;
@@ -59,18 +57,12 @@ header .texto {
     text-align: center;
 }
 
-header h1 {
-    font-size: 58px;
-}
+header h1 { font-size: 58px; }
 
 /* SECCIONES */
-section {
-    padding: 40px 25px;
-}
+section { padding: 40px 25px; }
 
-h2 {
-    text-align: center;
-}
+h2 { text-align: center; }
 
 /* CATEGORÍAS */
 .categorias-grid {
@@ -79,7 +71,6 @@ h2 {
     gap: 20px;
 }
 
-/* TARJETAS */
 .categoria-card {
     background: white;
     border-radius: 15px;
@@ -87,11 +78,6 @@ h2 {
     text-decoration: none;
     color: black;
     box-shadow: 0 4px 14px rgba(0,0,0,0.1);
-    transition: transform 0.25s;
-}
-
-.categoria-card:hover {
-    transform: scale(1.04);
 }
 
 .categoria-card img {
@@ -127,23 +113,20 @@ h2 {
     border-radius: 5px;
 }
 
-/* 🌟 NOVEDADES */
+/* NOVEDADES */
 .novedades-wrapper {
-    position: relative;
     display: flex;
     align-items: center;
 }
 
-/* CARRUSEL SWIPE REAL */
 .novedades-slider {
     display: flex;
     gap: 15px;
     overflow-x: auto;
-    scroll-behavior: smooth;
     padding: 10px;
     width: 100%;
-    -webkit-overflow-scrolling: touch;
     scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
 }
 
 .novedades-slider::-webkit-scrollbar {
@@ -167,15 +150,9 @@ h2 {
     border-radius: 50%;
 }
 
-.flecha:hover {
-    background: rgba(0,0,0,0.8);
-}
-
-/* ❌ OCULTAR FLECHAS EN MÓVIL (REAL) */
+/* ❌ SOLO MÓVIL SIN FLECHAS */
 @media (max-width: 768px) {
-    .flecha {
-        display: none !important;
-    }
+    .flecha { display: none !important; }
 }
 
 /* MODAL */
@@ -191,23 +168,13 @@ h2 {
     align-items: center;
 }
 
-.modal:target {
-    display: flex;
-}
+.modal:target { display: flex; }
 
 .modal-contenido {
     background: white;
     padding: 20px;
     border-radius: 12px;
     text-align: center;
-    max-width: 90%;
-}
-
-.cerrar {
-    display: block;
-    text-align: right;
-    font-size: 22px;
-    text-decoration: none;
 }
 
 /* REDES */
@@ -224,11 +191,6 @@ h2 {
     padding: 15px;
     text-decoration: none;
     color: black;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-}
-
-.social-card img {
-    width: 45px;
 }
 
 /* FOOTER */
@@ -238,23 +200,40 @@ footer {
     text-align: center;
     padding: 20px;
 }
+
+/* 🚨 POPUP NO HAY MÁS RESULTADOS (NUEVO CENTRADO) */
+.aviso-overlay {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.aviso-box {
+    background: white;
+    padding: 25px 40px;
+    border-radius: 15px;
+    font-size: 20px;
+    font-weight: 600;
+    text-align: center;
+    box-shadow: 0 10px 25px rgba(0,0,0,0.2);
+}
 </style>
 </head>
 
 <body>
 
-<!-- 🔥 SIEMPRE ARRIBA AL ENTRAR -->
-<script>
-window.onload = function () {
-    window.scrollTo(0, 0);
-};
-</script>
-
-<header id="inicio">
+<header>
     <img src="playa.jpg">
     <div class="texto">
         <h1>Solera</h1>
-        <p>Moda y complementos de verano</p>
+        <p>Moda verano</p>
     </div>
 </header>
 
@@ -265,175 +244,58 @@ window.onload = function () {
     <a href="#contacto">Contacto</a>
 </nav>
 
-<!-- NOVEDADES -->
 <section id="novedades">
 
 <h2>Novedades</h2>
 
 <div class="novedades-wrapper">
 
-    <button class="flecha" onclick="moverNovedades(-1)">&#10094;</button>
+<button class="flecha" onclick="move(-1)">&#10094;</button>
 
-    <div class="novedades-slider"></div>
+<div class="novedades-slider"></div>
 
-    <button class="flecha" onclick="moverNovedades(1)">&#10095;</button>
-
-</div>
-
-</section>
-
-<!-- CATEGORÍAS (NO TOCADAS) -->
-<section id="categorias">
-
-<h2>Categorías</h2>
-
-<div class="categorias-grid">
-
-<a href="#ropa" class="categoria-card">
-    <img src="ropa.jpg">
-    <h3>Ropa</h3>
-</a>
-
-<a href="#complementos" class="categoria-card">
-    <img src="complementos.jpg">
-    <h3>Complementos</h3>
-</a>
-
-<a href="#zapatos" class="categoria-card">
-    <img src="zapatos.jpg">
-    <h3>Zapatos</h3>
-</a>
+<button class="flecha" onclick="move(1)">&#10095;</button>
 
 </div>
 
 </section>
-
-<!-- ROPA -->
-<section id="ropa">
-<h2>Ropa</h2>
-
-<div class="caja nuevo">
-    <a href="#vestido1">
-        <img src="vestido1.jpg" style="width:140px;">
-    </a>
-    <p>Vestido playa verano</p>
-    <p><strong>22,99€</strong></p>
-</div>
-
-</section>
-
-<!-- COMPLEMENTOS -->
-<section id="complementos">
-<h2>Complementos</h2>
-
-<div class="caja nuevo">
-    <a href="#bolso2">
-        <img src="bolso2.jpg" style="width:140px;">
-    </a>
-    <p>Bolso verano elegante</p>
-    <p><strong>18,99€</strong></p>
-</div>
-
-</section>
-
-<!-- ZAPATOS -->
-<section id="zapatos">
-<h2>Zapatos</h2>
-
-<div class="caja">
-    <a href="#sandalia1">
-        <img src="sandalia1.jpg" style="width:140px;">
-    </a>
-    <p>Sandalia Boho</p>
-    <p><strong>24,99€</strong></p>
-</div>
-
-</section>
-
-<!-- MODALES (NO TOCADOS) -->
-<div id="vestido1" class="modal">
-<div class="modal-contenido">
-<a href="#ropa" class="cerrar">✖</a>
-<img src="vestido1.jpg" style="width:300px;">
-<h2>Vestido playa verano</h2>
-<p>Vestido ligero</p>
-<p>22,99€</p>
-</div>
-</div>
-
-<div id="bolso2" class="modal">
-<div class="modal-contenido">
-<a href="#complementos" class="cerrar">✖</a>
-<img src="bolso2.jpg" style="width:300px;">
-<h2>Bolso verano elegante</h2>
-<p>Bolso moderno</p>
-<p>18,99€</p>
-</div>
-</div>
-
-<!-- CONTACTO -->
-<section id="contacto">
-
-<h2>Contacto</h2>
-
-<div class="social-grid">
-
-<a href="https://instagram.com" class="social-card"><img src="instagram.png"><p>Instagram</p></a>
-<a href="https://tiktok.com" class="social-card"><img src="tiktok.png"><p>TikTok</p></a>
-<a href="https://facebook.com" class="social-card"><img src="facebook.png"><p>Facebook</p></a>
-<a href="mailto:soleraycomplementos@gmail.com" class="social-card"><img src="gmail.png"><p>Email</p></a>
-<a href="https://api.whatsapp.com/send?phone=34643319232&text=Hola%20quiero%20informacion%20sobre%20Solera" class="social-card"><img src="whatsapp.png"><p>WhatsApp</p></a>
-
-</div>
-
-</section>
-
-<footer>
-<p>© 2026 Solera</p>
-</footer>
 
 <script>
 const slider = document.querySelector(".novedades-slider");
 
-document.querySelectorAll(".nuevo").forEach(p => {
-    const img = p.querySelector("img").src;
-    const nombre = p.querySelector("p").innerText;
-    const enlace = p.querySelector("a").getAttribute("href");
+document.querySelectorAll(".nuevo").forEach(e => {
+    const img = e.querySelector("img").src;
+    const name = e.querySelector("p").innerText;
+    const link = e.querySelector("a").href;
 
     const card = document.createElement("a");
-    card.href = enlace;
+    card.href = link;
     card.className = "categoria-card";
-    card.innerHTML = `<img src="${img}"><h3>${nombre}</h3>`;
-
-    slider.prepend(card);
+    card.innerHTML = `<img src="${img}"><h3>${name}</h3>`;
+    slider.appendChild(card);
 });
 
-function moverNovedades(dir) {
-    const maxScroll = slider.scrollWidth - slider.clientWidth;
-    const next = slider.scrollLeft + (dir * 220);
+function move(dir){
+    const max = slider.scrollWidth - slider.clientWidth;
+    const next = slider.scrollLeft + dir * 220;
 
-    if (next < 0 || next > maxScroll) {
-        const aviso = document.createElement("div");
-        aviso.innerText = "No hay más productos disponibles";
-        aviso.style.position = "fixed";
-        aviso.style.bottom = "20px";
-        aviso.style.left = "50%";
-        aviso.style.transform = "translateX(-50%)";
-        aviso.style.background = "rgba(0,0,0,0.8)";
-        aviso.style.color = "white";
-        aviso.style.padding = "10px 20px";
-        aviso.style.borderRadius = "10px";
-        aviso.style.zIndex = "9999";
-        document.body.appendChild(aviso);
+    if(next < 0 || next > max){
+        const overlay = document.createElement("div");
+        overlay.className = "aviso-overlay";
 
-        setTimeout(() => aviso.remove(), 2000);
+        overlay.innerHTML = `
+            <div class="aviso-box">
+                No hay más resultados
+            </div>
+        `;
+
+        document.body.appendChild(overlay);
+
+        setTimeout(() => overlay.remove(), 2000);
         return;
     }
 
-    slider.scrollBy({
-        left: dir * 220,
-        behavior: "smooth"
-    });
+    slider.scrollBy({left: dir * 220, behavior: "smooth"});
 }
 </script>
 
