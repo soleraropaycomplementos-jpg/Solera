@@ -16,7 +16,7 @@ body {
     scroll-behavior: smooth;
 }
 
-/* 🔗 NAV FIJO */
+/* NAV */
 nav {
     background: #055160;
     text-align: center;
@@ -35,7 +35,7 @@ nav a {
     font-weight: 600;
 }
 
-/* 🌊 PORTADA */
+/* PORTADA */
 header {
     position: relative;
     height: 340px;
@@ -59,47 +59,25 @@ header .texto {
 
 header h1 {
     font-size: 58px;
-    margin: 0;
 }
 
-header p {
-    font-size: 16px;
-    margin-top: 5px;
-}
-
-.btn-home {
-    display: inline-block;
-    margin-top: 15px;
-    padding: 10px 22px;
-    background: white;
-    color: #055160;
-    text-decoration: none;
-    font-weight: 600;
-    border-radius: 25px;
-    transition: 0.2s;
-}
-
-.btn-home:hover {
-    transform: scale(1.05);
-}
-
-/* 📦 SECCIONES */
+/* SECCIONES */
 section {
     padding: 40px 25px;
 }
 
 h2 {
     text-align: center;
-    margin-bottom: 20px;
 }
 
-/* 🛍️ TARJETAS */
+/* GRID */
 .categorias-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
     gap: 20px;
 }
 
+/* TARJETAS */
 .categoria-card {
     background: white;
     border-radius: 15px;
@@ -123,10 +101,9 @@ h2 {
 .categoria-card h3 {
     text-align: center;
     padding: 10px;
-    margin: 0;
 }
 
-/* 🧾 PRODUCTOS */
+/* PRODUCTOS */
 .caja {
     background: white;
     padding: 15px;
@@ -136,12 +113,22 @@ h2 {
     box-shadow: 0 3px 10px rgba(0,0,0,0.08);
 }
 
-/* 📱 REDES */
+/* NUEVO */
+.nuevo::after {
+    content: "NUEVO";
+    background: red;
+    color: white;
+    font-size: 11px;
+    padding: 3px 6px;
+    margin-left: 6px;
+    border-radius: 5px;
+}
+
+/* REDES */
 .social-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
     gap: 15px;
-    margin-top: 15px;
 }
 
 .social-card {
@@ -152,49 +139,63 @@ h2 {
     text-decoration: none;
     color: black;
     box-shadow: 0 4px 12px rgba(0,0,0,0.1);
-    transition: 0.2s;
-}
-
-.social-card:hover {
-    transform: scale(1.05);
 }
 
 .social-card img {
     width: 45px;
-    height: 45px;
-    object-fit: contain;
-    margin-bottom: 5px;
 }
 
-/* 📞 CONTACTO */
-#contacto {
+/* MODAL */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.6);
+    display: none;
+    justify-content: center;
+    align-items: center;
+}
+
+.modal:target {
+    display: flex;
+}
+
+.modal-contenido {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
     text-align: center;
 }
 
-/* 🌟 FOOTER */
+.cerrar {
+    display: block;
+    text-align: right;
+    font-size: 22px;
+    text-decoration: none;
+}
+
+/* FOOTER */
 footer {
     background: #055160;
     color: white;
     text-align: center;
     padding: 20px;
-    margin-top: 30px;
 }
 </style>
 </head>
 
 <body>
 
-<!-- 🌊 PORTADA -->
 <header id="inicio">
     <img src="playa.jpg">
     <div class="texto">
         <h1>Solera</h1>
         <p>Moda y complementos de verano</p>
-        <a href="#novedades" class="btn-home">Ver colección</a>
     </div>
 </header>
 
-<!-- 🔗 MENÚ -->
 <nav>
     <a href="#inicio">Inicio</a>
     <a href="#novedades">Novedades</a>
@@ -202,30 +203,15 @@ footer {
     <a href="#contacto">Contacto</a>
 </nav>
 
-<!-- 🛍️ NOVEDADES -->
+<!-- NOVEDADES -->
 <section id="novedades">
     <h2>Novedades</h2>
-
-    <div class="categorias-grid">
-        <div class="categoria-card">
-            <img src="ropa1.jpg">
-            <h3>Vestido verano</h3>
-        </div>
-
-        <div class="categoria-card">
-            <img src="sandalia1.jpg">
-            <h3>Sandalia Boho</h3>
-        </div>
-
-        <div class="categoria-card">
-            <img src="bolso1.jpg">
-            <h3>Bolso playa</h3>
-        </div>
-    </div>
+    <div class="categorias-grid"></div>
 </section>
 
-<!-- 📌 CATEGORÍAS -->
+<!-- CATEGORÍAS -->
 <section id="categorias">
+
     <h2>Categorías</h2>
 
     <div class="categorias-grid">
@@ -248,65 +234,81 @@ footer {
     </div>
 </section>
 
-<!-- 👗 ROPA -->
+<!-- ROPA -->
 <section id="ropa">
     <h2>Ropa</h2>
-    <div class="caja">
-        <img src="ropa1.jpg" style="width:140px;">
-        <p>Vestido playero</p>
-        <p><strong>19,99€</strong></p>
+
+    <!-- 👗 VESTIDO PLAYA -->
+    <div class="caja nuevo">
+
+        <a href="#vestido1">
+            <img src="vestido1.jpg" style="width:140px; border-radius:10px;">
+        </a>
+
+        <p>Vestido playa verano</p>
+        <p><strong>22,99€</strong></p>
+
     </div>
+
 </section>
 
-<!-- 👜 COMPLEMENTOS -->
+<!-- COMPLEMENTOS -->
 <section id="complementos">
     <h2>Complementos</h2>
-    <div class="caja">
-        <img src="bolso1.jpg" style="width:140px;">
-        <p>Bolso playa</p>
-        <p><strong>14,99€</strong></p>
-    </div>
 </section>
 
-<!-- 👡 ZAPATOS -->
+<!-- ZAPATOS -->
 <section id="zapatos">
     <h2>Zapatos</h2>
-    <div class="caja">
-        <img src="sandalia1.jpg" style="width:140px;">
-        <p>Sandalia Boho</p>
-        <p><strong>24,99€</strong></p>
-    </div>
 </section>
 
-<!-- 📱 CONTACTO -->
+<!-- MODAL VESTIDO -->
+<div id="vestido1" class="modal">
+
+    <div class="modal-contenido">
+
+        <a href="#ropa" class="cerrar">✖</a>
+
+        <img src="vestido1.jpg" style="width:300px; border-radius:10px;">
+
+        <h2>Vestido playa verano</h2>
+
+        <p>Vestido ligero ideal para verano y playa</p>
+
+        <p><strong>22,99€</strong></p>
+
+    </div>
+
+</div>
+
+<!-- CONTACTO -->
 <section id="contacto">
 
     <h2>Contacto</h2>
-    <p>Habla con nosotros directamente</p>
 
     <div class="social-grid">
 
-        <a href="https://www.instagram.com/solerashopp?igsh=bzdndTJlaGxpNXpl&utm_source=qr" target="_blank" class="social-card">
+        <a href="https://www.instagram.com/solerashopp?igsh=bzdndTJlaGxpNXpl&utm_source=qr" class="social-card">
             <img src="instagram.png">
             <p>Instagram</p>
         </a>
 
-        <a href="https://www.tiktok.com/@solerashop8?_r=1&_t=ZN-95eM5tYia5m" target="_blank" class="social-card">
+        <a href="https://www.tiktok.com/@solerashop8?_r=1&_t=ZN-95eM5tYia5m" class="social-card">
             <img src="tiktok.png">
             <p>TikTok</p>
         </a>
 
-        <a href="https://www.facebook.com/share/1Ay1WQhBA1/?mibextid=wwXIfr" target="_blank" class="social-card">
+        <a href="https://www.facebook.com/share/1Ay1WQhBA1/?mibextid=wwXIfr" class="social-card">
             <img src="facebook.png">
             <p>Facebook</p>
         </a>
 
-        <a href="mailto:soleraycomplementos@gmail.com?subject=Información%20Solera&body=Hola%20quiero%20informacion%20sobre%20los%20productos" class="social-card">
+        <a href="mailto:soleraycomplementos@gmail.com" class="social-card">
             <img src="gmail.png">
             <p>Email</p>
         </a>
 
-        <a href="https://api.whatsapp.com/send?phone=34643319232&text=Hola%20quiero%20informacion%20sobre%20los%20articulos%20de%20Solera" target="_blank" class="social-card">
+        <a href="https://api.whatsapp.com/send?phone=34643319232&text=Hola%20quiero%20informacion%20sobre%20Solera" class="social-card">
             <img src="whatsapp.png">
             <p>WhatsApp</p>
         </a>
@@ -318,6 +320,28 @@ footer {
 <footer>
     <p>© 2026 Solera</p>
 </footer>
+
+<script>
+const novedades = document.querySelector("#novedades .categorias-grid");
+
+document.querySelectorAll(".nuevo").forEach(producto => {
+
+    const img = producto.querySelector("img").src;
+    const nombre = producto.querySelector("p").innerText;
+    const enlace = producto.querySelector("a").getAttribute("href");
+
+    const card = document.createElement("a");
+    card.href = enlace;
+    card.className = "categoria-card";
+
+    card.innerHTML = `
+        <img src="${img}">
+        <h3>${nombre}</h3>
+    `;
+
+    novedades.prepend(card);
+});
+</script>
 
 </body>
 </html>
