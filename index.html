@@ -3,28 +3,57 @@
 <head>
 <meta charset="UTF-8">
 <title>Solera</title>
+
 <style>
 body {
     font-family: Arial, sans-serif;
     margin: 0;
     background-color: #eaf6f6;
+    color: #333;
 }
 
+/* 🌊 PORTADA */
 header {
-    background-color: #055160;
-    color: white;
-    text-align: center;
-    padding: 30px;
+    position: relative;
+    height: 300px;
+    overflow: hidden;
 }
 
-nav {
-    background-color: #04424d;
+header img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(60%);
+}
+
+header .texto {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
     text-align: center;
+    color: white;
+}
+
+header h1 {
+    margin: 0;
+    font-size: 50px;
+}
+
+header h2 {
+    margin: 5px 0 0 0;
+    font-size: 18px;
+}
+
+/* 🔗 MENÚ */
+nav {
+    background-color: #055160;
     padding: 12px;
+    text-align: center;
 }
 
 nav a {
-    color: white;
+    color: #eaf6f6;
     margin: 0 15px;
     text-decoration: none;
     font-weight: bold;
@@ -35,31 +64,51 @@ nav a:hover {
 }
 
 section {
-    padding: 30px;
+    padding: 25px;
 }
 
+h2 {
+    color: #055160;
+}
+
+/* 🧱 PRODUCTOS */
 .categoria {
-    background: white;
+    background-color: white;
     margin: 15px 0;
     padding: 20px;
     border-radius: 12px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
 }
 
+/* ✨ SCROLL SUAVE */
 html {
     scroll-behavior: smooth;
+}
+
+footer {
+    background-color: #055160;
+    color: white;
+    text-align: center;
+    padding: 20px;
 }
 </style>
 </head>
 
 <body>
 
-<header>
-    <h1>Solera</h1>
-    <p>Tienda de complementos en Chipiona</p>
+<!-- 🌊 PORTADA -->
+<header id="inicio">
+    <img src="playa.jpg" alt="Solera">
+
+    <div class="texto">
+        <h1>Solera</h1>
+        <h2>Tienda de complementos en Chipiona</h2>
+    </div>
 </header>
 
 <!-- 🔗 MENÚ -->
 <nav>
+    <a href="#inicio">Inicio</a>
     <a href="#categorias">Categorías</a>
     <a href="#contacto">Contacto</a>
 </nav>
@@ -78,7 +127,7 @@ html {
     <h2>Ropa</h2>
 
     <div class="categoria">
-        <p>Aquí irán productos de ropa</p>
+        <p>Ejemplo de producto de ropa (próximamente)</p>
     </div>
 </section>
 
@@ -87,17 +136,16 @@ html {
     <h2>Complementos</h2>
 
     <div class="categoria">
-        <p>Aquí irán productos de complementos</p>
+        <p>Ejemplo de producto de complementos (próximamente)</p>
     </div>
 </section>
 
-<!-- 👡 ZAPATOS (TU EJEMPLO REAL) -->
+<!-- 👡 ZAPATOS -->
 <section id="zapatos">
     <h2>Zapatos</h2>
 
     <div class="categoria">
-        
-        <!-- 🖼️ IMAGEN SOLO AQUÍ -->
+
         <img src="sandalia1.jpg" alt="Sandalia Boho Chic" style="width:100%; border-radius:10px;">
 
         <h3>Sandalia Boho Chic</h3>
@@ -113,10 +161,15 @@ html {
 <section id="contacto">
     <h2>Contacto</h2>
 
-    <p>Dirección: Calle Isaac Peral, Chipiona</p>
-    <p>Teléfono: 643 319 232</p>
-    <p>Email: soleraycomplementos@gmail.com</p>
+    <p><strong>Dirección:</strong> Calle Isaac Peral, Chipiona</p>
+    <p><strong>Teléfono:</strong> 643 319 232</p>
+    <p><strong>Email:</strong> soleraycomplementos@gmail.com</p>
 </section>
+
+<!-- ⬛ FOOTER -->
+<footer>
+    <p>© 2026 Solera - Todos los derechos reservados</p>
+</footer>
 
 </body>
 </html>
