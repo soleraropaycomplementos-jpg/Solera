@@ -1,156 +1,168 @@
 <!DOCTYPE html>
 <html lang="es">
 <head>
-    <meta charset="UTF-8">
-    <title>Solera</title>
+<meta charset="UTF-8">
+<title>Solera</title>
 
-    <style>
-        body {
-            font-family: Arial, sans-serif;
-            margin: 0;
-            background-color: #eaf6f6;
-            color: #333;
-        }
+<style>
+body {
+    font-family: Arial, sans-serif;
+    margin: 0;
+    background-color: #eaf6f6;
+    color: #333;
+}
 
-        header {
-            position: relative;
-            height: 300px;
-            overflow: hidden;
-        }
+header {
+    position: relative;
+    height: 300px;
+    overflow: hidden;
+}
 
-        header img {
-            width: 100%;
-            height: 100%;
-            object-fit: cover;
-            filter: brightness(60%);
-        }
+header img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    filter: brightness(60%);
+}
 
-        header .texto {
-            position: absolute;
-            top: 50%;
-            left: 50%;
-            transform: translate(-50%, -50%);
-            text-align: center;
-            color: white;
-        }
+header .texto {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    text-align: center;
+    color: white;
+}
 
-        header h1 {
-            margin: 0;
-            font-size: 50px;
-        }
+header h1 {
+    margin: 0;
+    font-size: 50px;
+}
 
-        header h2 {
-            margin: 5px 0 0 0;
-            font-size: 18px;
-        }
+header h2 {
+    margin: 5px 0 0 0;
+    font-size: 18px;
+}
 
-        nav {
-            background-color: #055160;
-            padding: 12px;
-            text-align: center;
-        }
+nav {
+    background-color: #055160;
+    padding: 12px;
+    text-align: center;
+}
 
-        nav a {
-            color: #eaf6f6;
-            margin: 0 15px;
-            text-decoration: none;
-            font-weight: bold;
-        }
+nav a {
+    color: #eaf6f6;
+    margin: 0 15px;
+    text-decoration: none;
+    font-weight: bold;
+}
 
-        nav a:hover {
-            text-decoration: underline;
-        }
+nav a:hover {
+    text-decoration: underline;
+}
 
-        section {
-            padding: 25px;
-        }
+section {
+    padding: 25px;
+}
 
-        h2 {
-            color: #055160;
-        }
+h2 {
+    color: #055160;
+}
 
-        .categoria {
-            background-color: white;
-            margin: 15px 0;
-            padding: 20px;
-            border-radius: 12px;
-            box-shadow: 0 2px 6px rgba(0,0,0,0.1);
-        }
+.categoria {
+    background-color: white;
+    margin: 15px 0;
+    padding: 20px;
+    border-radius: 12px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.1);
+}
 
-        footer {
-            background-color: #055160;
-            color: white;
-            text-align: center;
-            padding: 20px;
-        }
+html {
+    scroll-behavior: smooth;
+}
 
-        html {
-            scroll-behavior: smooth;
-        }
-    </style>
+footer {
+    background-color: #055160;
+    color: white;
+    text-align: center;
+    padding: 20px;
+}
+</style>
 </head>
 
 <body>
 
-<!-- 🟦 PORTADA -->
+<!-- 🌊 PORTADA -->
 <header id="inicio">
     <img src="playa.jpg" alt="Solera">
-
     <div class="texto">
         <h1>Solera</h1>
         <h2>Tienda de complementos en Chipiona</h2>
     </div>
 </header>
 
-<!-- 🟦 MENÚ -->
+<!-- 🔗 MENÚ -->
 <nav>
     <a href="#inicio">Inicio</a>
     <a href="#categorias">Categorías</a>
     <a href="#contacto">Contacto</a>
 </nav>
 
-<!-- 🟨 DESCRIPCIÓN -->
-<section id="descripcion">
-    <h2>Sobre nosotros</h2>
-    <p>
-        En Solera ofrecemos productos de estilo playero y boho chic, ideales para disfrutar del verano y la playa.
-        Disponemos de ropa, complementos y zapatos con un toque fresco, cómodo y con mucha personalidad.
-    </p>
-</section>
-
-<!-- 🟩 CATEGORÍAS -->
+<!-- 📌 CATEGORÍAS -->
 <section id="categorias">
     <h2>Categorías</h2>
 
     <div class="categoria">
         <h3><a href="#ropa">Ropa</a></h3>
-        <p>Vestidos, camisetas y ropa fresca.</p>
     </div>
 
     <div class="categoria">
         <h3><a href="#complementos">Complementos</a></h3>
-        <p>Bolsos, gafas y accesorios.</p>
     </div>
 
     <div class="categoria">
         <h3><a href="#zapatos">Zapatos</a></h3>
-        <p>Sandalias cómodas de verano.</p>
     </div>
 </section>
 
 <!-- 👗 ROPA -->
 <section id="ropa">
     <h2>Ropa</h2>
+
+    <div class="categoria">
+        <img src="ropa1.jpg" style="width:100%; border-radius:10px;">
+        <h3>Vestido playero</h3>
+        <p>Vestido ligero estilo boho chic, perfecto para verano.</p>
+        <p><strong>Precio:</strong> 29,99€</p>
+    </div>
 </section>
 
 <!-- 👜 COMPLEMENTOS -->
 <section id="complementos">
     <h2>Complementos</h2>
+
+    <div class="categoria">
+        <img src="complemento1.jpg" style="width:100%; border-radius:10px;">
+        <h3>Bolso veraniego</h3>
+        <p>Bolso de estilo playero ideal para tus looks de verano.</p>
+        <p><strong>Precio:</strong> 19,99€</p>
+    </div>
 </section>
 
 <!-- 👡 ZAPATOS -->
 <section id="zapatos">
     <h2>Zapatos</h2>
+
+    <div class="categoria">
+        <img src="sandalia1.jpg" style="width:100%; border-radius:10px;">
+        <h3>Sandalia Boho Chic</h3>
+        <p>
+            Sandalia ligera de estilo bohemio ideal para verano y playa. 
+            Cómoda, fresca y perfecta para looks relajados.
+        </p>
+        <p><strong>Precio:</strong> 24,99€</p>
+    </div>
+
 </section>
 
 <!-- 📞 CONTACTO -->
@@ -160,12 +172,6 @@
     <p><strong>Dirección:</strong> Calle Isaac Peral, Chipiona</p>
     <p><strong>Teléfono:</strong> 643 319 232</p>
     <p><strong>Email:</strong> soleraycomplementos@gmail.com</p>
-</section>
-
-<!-- 💳 PAGO (RESERVADO) -->
-<section id="pago">
-    <h2>Método de pago</h2>
-    <p>Sección preparada para pagos futuros.</p>
 </section>
 
 <footer>
