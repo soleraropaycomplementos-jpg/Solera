@@ -58,9 +58,13 @@ header .texto {
 }
 
 /* SECCIONES */
-section { padding: 40px 25px; }
+section {
+    padding: 40px 25px;
+}
 
-h2 { text-align: center; }
+h2 {
+    text-align: center;
+}
 
 /* CATEGORÍAS */
 .categorias-grid {
@@ -123,13 +127,21 @@ h2 { text-align: center; }
     overflow-x: auto;
     padding: 10px;
     width: 100%;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
 }
 
 .novedades-slider::-webkit-scrollbar {
     display: none;
 }
 
-/* FLECHAS */
+.novedades-slider .categoria-card {
+    min-width: 200px;
+    flex: 0 0 auto;
+    scroll-snap-align: start;
+}
+
+/* FLECHAS PC */
 .flecha {
     background: rgba(0,0,0,0.6);
     color: white;
@@ -144,7 +156,7 @@ h2 { text-align: center; }
     .flecha { display: none !important; }
 }
 
-/* MODAL */
+/* MODAL PRODUCTOS */
 .modal {
     position: fixed;
     top: 0;
@@ -210,29 +222,6 @@ footer {
     text-align: center;
     padding: 20px;
 }
-
-/* POPUP */
-.aviso-overlay {
-    position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
-    background: rgba(0,0,0,0.6);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
-}
-
-.aviso-box {
-    background: white;
-    padding: 30px 50px;
-    border-radius: 15px;
-    font-size: 22px;
-    font-weight: 600;
-    text-align: center;
-}
 </style>
 </head>
 
@@ -253,13 +242,32 @@ footer {
     <a href="#contacto">Contacto</a>
 </nav>
 
-<!-- NOVEDADES -->
+<!-- NOVEDADES (ESTABLE) -->
 <section id="novedades">
 <h2>Novedades</h2>
 
 <div class="novedades-wrapper">
 <button class="flecha" onclick="move(-1)">&#10094;</button>
-<div class="novedades-slider"></div>
+
+<div class="novedades-slider">
+
+<a href="#r1" class="categoria-card">
+<img src="vestido1.jpg">
+<h3>Vestido blanco</h3>
+</a>
+
+<a href="#c1" class="categoria-card">
+<img src="bolso1.jpg">
+<h3>Bolso playa</h3>
+</a>
+
+<a href="#z1" class="categoria-card">
+<img src="zapato1.jpg">
+<h3>Sandalia</h3>
+</a>
+
+</div>
+
 <button class="flecha" onclick="move(1)">&#10095;</button>
 </div>
 </section>
@@ -275,7 +283,43 @@ footer {
 </div>
 </section>
 
-<!-- CONTACTO -->
+<!-- ROPA -->
+<section id="ropa">
+<h2>Ropa</h2>
+
+<div class="caja nuevo"><a href="#r1"><img src="vestido1.jpg" width="120"></a><p>Vestido blanco</p><p>22€</p></div>
+<div class="caja"><a href="#r2"><img src="vestido2.jpg" width="120"></a><p>Vestido azul</p><p>25€</p></div>
+<div class="caja"><a href="#r3"><img src="vestido3.jpg" width="120"></a><p>Vestido flores</p><p>28€</p></div>
+<div class="caja"><a href="#r4"><img src="vestido4.jpg" width="120"></a><p>Vestido corto</p><p>19€</p></div>
+</section>
+
+<!-- COMPLEMENTOS -->
+<section id="complementos">
+<h2>Complementos</h2>
+
+<div class="caja nuevo"><a href="#c1"><img src="bolso1.jpg" width="120"></a><p>Bolso playa</p><p>15€</p></div>
+<div class="caja"><a href="#c2"><img src="bolso2.jpg" width="120"></a><p>Bolso blanco</p><p>18€</p></div>
+<div class="caja"><a href="#c3"><img src="bolso3.jpg" width="120"></a><p>Bolso grande</p><p>20€</p></div>
+<div class="caja"><a href="#c4"><img src="bolso4.jpg" width="120"></a><p>Bolso verano</p><p>22€</p></div>
+</section>
+
+<!-- ZAPATOS -->
+<section id="zapatos">
+<h2>Zapatos</h2>
+
+<div class="caja nuevo"><a href="#z1"><img src="zapato1.jpg" width="120"></a><p>Sandalia</p><p>24€</p></div>
+<div class="caja"><a href="#z2"><img src="zapato2.jpg" width="120"></a><p>Cuña</p><p>26€</p></div>
+<div class="caja"><a href="#z3"><img src="zapato3.jpg" width="120"></a><p>Plana</p><p>19€</p></div>
+<div class="caja"><a href="#z4"><img src="zapato4.jpg" width="120"></a><p>Deportiva</p><p>30€</p></div>
+</section>
+
+<!-- MODALES (FUNCIONAN TODOS) -->
+<div id="r1" class="modal"><div class="modal-contenido"><a href="#ropa" class="cerrar">✖</a><img src="vestido1.jpg"><h2>Vestido blanco</h2><p>22€</p></div></div>
+<div id="r2" class="modal"><div class="modal-contenido"><a href="#ropa" class="cerrar">✖</a><img src="vestido2.jpg"><h2>Vestido azul</h2><p>25€</p></div></div>
+<div id="r3" class="modal"><div class="modal-contenido"><a href="#ropa" class="cerrar">✖</a><img src="vestido3.jpg"><h2>Vestido flores</h2><p>28€</p></div></div>
+<div id="r4" class="modal"><div class="modal-contenido"><a href="#ropa" class="cerrar">✖</a><img src="vestido4.jpg"><h2>Vestido corto</h2><p>19€</p></div></div>
+
+<!-- CONTACTO CORREGIDO -->
 <section id="contacto">
 <h2>Contacto</h2>
 
@@ -304,22 +348,9 @@ footer {
 </footer>
 
 <script>
-const slider = document.querySelector(".novedades-slider");
-
 function move(dir){
-    const max = slider.scrollWidth - slider.clientWidth;
-    const next = slider.scrollLeft + dir * 220;
-
-    if(next < 0 || next > max){
-        const overlay = document.createElement("div");
-        overlay.className = "aviso-overlay";
-        overlay.innerHTML = `<div class="aviso-box">No hay más resultados</div>`;
-        document.body.appendChild(overlay);
-        setTimeout(()=>overlay.remove(),2000);
-        return;
-    }
-
-    slider.scrollBy({left: dir*220, behavior:"smooth"});
+    const slider = document.querySelector(".novedades-slider");
+    slider.scrollBy({left: dir * 220, behavior:"smooth"});
 }
 </script>
 
