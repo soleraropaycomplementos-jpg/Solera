@@ -69,7 +69,7 @@ h2 {
     text-align: center;
 }
 
-/* CATEGORÍAS GRID */
+/* CATEGORÍAS */
 .categorias-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -124,23 +124,53 @@ h2 {
     border-radius: 5px;
 }
 
-/* 🌟 NOVEDADES CARRUSEL */
+/* 🌟 NOVEDADES CON FLECHAS */
+.novedades-wrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+}
+
 .novedades-slider {
     display: flex;
     gap: 15px;
     overflow-x: auto;
+    scroll-behavior: smooth;
     padding: 10px;
-    scroll-snap-type: x mandatory;
+    width: 100%;
 }
 
 .novedades-slider::-webkit-scrollbar {
     display: none;
 }
 
+/* TARJETAS EN CARRUSEL */
 .novedades-slider .categoria-card {
     min-width: 200px;
     flex: 0 0 auto;
-    scroll-snap-align: start;
+}
+
+/* FLECHAS */
+.flecha {
+    background: rgba(0,0,0,0.6);
+    color: white;
+    border: none;
+    font-size: 28px;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 50%;
+    z-index: 10;
+}
+
+.flecha:hover {
+    background: rgba(0,0,0,0.8);
+}
+
+/* SOLO PC */
+@media (max-width: 768px) {
+    .flecha {
+        display: none;
+    }
 }
 
 /* MODAL */
@@ -223,10 +253,21 @@ footer {
     <a href="#contacto">Contacto</a>
 </nav>
 
-<!-- 🌟 NOVEDADES (CARRUSEL) -->
+<!-- NOVEDADES -->
 <section id="novedades">
+
     <h2>Novedades</h2>
-    <div class="novedades-slider"></div>
+
+    <div class="novedades-wrapper">
+
+        <button class="flecha" onclick="moverNovedades(-1)">&#10094;</button>
+
+        <div class="novedades-slider"></div>
+
+        <button class="flecha" onclick="moverNovedades(1)">&#10095;</button>
+
+    </div>
+
 </section>
 
 <!-- CATEGORÍAS -->
@@ -258,14 +299,6 @@ footer {
 <section id="ropa">
 
     <h2>Ropa</h2>
-
-    <div class="caja">
-        <a href="#ropa1">
-            <img src="ropa1.jpg" style="width:140px;">
-        </a>
-        <p>Vestido playero</p>
-        <p><strong>19,99€</strong></p>
-    </div>
 
     <div class="caja nuevo">
         <a href="#vestido1">
@@ -340,7 +373,7 @@ footer {
 </footer>
 
 <script>
-const novedades = document.querySelector("#novedades .novedades-slider");
+const slider = document.querySelector(".novedades-slider");
 
 document.querySelectorAll(".nuevo").forEach(p => {
 
@@ -354,8 +387,15 @@ document.querySelectorAll(".nuevo").forEach(p => {
 
     card.innerHTML = `<img src="${img}"><h3>${nombre}</h3>`;
 
-    novedades.prepend(card);
+    slider.prepend(card);
 });
+
+function moverNovedades(dir) {
+    slider.scrollBy({
+        left: dir * 220,
+        behavior: "smooth"
+    });
+}
 </script>
 
 </body>
