@@ -7,13 +7,16 @@
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
 <style>
+html {
+    scroll-behavior: smooth;
+}
+
 body {
     margin: 0;
     font-family: 'Poppins', sans-serif;
     background: #eaf6f6;
     color: #333;
     padding-top: 60px;
-    scroll-behavior: smooth;
 }
 
 /* NAV */
@@ -124,14 +127,14 @@ h2 {
     border-radius: 5px;
 }
 
-/* 🌟 NOVEDADES */
+/* 🌟 NOVEDADES CARRUSEL */
 .novedades-wrapper {
     position: relative;
     display: flex;
     align-items: center;
 }
 
-/* CARRUSEL */
+/* CARRUSEL NATURAL (MÓVIL PERFECTO) */
 .novedades-slider {
     display: flex;
     gap: 15px;
@@ -143,17 +146,19 @@ h2 {
     scroll-snap-type: x mandatory;
 }
 
+/* OCULTAR SCROLLBAR */
 .novedades-slider::-webkit-scrollbar {
     display: none;
 }
 
+/* TARJETAS */
 .novedades-slider .categoria-card {
     min-width: 200px;
     flex: 0 0 auto;
     scroll-snap-align: start;
 }
 
-/* FLECHAS */
+/* FLECHAS SOLO PC */
 .flecha {
     background: rgba(0,0,0,0.6);
     color: white;
@@ -169,10 +174,10 @@ h2 {
     background: rgba(0,0,0,0.8);
 }
 
-/* ❌ OCULTAR EN MÓVIL */
+/* 🚨 OCULTAR EN MÓVIL COMPLETAMENTE */
 @media (max-width: 768px) {
     .flecha {
-        display: none;
+        display: none !important;
     }
 }
 
@@ -241,6 +246,13 @@ footer {
 
 <body>
 
+<script>
+/* 🔥 FORZAR QUE SIEMPRE ABRA ARRIBA */
+window.onload = function () {
+    window.scrollTo(0, 0);
+};
+</script>
+
 <header id="inicio">
     <img src="playa.jpg">
     <div class="texto">
@@ -275,112 +287,33 @@ footer {
 
 <!-- CATEGORÍAS -->
 <section id="categorias">
-
 <h2>Categorías</h2>
 
 <div class="categorias-grid">
 
 <a href="#ropa" class="categoria-card">
-    <img src="ropa.jpg">
-    <h3>Ropa</h3>
+<img src="ropa.jpg">
+<h3>Ropa</h3>
 </a>
 
 <a href="#complementos" class="categoria-card">
-    <img src="complementos.jpg">
-    <h3>Complementos</h3>
+<img src="complementos.jpg">
+<h3>Complementos</h3>
 </a>
 
 <a href="#zapatos" class="categoria-card">
-    <img src="zapatos.jpg">
-    <h3>Zapatos</h3>
+<img src="zapatos.jpg">
+<h3>Zapatos</h3>
 </a>
 
 </div>
-
 </section>
 
-<!-- ROPA -->
-<section id="ropa">
-
-<h2>Ropa</h2>
-
-<div class="caja nuevo">
-    <a href="#vestido1">
-        <img src="vestido1.jpg" style="width:140px;">
-    </a>
-    <p>Vestido playa verano</p>
-    <p><strong>22,99€</strong></p>
-</div>
-
-</section>
-
-<!-- COMPLEMENTOS -->
-<section id="complementos">
-
-<h2>Complementos</h2>
-
-<div class="caja nuevo">
-    <a href="#bolso2">
-        <img src="bolso2.jpg" style="width:140px;">
-    </a>
-    <p>Bolso verano elegante</p>
-    <p><strong>18,99€</strong></p>
-</div>
-
-</section>
-
-<!-- ZAPATOS -->
-<section id="zapatos">
-<h2>Zapatos</h2>
-</section>
-
-<!-- MODALES -->
-<div id="vestido1" class="modal">
-<div class="modal-contenido">
-<a href="#ropa" class="cerrar">✖</a>
-<img src="vestido1.jpg" style="width:300px;">
-<h2>Vestido playa verano</h2>
-<p>Vestido ligero</p>
-<p>22,99€</p>
-</div>
-</div>
-
-<div id="bolso2" class="modal">
-<div class="modal-contenido">
-<a href="#complementos" class="cerrar">✖</a>
-<img src="bolso2.jpg" style="width:300px;">
-<h2>Bolso verano elegante</h2>
-<p>Bolso moderno</p>
-<p>18,99€</p>
-</div>
-</div>
-
-<!-- CONTACTO -->
-<section id="contacto">
-
-<h2>Contacto</h2>
-
-<div class="social-grid">
-
-<a href="https://instagram.com" class="social-card"><img src="instagram.png"><p>Instagram</p></a>
-<a href="https://tiktok.com" class="social-card"><img src="tiktok.png"><p>TikTok</p></a>
-<a href="https://facebook.com" class="social-card"><img src="facebook.png"><p>Facebook</p></a>
-<a href="mailto:soleraycomplementos@gmail.com" class="social-card"><img src="gmail.png"><p>Email</p></a>
-<a href="https://api.whatsapp.com/send?phone=34643319232&text=Hola%20quiero%20informacion%20sobre%20Solera" class="social-card"><img src="whatsapp.png"><p>WhatsApp</p></a>
-
-</div>
-
-</section>
-
-<footer>
-<p>© 2026 Solera</p>
-</footer>
-
+<!-- JS -->
 <script>
 const slider = document.querySelector(".novedades-slider");
 
 document.querySelectorAll(".nuevo").forEach(p => {
-
     const img = p.querySelector("img").src;
     const nombre = p.querySelector("p").innerText;
     const enlace = p.querySelector("a").getAttribute("href");
