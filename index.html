@@ -4,14 +4,13 @@
 <meta charset="UTF-8">
 <title>Solera</title>
 
-<!-- 🔤 FUENTE MÁS BONITA -->
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
 <style>
 body {
     margin: 0;
     font-family: 'Poppins', sans-serif;
-    background-color: #eaf6f6;
+    background: #eaf6f6;
     color: #333;
 }
 
@@ -61,15 +60,7 @@ section {
     padding: 30px;
 }
 
-/* 🧱 CAJAS */
-.caja {
-    background: white;
-    padding: 18px;
-    margin: 12px 0;
-    border-radius: 14px;
-}
-
-/* 🖼️ CATEGORÍAS GRANDES */
+/* 🧱 TARJETAS CATEGORÍAS */
 .categorias-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -78,15 +69,16 @@ section {
 
 .categoria-card {
     background: white;
-    border-radius: 14px;
+    border-radius: 15px;
     overflow: hidden;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
-    text-align: center;
+    text-decoration: none;
+    color: black;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     transition: transform 0.2s;
 }
 
 .categoria-card:hover {
-    transform: scale(1.03);
+    transform: scale(1.04);
 }
 
 .categoria-card img {
@@ -96,7 +88,17 @@ section {
 }
 
 .categoria-card h3 {
+    text-align: center;
+    padding: 10px;
+    margin: 0;
+}
+
+/* 🧱 PRODUCTOS */
+.caja {
+    background: white;
+    padding: 15px;
     margin: 10px 0;
+    border-radius: 10px;
 }
 
 /* 🌟 MODAL */
@@ -121,14 +123,13 @@ section {
     padding: 20px;
     border-radius: 12px;
     text-align: center;
-    max-width: 400px;
 }
 
 .cerrar {
     display: block;
     text-align: right;
-    text-decoration: none;
     font-size: 22px;
+    text-decoration: none;
 }
 
 html {
@@ -155,7 +156,7 @@ footer {
     </div>
 </header>
 
-<!-- 🔗 NAV -->
+<!-- 🔗 MENÚ -->
 <nav>
     <a href="#categorias">Categorías</a>
     <a href="#contacto">Contacto</a>
@@ -168,16 +169,19 @@ footer {
 
     <div class="categorias-grid">
 
+        <!-- 👗 ROPA -->
         <a href="#ropa" class="categoria-card">
             <img src="ropa.jpg">
             <h3>Ropa</h3>
         </a>
 
+        <!-- 👜 COMPLEMENTOS -->
         <a href="#complementos" class="categoria-card">
             <img src="complementos.jpg">
             <h3>Complementos</h3>
         </a>
 
+        <!-- 👡 ZAPATOS -->
         <a href="#zapatos" class="categoria-card">
             <img src="zapatos.jpg">
             <h3>Zapatos</h3>
@@ -190,7 +194,9 @@ footer {
 <section id="ropa">
     <h2>Ropa</h2>
     <div class="caja">
-        <p>Próximamente ropa playera, vestidos y estilo boho chic</p>
+        <img src="ropa1.jpg" style="width:140px; border-radius:10px;">
+        <p>Vestido playero de verano</p>
+        <p><strong>19,99€</strong></p>
     </div>
 </section>
 
@@ -198,7 +204,9 @@ footer {
 <section id="complementos">
     <h2>Complementos</h2>
     <div class="caja">
-        <p>Bolsos, gafas y accesorios de verano</p>
+        <img src="bolso1.jpg" style="width:140px; border-radius:10px;">
+        <p>Bolso de playa grande</p>
+        <p><strong>14,99€</strong></p>
     </div>
 </section>
 
@@ -219,7 +227,7 @@ footer {
     </div>
 </section>
 
-<!-- 🌟 MODAL PRODUCTO -->
+<!-- 🌟 MODAL -->
 <div id="producto1" class="modal">
 
     <div class="modal-contenido">
@@ -230,7 +238,7 @@ footer {
 
         <h2>Sandalia Boho Chic</h2>
 
-        <p>Sandalia perfecta para verano, playa y estilo casual.</p>
+        <p>Sandalia ideal para verano y playa.</p>
 
         <p><strong>24,99€</strong></p>
 
