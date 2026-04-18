@@ -4,10 +4,13 @@
 <meta charset="UTF-8">
 <title>Solera</title>
 
+<!-- 🔤 FUENTE MÁS BONITA -->
+<link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+
 <style>
 body {
-    font-family: Arial, sans-serif;
     margin: 0;
+    font-family: 'Poppins', sans-serif;
     background-color: #eaf6f6;
     color: #333;
 }
@@ -15,8 +18,7 @@ body {
 /* 🌊 PORTADA */
 header {
     position: relative;
-    height: 300px;
-    overflow: hidden;
+    height: 320px;
 }
 
 header img {
@@ -31,47 +33,70 @@ header .texto {
     top: 50%;
     left: 50%;
     transform: translate(-50%,-50%);
-    text-align: center;
     color: white;
+    text-align: center;
 }
 
-/* 🔗 MENÚ */
+header h1 {
+    font-size: 55px;
+    margin: 0;
+}
+
+/* 🔗 NAV */
 nav {
-    background-color: #055160;
+    background: #055160;
     text-align: center;
-    padding: 12px;
+    padding: 14px;
 }
 
 nav a {
     color: white;
     margin: 0 15px;
     text-decoration: none;
-    font-weight: bold;
+    font-weight: 600;
 }
 
 /* 📦 SECCIONES */
 section {
-    padding: 25px;
+    padding: 30px;
 }
 
+/* 🧱 CAJAS */
 .caja {
     background: white;
-    padding: 15px;
-    margin: 10px 0;
-    border-radius: 10px;
+    padding: 18px;
+    margin: 12px 0;
+    border-radius: 14px;
 }
 
-/* ✨ SCROLL */
-html {
-    scroll-behavior: smooth;
+/* 🖼️ CATEGORÍAS GRANDES */
+.categorias-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
 }
 
-/* 🧾 FOOTER */
-footer {
-    background: #055160;
-    color: white;
+.categoria-card {
+    background: white;
+    border-radius: 14px;
+    overflow: hidden;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
     text-align: center;
-    padding: 20px;
+    transition: transform 0.2s;
+}
+
+.categoria-card:hover {
+    transform: scale(1.03);
+}
+
+.categoria-card img {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+}
+
+.categoria-card h3 {
+    margin: 10px 0;
 }
 
 /* 🌟 MODAL */
@@ -103,7 +128,18 @@ footer {
     display: block;
     text-align: right;
     text-decoration: none;
-    font-size: 20px;
+    font-size: 22px;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+footer {
+    background: #055160;
+    color: white;
+    text-align: center;
+    padding: 20px;
 }
 </style>
 </head>
@@ -119,20 +155,34 @@ footer {
     </div>
 </header>
 
-<!-- 🔗 MENÚ -->
+<!-- 🔗 NAV -->
 <nav>
     <a href="#categorias">Categorías</a>
     <a href="#contacto">Contacto</a>
 </nav>
 
-<!-- 📌 CATEGORÍAS -->
+<!-- 📌 CATEGORÍAS VISUALES -->
 <section id="categorias">
+
     <h2>Categorías</h2>
 
-    <div class="caja">
-        <a href="#ropa">Ropa</a> |
-        <a href="#complementos">Complementos</a> |
-        <a href="#zapatos">Zapatos</a>
+    <div class="categorias-grid">
+
+        <a href="#ropa" class="categoria-card">
+            <img src="ropa.jpg">
+            <h3>Ropa</h3>
+        </a>
+
+        <a href="#complementos" class="categoria-card">
+            <img src="complementos.jpg">
+            <h3>Complementos</h3>
+        </a>
+
+        <a href="#zapatos" class="categoria-card">
+            <img src="zapatos.jpg">
+            <h3>Zapatos</h3>
+        </a>
+
     </div>
 </section>
 
@@ -140,7 +190,7 @@ footer {
 <section id="ropa">
     <h2>Ropa</h2>
     <div class="caja">
-        <p>Próximamente productos de ropa</p>
+        <p>Próximamente ropa playera, vestidos y estilo boho chic</p>
     </div>
 </section>
 
@@ -148,7 +198,7 @@ footer {
 <section id="complementos">
     <h2>Complementos</h2>
     <div class="caja">
-        <p>Próximamente productos de complementos</p>
+        <p>Bolsos, gafas y accesorios de verano</p>
     </div>
 </section>
 
@@ -180,9 +230,9 @@ footer {
 
         <h2>Sandalia Boho Chic</h2>
 
-        <p>Sandalia cómoda de estilo playero perfecta para verano.</p>
+        <p>Sandalia perfecta para verano, playa y estilo casual.</p>
 
-        <p><strong>Precio: 24,99€</strong></p>
+        <p><strong>24,99€</strong></p>
 
     </div>
 </div>
@@ -197,7 +247,6 @@ footer {
     </div>
 </section>
 
-<!-- FOOTER -->
 <footer>
     <p>© 2026 Solera</p>
 </footer>
