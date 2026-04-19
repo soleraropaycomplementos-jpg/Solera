@@ -8,13 +8,16 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 <style>
-html { scroll-behavior: smooth; }
 
-body{
+html, body{
 margin:0;
 font-family:Poppins,sans-serif;
 background:#eaf6f6;
 padding-top:60px;
+
+/* 🔥 EVITA ZOOM EN MÓVIL */
+-webkit-text-size-adjust: 100%;
+touch-action: manipulation;
 }
 
 /* NAV */
@@ -57,7 +60,13 @@ color:white;
 text-align:center;
 }
 
-#logo{cursor:pointer;}
+/* 🔥 LOGO ANTI ZOOM */
+#logo{
+cursor:pointer;
+user-select:none;
+touch-action: manipulation;
+-webkit-user-select:none;
+}
 
 /* GRID */
 .grid{
@@ -198,6 +207,7 @@ border-radius:10px;
 background:#fafafa;
 margin-bottom:10px;
 }
+
 </style>
 </head>
 
@@ -205,6 +215,7 @@ margin-bottom:10px;
 
 <header>
 <img src="playa.jpg">
+
 <div class="texto">
 <h1 id="logo">Solera</h1>
 <p>Moda verano</p>
@@ -221,6 +232,7 @@ margin-bottom:10px;
 <!-- NOVEDADES -->
 <section id="novedades">
 <h2>Novedades</h2>
+
 <div class="grid">
 <div class="card"><img src="vestido1.jpg"><h3>Vestido</h3></div>
 <div class="card"><img src="bolso2.jpg"><h3>Bolso</h3></div>
@@ -272,6 +284,7 @@ margin-bottom:10px;
 <!-- PRODUCTO MODAL -->
 <div class="modal" id="productModal">
 <div class="box">
+
 <div class="close-left" onclick="closeProduct()">✕</div>
 
 <div id="productContent"></div>
@@ -287,17 +300,17 @@ margin-bottom:10px;
 
 <script>
 
-/* ADMIN FIX */
+/* ADMIN FIX SIN ZOOM */
 let admin=false;
 let taps=0;
+let lastTap=0;
 
 /* USER */
-let currentUser = localStorage.getItem("user") || "user";
+let currentUser=localStorage.getItem("user")||"user";
 
-/* ASK USER */
 function askUser(){
 if(!currentUser || currentUser==="user"){
-let n = prompt("Escribe tu nombre:");
+let n=prompt("Escribe tu nombre:");
 if(n){
 currentUser=n;
 localStorage.setItem("user",n);
@@ -305,16 +318,33 @@ localStorage.setItem("user",n);
 }
 }
 
-/* ADMIN 5 CLICS */
-document.addEventListener("DOMContentLoaded", () => {
+/* ADMIN 5 TOQUES SIN ZOOM */
+document.addEventListener("DOMContentLoaded",()=>{
 
-const logo = document.getElementById("logo");
+const logo=document.getElementById("logo");
 
-logo.addEventListener("click", () => {
+if(!logo)return;
 
+logo.addEventListener("click",(e)=>{
+e.preventDefault();
+handleTap();
+});
+
+logo.addEventListener("touchend",(e)=>{
+e.preventDefault();
+handleTap();
+});
+
+function handleTap(){
+
+let now=Date.now();
+
+if(now-lastTap>2000){
+taps=0;
+}
+
+lastTap=now;
 taps++;
-
-setTimeout(()=>taps=0,2000);
 
 if(taps===5){
 
@@ -331,8 +361,7 @@ alert("Incorrecto");
 
 taps=0;
 }
-
-});
+}
 
 });
 
@@ -379,25 +408,12 @@ document.getElementById("productContent").innerHTML=`
 <img src="${p.img}" style="width:100%;max-height:400px;object-fit:contain;">
 <h3>${p.nombre}</h3>
 <p>${p.precio}</p>
-<button class="btn" onclick="shareProduct()">Compartir</button>
 `;
-
 loadComments();
 }
 
 function closeProduct(){
 document.getElementById("productModal").classList.remove("activo");
-}
-
-/* SHARE */
-function shareProduct(){
-if(navigator.share){
-navigator.share({
-title:"Solera",
-text:`${currentProduct.nombre} - ${currentProduct.precio}`,
-url:window.location.href
-});
-}
 }
 
 /* COMMENTS */
@@ -431,31 +447,6 @@ document.getElementById("commentText").value="";
 loadComments();
 }
 
-/* REPLIES */
-function replyComment(id){
-
-askUser();
-
-let text=prompt("Responder:");
-if(!text)return;
-
-let data=getComments();
-
-data=data.map(c=>{
-if(c.id===id){
-c.replies.push({
-user:currentUser,
-text:text,
-date:new Date().toLocaleDateString()
-});
-}
-return c;
-});
-
-saveComments(data);
-loadComments();
-}
-
 /* LOAD COMMENTS */
 function loadComments(){
 
@@ -474,18 +465,16 @@ replies+=`<div style="margin-left:15px;font-size:12px;background:#eee;padding:5p
 </div>`;
 });
 
+let canDelete=admin || cm.user===currentUser;
+
 let div=document.createElement("div");
 div.className="reseña";
-
-let canDelete = admin || cm.user===currentUser;
 
 div.innerHTML=`
 <strong>${cm.user}</strong> · ${cm.date}
 <p>${cm.text}</p>
 
-<button onclick="replyComment(${cm.id})" class="btn" style="padding:5px;font-size:12px;">Responder</button>
-
-${canDelete ? `<button onclick="deleteComment(${cm.id})" style="background:red;color:white;border:none;padding:5px;border-radius:6px;cursor:pointer">✕</button>`:""}
+${canDelete?`<button onclick="deleteComment(${cm.id})" style="background:red;color:white;border:none;padding:5px;border-radius:6px;">✕</button>`:""}
 
 ${replies}
 `;
@@ -494,7 +483,6 @@ c.appendChild(div);
 });
 }
 
-/* DELETE COMMENT */
 function deleteComment(id){
 let data=getComments();
 data=data.filter(c=>c.id!==id);
