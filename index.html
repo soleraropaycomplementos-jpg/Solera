@@ -5,122 +5,234 @@
 <title>Solera</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 <style>
 html { scroll-behavior: smooth; }
 
-body {
-    margin: 0;
-    font-family: 'Poppins', sans-serif;
-    background: #eaf6f6;
-    color: #333;
-    padding-top: 60px;
+body{
+margin:0;
+font-family:Poppins,sans-serif;
+background:#eaf6f6;
+padding-top:60px;
 }
 
-/* NAV */
-nav {
-    background: #055160;
-    text-align: center;
-    padding: 14px;
-    position: fixed;
-    top: 0;
-    width: 100%;
-    z-index: 1000;
+nav{
+background:#055160;
+position:fixed;
+top:0;
+width:100%;
+text-align:center;
+padding:14px;
+z-index:1000;
 }
 
-nav a {
-    color: white;
-    margin: 0 15px;
-    text-decoration: none;
-    font-weight: 600;
+nav a{
+color:white;
+margin:0 12px;
+text-decoration:none;
+font-weight:600;
 }
 
-/* HEADER */
-header {
-    position: relative;
-    height: 340px;
+header{
+height:340px;
+position:relative;
 }
 
-header img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    filter: brightness(55%);
+header img{
+width:100%;
+height:100%;
+object-fit:cover;
+filter:brightness(55%);
 }
 
-header .texto {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%,-50%);
-    color: white;
-    text-align: center;
+header .texto{
+position:absolute;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+color:white;
+text-align:center;
 }
 
-/* SECCIONES */
-section {
-    padding: 40px 25px;
+section{padding:40px 25px;}
+h2{text-align:center;}
+
+/* CATEGORÍAS */
+.categorias-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:20px;
 }
 
-h2 {
-    text-align: center;
+.categoria-card{
+background:white;
+border-radius:15px;
+overflow:hidden;
+text-decoration:none;
+color:black;
+box-shadow:0 4px 12px rgba(0,0,0,0.1);
 }
 
-/* GRID */
-.categorias-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 20px;
+.categoria-card img{
+width:100%;
+height:160px;
+object-fit:cover;
 }
 
-.categoria-card {
-    background: white;
-    border-radius: 15px;
-    overflow: hidden;
-    text-decoration: none;
-    color: black;
-    box-shadow: 0 4px 14px rgba(0,0,0,0.1);
-    cursor: pointer;
+/* PRODUCTOS */
+.caja{
+background:white;
+padding:15px;
+margin:10px auto;
+max-width:500px;
+border-radius:12px;
+text-align:center;
+box-shadow:0 3px 10px rgba(0,0,0,0.08);
 }
 
-.categoria-card img {
-    width: 100%;
-    height: 160px;
-    object-fit: cover;
+/* NOVEDADES */
+.novedades-wrapper{display:flex;align-items:center;}
+
+.novedades-slider{
+display:flex;
+overflow-x:auto;
+gap:15px;
+scroll-snap-type:x mandatory;
+width:100%;
 }
 
-.categoria-card h3, .categoria-card p {
-    text-align: center;
+.novedades-slider::-webkit-scrollbar{display:none;}
+
+.novedades-slider .categoria-card{
+min-width:200px;
+scroll-snap-align:start;
+}
+
+.flecha{
+background:rgba(0,0,0,0.6);
+color:white;
+border:none;
+border-radius:50%;
+font-size:26px;
+padding:10px;
+}
+
+/* CONTACTO */
+.social-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
+gap:15px;
+}
+
+.social-card{
+background:white;
+padding:15px;
+border-radius:12px;
+text-align:center;
+text-decoration:none;
+color:black;
+box-shadow:0 4px 10px rgba(0,0,0,0.1);
+}
+
+/* RESEÑAS */
+#reseñas{
+background:white;
+padding:40px 20px;
+}
+
+.reseñas-box{
+max-width:600px;
+margin:auto;
+height:300px;
+overflow-y:auto;
+border:1px solid #ddd;
+border-radius:12px;
+padding:10px;
+}
+
+.reseña{
+background:#f7f7f7;
+margin:10px 0;
+padding:10px;
+border-radius:10px;
+}
+
+.btn{
+display:block;
+margin:15px auto;
+padding:10px 18px;
+background:#055160;
+color:white;
+border:none;
+border-radius:8px;
 }
 
 /* MODAL */
-.modal {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.6);
-    display: none;
-    justify-content: center;
-    align-items: center;
-    z-index: 9999;
+.modal{
+position:fixed;
+inset:0;
+background:rgba(0,0,0,0.6);
+display:none;
+justify-content:center;
+align-items:center;
 }
 
-.modal.activo {
-    display: flex;
+.modal.activo{display:flex;}
+
+.box{
+background:white;
+padding:20px;
+border-radius:12px;
+width:90%;
+max-width:400px;
 }
 
-.modal-contenido {
-    background: white;
-    padding: 20px;
-    border-radius: 12px;
-    width: 90%;
-    max-width: 400px;
-    text-align: center;
+.estrellas{
+display:flex;
+flex-direction:row-reverse;
+justify-content:center;
+font-size:26px;
 }
 
-.cerrar {
-    text-decoration: none;
-    float: right;
-    font-size: 20px;
+.estrellas input{display:none;}
+.estrellas label{color:lightgray;cursor:pointer;}
+
+.estrellas input:checked ~ label,
+.estrellas label:hover,
+.estrellas label:hover ~ label{
+color:gold;
+}
+
+textarea{
+width:100%;
+margin-top:10px;
+padding:10px;
+}
+
+footer{
+background:#055160;
+color:white;
+text-align:center;
+padding:20px;
+}
+
+/* AVISO */
+.aviso-overlay{
+position:fixed;
+inset:0;
+background:rgba(0,0,0,0.6);
+display:flex;
+justify-content:center;
+align-items:center;
+z-index:9999;
+}
+
+.aviso-box{
+background:white;
+padding:25px 40px;
+border-radius:12px;
+font-weight:bold;
 }
 </style>
 </head>
@@ -139,20 +251,20 @@ h2 {
 <a href="#novedades">Novedades</a>
 <a href="#categorias">Categorías</a>
 <a href="#ropa">Ropa</a>
-<a href="#complementos">Complementos</a>
-<a href="#zapatos">Zapatos</a>
 <a href="#contacto">Contacto</a>
 <a href="#reseñas">Reseñas</a>
 </nav>
 
----
-
-# 🔵 NOVEDADES (REPARADO SIN PERDER NADA)
-
+<!-- NOVEDADES -->
 <section id="novedades">
+
 <h2>Novedades</h2>
 
-<div class="categorias-grid">
+<div class="novedades-wrapper">
+
+<button class="flecha" onclick="move(-1)">‹</button>
+
+<div class="novedades-slider" id="slider">
 
 <div class="categoria-card">
 <img src="vestido.jpg">
@@ -170,13 +282,16 @@ h2 {
 </div>
 
 </div>
+
+<button class="flecha" onclick="move(1)">›</button>
+
+</div>
+
 </section>
 
----
-
-# 🔵 CATEGORÍAS
-
+<!-- CATEGORÍAS -->
 <section id="categorias">
+
 <h2>Categorías</h2>
 
 <div class="categorias-grid">
@@ -197,132 +312,142 @@ h2 {
 </div>
 
 </div>
+
 </section>
 
----
-
-# 🔵 ROPA (AHORA COMPLETO)
-
+<!-- ROPA -->
 <section id="ropa">
 <h2>Ropa</h2>
 
-<div class="categorias-grid">
+<div class="caja">Vestido blanco playa</div>
+<div class="caja">Vestido rosa verano</div>
 
-<div class="categoria-card" onclick="document.getElementById('v1').classList.add('activo')">
-<img src="vestido.jpg">
-<h3>Vestido playa</h3>
-<p>19,99€</p>
-</div>
-
-<div class="categoria-card" onclick="document.getElementById('v2').classList.add('activo')">
-<img src="vestido2.jpg">
-<h3>Vestido rosa</h3>
-<p>24,99€</p>
-</div>
-
-</div>
 </section>
 
----
-
-# 🔵 COMPLEMENTOS
-
-<section id="complementos">
-<h2>Complementos</h2>
-
-<div class="categorias-grid">
-
-<div class="categoria-card" onclick="document.getElementById('v3').classList.add('activo')">
-<img src="bolso.jpg">
-<h3>Bolso verano</h3>
-<p>29,99€</p>
-</div>
-
-</div>
-</section>
-
----
-
-# 🔵 ZAPATOS
-
-<section id="zapatos">
-<h2>Zapatos</h2>
-
-<div class="categorias-grid">
-
-<div class="categoria-card" onclick="document.getElementById('v4').classList.add('activo')">
-<img src="sandalias.jpg">
-<h3>Sandalias playa</h3>
-<p>22,99€</p>
-</div>
-
-</div>
-</section>
-
----
-
-# 🔵 MODALES PRODUCTO (FUNCIONALES)
-
-<div id="v1" class="modal">
-<div class="modal-contenido">
-<a href="#" class="cerrar">✖</a>
-<img src="vestido.jpg" style="width:100%">
-<h2>Vestido playa</h2>
-<p>19,99€</p>
-<p>Perfecto para verano y playa.</p>
-</div>
-</div>
-
-<div id="v2" class="modal">
-<div class="modal-contenido">
-<a href="#" class="cerrar">✖</a>
-<img src="vestido2.jpg" style="width:100%">
-<h2>Vestido rosa</h2>
-<p>24,99€</p>
-<p>Elegante y fresco.</p>
-</div>
-</div>
-
-<div id="v3" class="modal">
-<div class="modal-contenido">
-<a href="#" class="cerrar">✖</a>
-<img src="bolso.jpg" style="width:100%">
-<h2>Bolso verano</h2>
-<p>29,99€</p>
-<p>Ideal para playa.</p>
-</div>
-</div>
-
-<div id="v4" class="modal">
-<div class="modal-contenido">
-<a href="#" class="cerrar">✖</a>
-<img src="sandalias.jpg" style="width:100%">
-<h2>Sandalias playa</h2>
-<p>22,99€</p>
-<p>Comodidad total.</p>
-</div>
-</div>
-
----
-
-# 🔵 CONTACTO (INTACTO)
-
+<!-- CONTACTO -->
 <section id="contacto">
+
 <h2>Contacto</h2>
-<p>Email: soleraropaycomplementos@gmail.com</p>
-<p>WhatsApp: 643319232</p>
+
+<div class="social-grid">
+
+<a href="mailto:soleraropaycomplementos@gmail.com" class="social-card">
+<i class="fa-solid fa-envelope"></i><br>Gmail
+</a>
+
+<a href="https://api.whatsapp.com/send?phone=34643319232&text=Buenas%2C%20quiero%20informaci%C3%B3n%20🌞🏖️" class="social-card">
+<i class="fa-brands fa-whatsapp"></i><br>WhatsApp
+</a>
+
+<a href="https://instagram.com" class="social-card">
+<i class="fa-brands fa-instagram"></i><br>Instagram
+</a>
+
+<a href="https://facebook.com" class="social-card">
+<i class="fa-brands fa-facebook"></i><br>Facebook
+</a>
+
+<a href="https://tiktok.com" class="social-card">
+<i class="fa-brands fa-tiktok"></i><br>TikTok
+</a>
+
+</div>
+
 </section>
 
----
-
-# 🔵 RESEÑAS (INTACTO)
-
+<!-- RESEÑAS -->
 <section id="reseñas">
+
 <h2>Reseñas</h2>
-<p>Sistema activo</p>
+
+<button class="btn" onclick="openM()">Dejar reseña</button>
+
+<div class="reseñas-box" id="list"></div>
+
 </section>
 
----
+<!-- MODAL -->
+<div class="modal" id="modal">
+
+<div class="box">
+
+<div class="estrellas">
+<input type="radio" id="5" name="e" value="5"><label for="5">★</label>
+<input type="radio" id="4" name="e" value="4"><label for="4">★</label>
+<input type="radio" id="3" name="e" value="3"><label for="3">★</label>
+<input type="radio" id="2" name="e" value="2"><label for="2">★</label>
+<input type="radio" id="1" name="e" value="1"><label for="1">★</label>
+</div>
+
+<textarea id="txt"></textarea>
+
+<button onclick="save()">Enviar</button>
+
+</div>
+
+</div>
+
+<footer>
+<p>© 2026 Solera</p>
+</footer>
+
+<script>
+
+function move(dir){
+const s=document.getElementById("slider");
+const max=s.scrollWidth-s.clientWidth;
+const next=s.scrollLeft+dir*220;
+
+if(next<0||next>max){
+const a=document.createElement("div");
+a.className="aviso-overlay";
+a.innerHTML="<div class='aviso-box'>No hay resultados</div>";
+document.body.appendChild(a);
+setTimeout(()=>a.remove(),1500);
+return;
+}
+
+s.scrollBy({left:dir*220,behavior:"smooth"});
+}
+
+/* reseñas */
+function openM(){document.getElementById("modal").classList.add("activo");}
+
+function save(){
+
+let e=document.querySelector('input[name="e"]:checked');
+let t=document.getElementById("txt").value;
+
+if(!e||t==="")return;
+
+let d=JSON.parse(localStorage.getItem("r"))||[];
+
+d.push({estrellas:e.value,texto:t});
+
+localStorage.setItem("r",JSON.stringify(d));
+
+load();
+}
+
+function load(){
+
+let c=document.getElementById("list");
+c.innerHTML="";
+
+let d=JSON.parse(localStorage.getItem("r"))||[];
+
+d.forEach(r=>{
+let x=document.createElement("div");
+x.className="reseña";
+x.innerHTML="⭐".repeat(r.estrellas)+"<p>"+r.texto+"</p>";
+c.appendChild(x);
+});
+
+}
+
+load();
+
+</script>
 
 </body>
 </html>
