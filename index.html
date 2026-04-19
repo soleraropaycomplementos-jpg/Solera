@@ -53,6 +53,10 @@ color:white;
 text-align:center;
 }
 
+#logo{
+cursor:pointer;
+}
+
 .grid{
 display:grid;
 grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
@@ -74,13 +78,6 @@ height:160px;
 object-fit:cover;
 }
 
-#productGrid{
-display:grid;
-grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
-gap:18px;
-margin-top:20px;
-}
-
 .producto-card{
 background:white;
 border-radius:16px;
@@ -88,6 +85,13 @@ overflow:hidden;
 box-shadow:0 6px 18px rgba(0,0,0,0.12);
 text-align:center;
 padding-bottom:10px;
+position:relative;
+}
+
+.producto-card img{
+width:100%;
+height:200px;
+object-fit:cover;
 }
 
 .btn{
@@ -98,6 +102,19 @@ background:#055160;
 color:white;
 border:none;
 border-radius:8px;
+cursor:pointer;
+}
+
+.small-btns{
+display:flex;
+justify-content:center;
+gap:8px;
+margin-top:5px;
+}
+
+.small-btns button{
+font-size:12px;
+padding:6px 10px;
 cursor:pointer;
 }
 
@@ -115,7 +132,25 @@ border-radius:12px;
 text-align:center;
 text-decoration:none;
 color:black;
-box-shadow:0 4px 10px rgba(0,0,0,0.1);
+}
+
+/* RESEÑAS */
+.reseñas-box{
+max-width:600px;
+margin:auto;
+height:300px;
+overflow-y:auto;
+border:1px solid #ddd;
+border-radius:12px;
+padding:10px;
+background:white;
+}
+
+.reseña{
+background:#f7f7f7;
+margin:10px 0;
+padding:10px;
+border-radius:10px;
 }
 
 /* MODAL */
@@ -141,14 +176,6 @@ text-align:center;
 position:relative;
 }
 
-.close-left{
-position:absolute;
-top:10px;
-left:15px;
-font-size:22px;
-cursor:pointer;
-}
-
 /* CART ICON */
 #cartIcon{
 position:fixed;
@@ -159,15 +186,6 @@ color:white;
 padding:10px 14px;
 border-radius:50px;
 cursor:pointer;
-z-index:9999;
-}
-
-/* IMÁGENES CART */
-.cart-img{
-width:60px;
-height:60px;
-object-fit:cover;
-border-radius:8px;
 }
 
 /* TOAST */
@@ -181,7 +199,17 @@ color:white;
 padding:12px 18px;
 border-radius:10px;
 display:none;
-z-index:99999;
+}
+
+/* SHARE */
+.share-btn{
+background:#444;
+color:white;
+border:none;
+padding:8px;
+border-radius:8px;
+margin-top:5px;
+cursor:pointer;
 }
 
 </style>
@@ -192,7 +220,7 @@ z-index:99999;
 <header>
 <img src="playa.jpg">
 <div class="texto">
-<h1>Solera</h1>
+<h1 id="logo">Solera</h1>
 <p>Moda verano</p>
 </div>
 </header>
@@ -202,10 +230,10 @@ z-index:99999;
 <a href="#categorias">Categorías</a>
 <a href="#contacto">Contacto</a>
 <a href="#reseñas">Reseñas</a>
-<a href="#" onclick="openAdmin()">SOLERA</a>
+<a href="#" onclick="openAdmin()">Solera Admin</a>
 </nav>
 
-<!-- CART -->
+<!-- CARRITO -->
 <div id="cartIcon" onclick="openCart()">🛒 <span id="cartCount">0</span></div>
 
 <!-- NOVEDADES -->
@@ -239,40 +267,46 @@ z-index:99999;
 <a class="social-card" href="mailto:soleraropaycomplementos@gmail.com">Gmail</a>
 <a class="social-card" href="https://wa.me/34643319232">WhatsApp</a>
 <a class="social-card" href="https://instagram.com/solerashopp">Instagram</a>
-<a class="social-card" href="https://facebook.com/share/18feHPTPbK/">Facebook</a>
-<a class="social-card" href="https://tiktok.com/@solerashop8">TikTok</a>
 </div>
-
 </section>
 
-<!-- RESEÑAS (RESTAURADA) -->
+<!-- RESEÑAS -->
 <section id="reseñas">
 <h2>Reseñas</h2>
-<button class="btn" onclick="openReview()">Dejar reseña</button>
-<div id="list"></div>
+<button class="btn" onclick="openM()">Dejar reseña</button>
+<div class="reseñas-box" id="list"></div>
 </section>
 
-<!-- PRODUCT MODAL -->
+<!-- PRODUCTO MODAL -->
 <div class="modal" id="productModal">
 <div class="box">
-<div class="close-left" onclick="closeProduct()">✕</div>
+<div onclick="closeProduct()">✕</div>
 <div id="productContent"></div>
 </div>
 </div>
 
-<!-- CART MODAL -->
+<!-- RESEÑA -->
+<div class="modal" id="modal">
+<div class="box">
+<div onclick="modal.classList.remove('activo')">✕</div>
+<textarea id="txt"></textarea>
+<button class="btn" onclick="saveReview()">Enviar</button>
+</div>
+</div>
+
+<!-- CARRITO -->
 <div class="modal" id="cartModal">
 <div class="box">
-<div class="close-left" onclick="closeCart()">✕</div>
+<div onclick="closeCart()">✕</div>
 
-<h2>Tu carrito</h2>
+<h2>Carrito</h2>
 <div id="cartList"></div>
 
-<h3 id="total">Total: 0€</h3>
+<h3 id="total"></h3>
 
-<input id="cname" placeholder="Nombre"><br><br>
-<input id="caddress" placeholder="Dirección"><br><br>
-<input id="cphone" placeholder="Teléfono"><br><br>
+<input id="cname" placeholder="Nombre">
+<input id="caddress" placeholder="Dirección">
+<input id="cphone" placeholder="Teléfono">
 
 <select id="cpayment">
 <option>Bizum</option>
@@ -280,8 +314,7 @@ z-index:99999;
 <option>Contra reembolso</option>
 </select>
 
-<button class="btn" onclick="checkout()">Confirmar pedido</button>
-
+<button class="btn" onclick="checkout()">Comprar</button>
 </div>
 </div>
 
@@ -291,6 +324,7 @@ z-index:99999;
 
 let cart=[];
 
+/* PRODUCTOS */
 const productos=[
 {cat:"ropa",img:"vestido1.jpg",nombre:"Vestido verano",precio:19.99},
 {cat:"complementos",img:"bolso2.jpg",nombre:"Bolso playa",precio:14.99},
@@ -299,7 +333,7 @@ const productos=[
 
 /* CATEGORÍAS */
 document.querySelectorAll('.card[data-cat]').forEach(card=>{
-card.addEventListener('click',()=>{
+card.onclick=()=>{
 
 let cat=card.dataset.cat;
 let grid=document.getElementById("productGrid");
@@ -315,112 +349,84 @@ div.innerHTML=`
 <h3>${p.nombre}</h3>
 <p>${p.precio}€</p>
 
-<button class="btn" onclick="addToCart('${p.nombre}',${p.precio},'${p.img}')">Añadir</button>
+<button class="btn" onclick="add('${p.nombre}',${p.precio},'${p.img}')">Añadir</button>
 
-<button onclick="share('${p.nombre}',${p.precio})">Compartir</button>
+<button class="share-btn" onclick="share('${p.nombre}')">Compartir</button>
 `;
 
 grid.appendChild(div);
-
-});
-});
 });
 
-/* CART */
-function addToCart(name,price,img){
+};
+});
 
-let item=cart.find(p=>p.nombre===name);
-
-if(item){
-item.cantidad++;
-}else{
-cart.push({nombre:name,precio:price,img:img,cantidad:1});
-}
-
+/* ADD */
+function add(n,p,img){
+cart.push({nombre:n,precio:p,img,cantidad:1});
 updateCart();
 }
 
+/* CART */
 function updateCart(){
+document.getElementById("cartCount").innerText=cart.length;
 
 let list=document.getElementById("cartList");
-list.innerHTML="";
-
 let total=0;
 
-cart.forEach((p,i)=>{
+list.innerHTML="";
 
+cart.forEach((p,i)=>{
 total+=p.precio*p.cantidad;
 
 list.innerHTML+=`
-<div style="display:flex;gap:10px;align-items:center;margin-bottom:10px;">
-<img class="cart-img" src="${p.img}">
-<div style="flex:1;text-align:left">
-${p.nombre}<br>${p.precio}€ x ${p.cantidad}
-</div>
+<div>
+<img src="${p.img}" style="width:50px;height:50px;object-fit:cover">
+${p.nombre} - ${p.precio}€ x${p.cantidad}
 
-<button onclick="changeQty(${i},-1)">-</button>
-<span>${p.cantidad}</span>
-<button onclick="changeQty(${i},1)">+</button>
-
+<button onclick="p.cantidad++ ; updateCart()">+</button>
+<button onclick="p.cantidad-- ; updateCart()">-</button>
 <button onclick="cart.splice(${i},1);updateCart()">❌</button>
 </div>
 `;
 });
 
 document.getElementById("total").innerText="Total: "+total.toFixed(2)+"€";
-document.getElementById("cartCount").innerText=cart.length;
 }
-
-function changeQty(i,v){
-cart[i].cantidad+=v;
-if(cart[i].cantidad<=0) cart.splice(i,1);
-updateCart();
-}
-
-function openCart(){cartModal.classList.add("activo");}
-function closeCart(){cartModal.classList.remove("activo");}
 
 /* SHARE */
-function share(name,price){
-navigator.share?.({
-title:name,
-text:name+" "+price+"€",
-url:location.href
-});
+function share(name){
+navigator.share?.({title:name,text:"Mira este producto de Solera"});
 }
 
-/* WHATSAPP */
+/* CHECKOUT */
 function checkout(){
 
-let name=cname.value;
-let address=caddress.value;
-let phone=cphone.value;
-let payment=cpayment.value;
-
-let text="🛍️ PEDIDO\n\n";
-text+=`Nombre: ${name}\nDirección: ${address}\nTel: ${phone}\nPago: ${payment}\n\n`;
+let text="🛍 PEDIDO\n";
+text+="Nombre: "+cname.value+"\n";
+text+="Dirección: "+caddress.value+"\n";
+text+="Tel: "+cphone.value+"\n";
+text+="Pago: "+cpayment.value+"\n\n";
 
 let total=0;
 
 cart.forEach(p=>{
-let sub=p.precio*p.cantidad;
-total+=sub;
-text+=`${p.nombre} x${p.cantidad} = ${sub.toFixed(2)}€\n`;
+text+=`${p.nombre} x${p.cantidad} = ${p.precio*p.cantidad}€\n`;
+total+=p.precio*p.cantidad;
 });
 
-text+=`\nTOTAL: ${total.toFixed(2)}€`;
+text+="TOTAL: "+total+"€";
 
 window.open("https://wa.me/34643319232?text="+encodeURIComponent(text));
 }
 
-/* RESEÑAS RESTAURADAS */
-function openReview(){
-alert("Aquí iría el modal de reseñas (ya estaba en tu base original)");
-}
+/* RESEÑAS */
+function openM(){modal.classList.add("activo");}
 
-/* ADMIN */
-function openAdmin(){
-alert("Panel admin (pendiente conexión)");
+function saveReview(){
+let d=JSON.parse(localStorage.getItem("r")||"[]");
+d.push(txt.value);
+localStorage.setItem("r",JSON.stringify(d));
+modal.classList.remove("activo");
 }
 
 </script>
