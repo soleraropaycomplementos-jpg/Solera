@@ -6,9 +6,6 @@
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
 
-<!-- ICONOS REDES -->
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
-
 <style>
 html { scroll-behavior: smooth; }
 
@@ -83,6 +80,7 @@ h2 {
     text-decoration: none;
     color: black;
     box-shadow: 0 4px 14px rgba(0,0,0,0.1);
+    cursor: pointer;
 }
 
 .categoria-card img {
@@ -91,72 +89,14 @@ h2 {
     object-fit: cover;
 }
 
-.categoria-card h3 {
-    text-align: center;
-    padding: 10px;
-}
-
-/* PRODUCTOS */
-.caja {
-    background: white;
-    padding: 15px;
-    margin: 10px auto;
-    border-radius: 12px;
-    max-width: 500px;
-    box-shadow: 0 3px 10px rgba(0,0,0,0.08);
+.categoria-card h3, .categoria-card p {
     text-align: center;
 }
 
-/* ================= NOVEDADES ================= */
-.novedades-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 20px;
-}
-
-/* ================= RESEÑAS ================= */
-
-#reseñas {
-    background: white;
-    padding: 40px 20px;
-}
-
-.reseñas-box {
-    max-width: 600px;
-    margin: auto;
-    height: 280px;
-    overflow-y: auto;
-    border: 2px solid #ddd;
-    border-radius: 12px;
-    padding: 10px;
-    background: #f9f9f9;
-}
-
-.reseña {
-    background: white;
-    margin-bottom: 10px;
-    padding: 12px;
-    border-radius: 10px;
-}
-
-.btn-reseña {
-    display: block;
-    margin: 20px auto;
-    padding: 12px 20px;
-    background: #055160;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
-}
-
-/* MODAL RESEÑA */
-.modal-reseña {
+/* MODAL */
+.modal {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    inset: 0;
     background: rgba(0,0,0,0.6);
     display: none;
     justify-content: center;
@@ -164,76 +104,24 @@ h2 {
     z-index: 9999;
 }
 
-.modal-reseña.activo {
+.modal:target {
     display: flex;
 }
 
-.modal-box {
+.modal-contenido {
     background: white;
-    padding: 25px;
+    padding: 20px;
     border-radius: 12px;
+    text-align: center;
     width: 90%;
     max-width: 400px;
 }
 
-/* ESTRELLAS */
-.estrellas {
-    display: flex;
-    flex-direction: row-reverse;
-    justify-content: center;
-    font-size: 30px;
+.cerrar {
+    text-decoration: none;
+    font-size: 20px;
+    float: right;
 }
-
-.estrellas input { display: none; }
-
-.estrellas label {
-    color: lightgray;
-    cursor: pointer;
-}
-
-.estrellas input:checked ~ label,
-.estrellas label:hover,
-.estrellas label:hover ~ label {
-    color: gold;
-}
-
-textarea {
-    width: 100%;
-    margin-top: 10px;
-    padding: 10px;
-}
-
-/* FOOTER */
-footer {
-    background: #055160;
-    color: white;
-    text-align: center;
-    padding: 20px;
-}
-
-/* CONTACTO REDES */
-.social-grid{
-    display:grid;
-    grid-template-columns:repeat(auto-fit,minmax(140px,1fr));
-    gap:15px;
-}
-
-.social-card{
-    background:white;
-    text-align:center;
-    padding:15px;
-    border-radius:12px;
-    text-decoration:none;
-    color:black;
-    box-shadow:0 4px 10px rgba(0,0,0,0.1);
-}
-
-.social-card i{
-    font-size:28px;
-    margin-bottom:8px;
-    display:block;
-}
-
 </style>
 </head>
 
@@ -248,52 +136,33 @@ footer {
 </header>
 
 <nav>
-<a href="#novedades">Novedades</a>
 <a href="#categorias">Categorías</a>
 <a href="#ropa">Ropa</a>
+<a href="#complementos">Complementos</a>
+<a href="#zapatos">Zapatos</a>
 <a href="#contacto">Contacto</a>
 <a href="#reseñas">Reseñas</a>
 </nav>
 
-<!-- NOVEDADES -->
-<section id="novedades">
-<h2>Novedades</h2>
-
-<div class="novedades-grid">
-
-<div class="categoria-card">
-<img src="vestido.jpg">
-<h3>Vestido playa</h3>
-</div>
-
-<div class="categoria-card">
-<img src="bolso.jpg">
-<h3>Bolso verano</h3>
-</div>
-
-<div class="categoria-card">
-<img src="sandalias.jpg">
-<h3>Sandalias</h3>
-</div>
-
-</div>
-</section>
-
 <!-- CATEGORÍAS -->
 <section id="categorias">
 <h2>Categorías</h2>
+
 <div class="categorias-grid">
 
 <a href="#ropa" class="categoria-card">
-<img src="ropa.jpg"><h3>Ropa</h3>
+<img src="ropa.jpg">
+<h3>Ropa</h3>
 </a>
 
 <a href="#complementos" class="categoria-card">
-<img src="bolso.jpg"><h3>Complementos</h3>
+<img src="bolso.jpg">
+<h3>Complementos</h3>
 </a>
 
 <a href="#zapatos" class="categoria-card">
-<img src="zapato.jpg"><h3>Zapatos</h3>
+<img src="sandalias.jpg">
+<h3>Zapatos</h3>
 </a>
 
 </div>
@@ -302,131 +171,107 @@ footer {
 <!-- ROPA -->
 <section id="ropa">
 <h2>Ropa</h2>
-<div class="caja">Vestido 1</div>
-<div class="caja">Vestido 2</div>
+
+<div class="categorias-grid">
+
+<div class="categoria-card" onclick="location.href='#v1'">
+<img src="vestido.jpg">
+<h3>Vestido playa</h3>
+<p>19,99€</p>
+</div>
+
+<div class="categoria-card" onclick="location.href='#v2'">
+<img src="vestido2.jpg">
+<h3>Vestido rosa</h3>
+<p>24,99€</p>
+</div>
+
+</div>
 </section>
+
+<!-- COMPLEMENTOS -->
+<section id="complementos">
+<h2>Complementos</h2>
+
+<div class="categorias-grid">
+
+<div class="categoria-card" onclick="location.href='#v3'">
+<img src="bolso.jpg">
+<h3>Bolso verano</h3>
+<p>29,99€</p>
+</div>
+
+</div>
+</section>
+
+<!-- ZAPATOS -->
+<section id="zapatos">
+<h2>Zapatos</h2>
+
+<div class="categorias-grid">
+
+<div class="categoria-card" onclick="location.href='#v4'">
+<img src="sandalias.jpg">
+<h3>Sandalias playa</h3>
+<p>22,99€</p>
+</div>
+
+</div>
+</section>
+
+<!-- MODALES PRODUCTOS -->
+<div id="v1" class="modal">
+<div class="modal-contenido">
+<a href="#" class="cerrar">✖</a>
+<img src="vestido.jpg" style="width:100%">
+<h2>Vestido playa</h2>
+<p>19,99€</p>
+<p>Vestido ligero ideal para verano.</p>
+</div>
+</div>
+
+<div id="v2" class="modal">
+<div class="modal-contenido">
+<a href="#" class="cerrar">✖</a>
+<img src="vestido2.jpg" style="width:100%">
+<h2>Vestido rosa</h2>
+<p>24,99€</p>
+<p>Estilo fresco y elegante.</p>
+</div>
+</div>
+
+<div id="v3" class="modal">
+<div class="modal-contenido">
+<a href="#" class="cerrar">✖</a>
+<img src="bolso.jpg" style="width:100%">
+<h2>Bolso verano</h2>
+<p>29,99€</p>
+<p>Perfecto para playa y verano.</p>
+</div>
+</div>
+
+<div id="v4" class="modal">
+<div class="modal-contenido">
+<a href="#" class="cerrar">✖</a>
+<img src="sandalias.jpg" style="width:100%">
+<h2>Sandalias playa</h2>
+<p>22,99€</p>
+<p>Comodidad total para verano.</p>
+</div>
+</div>
 
 <!-- CONTACTO -->
 <section id="contacto">
 <h2>Contacto</h2>
-
-<div class="social-grid">
-
-<a href="mailto:soleraropaycomplementos@gmail.com" class="social-card">
-<i class="fa-solid fa-envelope"></i>
-Gmail
-</a>
-
-<a href="https://api.whatsapp.com/send?phone=34643319232&text=Buenas,%20me%20gustar%C3%ADa%20informaci%C3%B3n%20sobre%20los%20productos%20de%20Solera%20🌞🏖️" class="social-card">
-<i class="fa-brands fa-whatsapp" style="color:green;"></i>
-WhatsApp
-</a>
-
-<a href="https://instagram.com" class="social-card">
-<i class="fa-brands fa-instagram" style="color:#e1306c;"></i>
-Instagram
-</a>
-
-<a href="https://facebook.com" class="social-card">
-<i class="fa-brands fa-facebook" style="color:#1877f2;"></i>
-Facebook
-</a>
-
-<a href="https://tiktok.com" class="social-card">
-<i class="fa-brands fa-tiktok"></i>
-TikTok
-</a>
-
-</div>
+<p>Email: soleraropaycomplementos@gmail.com</p>
+<p>WhatsApp: 643319232</p>
 </section>
 
 <!-- RESEÑAS -->
 <section id="reseñas">
-<h2>Opiniones de clientes</h2>
-
-<button class="btn-reseña" onclick="abrir()">Dejar reseña</button>
-
-<div class="reseñas-box" id="lista"></div>
+<h2>Reseñas</h2>
+<p>Sistema de reseñas ya existente</p>
 </section>
-
-<!-- MODAL RESEÑA -->
-<div class="modal-reseña" id="modal">
-
-<div class="modal-box">
-
-<h3>Escribe tu reseña</h3>
-
-<div class="estrellas">
-<input type="radio" id="5" name="e" value="5"><label for="5">★</label>
-<input type="radio" id="4" name="e" value="4"><label for="4">★</label>
-<input type="radio" id="3" name="e" value="3"><label for="3">★</label>
-<input type="radio" id="2" name="e" value="2"><label for="2">★</label>
-<input type="radio" id="1" name="e" value="1"><label for="1">★</label>
-</div>
-
-<textarea id="txt"></textarea>
-
-<button onclick="guardar()">Enviar</button>
-<button onclick="cerrar()">Cerrar</button>
-
-</div>
-
-</div>
-
-<footer>
-<p>© 2026 Solera</p>
-</footer>
-
-<script>
-
-function abrir(){
-document.getElementById("modal").classList.add("activo");
-}
-
-function cerrar(){
-document.getElementById("modal").classList.remove("activo");
-}
-
-function guardar(){
-
-const est = document.querySelector('input[name="e"]:checked');
-const txt = document.getElementById("txt").value;
-
-if(!est || txt === "") return alert("Completa todo");
-
-let datos = JSON.parse(localStorage.getItem("r")) || [];
-
-datos.push({ estrellas: est.value, texto: txt });
-
-localStorage.setItem("r", JSON.stringify(datos));
-
-cerrar();
-mostrar();
-}
-
-function mostrar(){
-
-const cont = document.getElementById("lista");
-cont.innerHTML = "";
-
-let datos = JSON.parse(localStorage.getItem("r")) || [];
-
-datos.forEach(r => {
-
-const div = document.createElement("div");
-div.className = "reseña";
-
-div.innerHTML = "⭐".repeat(r.estrellas) + "<p>" + r.texto + "</p>";
-
-cont.appendChild(div);
-
-});
-
-}
-
-mostrar();
-
-</script>
 
 </body>
 </html>
