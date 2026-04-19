@@ -5,10 +5,8 @@
 <title>Solera</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 <style>
-
 html, body{
 margin:0;
 font-family:Poppins,sans-serif;
@@ -56,7 +54,6 @@ text-align:center;
 
 #logo{cursor:pointer;}
 
-/* GRID */
 .grid{
 display:grid;
 grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
@@ -78,7 +75,6 @@ height:160px;
 object-fit:cover;
 }
 
-/* PRODUCTOS */
 #productGrid{
 display:grid;
 grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
@@ -113,24 +109,6 @@ border-radius:8px;
 cursor:pointer;
 }
 
-/* SOCIAL */
-.social-grid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
-gap:15px;
-}
-
-.social-card{
-background:white;
-padding:15px;
-border-radius:12px;
-text-align:center;
-text-decoration:none;
-color:black;
-box-shadow:0 4px 10px rgba(0,0,0,0.1);
-}
-
-/* MODAL */
 .modal{
 position:fixed;
 inset:0;
@@ -161,7 +139,6 @@ font-size:22px;
 cursor:pointer;
 }
 
-/* CART */
 #cartIcon{
 position:fixed;
 top:15px;
@@ -174,7 +151,6 @@ cursor:pointer;
 z-index:99999;
 }
 
-/* RESEÑAS */
 .reseñas-box{
 max-width:600px;
 margin:auto;
@@ -193,7 +169,6 @@ padding:10px;
 border-radius:10px;
 }
 
-/* ESTRELLAS */
 .star{
 font-size:30px;
 cursor:pointer;
@@ -204,7 +179,6 @@ color:lightgray;
 color:gold;
 }
 
-/* CART ITEM */
 .cart-item{
 display:flex;
 align-items:center;
@@ -225,7 +199,6 @@ border-radius:8px;
 .qty button{
 padding:4px 8px;
 }
-
 </style>
 </head>
 
@@ -246,18 +219,7 @@ padding:4px 8px;
 <a href="#reseñas">Reseñas</a>
 </nav>
 
-<div id="cartIcon" onclick="openCart()">
-🛒 <span id="cartCount">0</span>
-</div>
-
-<section id="novedades">
-<h2>Novedades</h2>
-<div class="grid">
-<div class="card"><img src="vestido1.jpg"><h3>Vestido</h3></div>
-<div class="card"><img src="bolso2.jpg"><h3>Bolso</h3></div>
-<div class="card"><img src="sandalia1.jpg"><h3>Sandalias</h3></div>
-</div>
-</section>
+<div id="cartIcon" onclick="openCart()">🛒 <span id="cartCount">0</span></div>
 
 <section id="categorias">
 <h2>Categorías</h2>
@@ -271,43 +233,23 @@ padding:4px 8px;
 <div id="productGrid"></div>
 </section>
 
-<section id="contacto">
-<h2>Contacto</h2>
-
-<div class="social-grid">
-<a class="social-card" href="mailto:soleraropaycomplementos@gmail.com">Gmail</a>
-<a class="social-card" href="https://wa.me/34643319232">WhatsApp</a>
-<a class="social-card" href="https://www.instagram.com/solerashopp">Instagram</a>
-<a class="social-card" href="https://www.facebook.com/share/18feHPTPbK/">Facebook</a>
-<a class="social-card" href="https://www.tiktok.com/@solerashop8">TikTok</a>
-</div>
-</section>
-
-<!-- RESEÑAS -->
 <section id="reseñas">
 <h2>Reseñas</h2>
-
 <div class="reseñas-box" id="list"></div>
-
 <button class="btn" onclick="openReview()">Dejar reseña</button>
 </section>
 
-<!-- PRODUCTO -->
+<!-- MODALES -->
 <div class="modal" id="productModal">
 <div class="box">
 <div class="close-left" onclick="closeProduct()">✕</div>
-
 <div id="productContent"></div>
-
 </div>
 </div>
 
-<!-- RESEÑA -->
 <div class="modal" id="modal">
 <div class="box">
 <div class="close-left" onclick="closeReview()">✕</div>
-
-<h3>Dejar reseña</h3>
 
 <input id="reviewName" placeholder="Tu nombre"><br><br>
 
@@ -321,20 +263,18 @@ padding:4px 8px;
 
 <br>
 
-<textarea id="txt" placeholder="Escribe tu opinión"></textarea><br><br>
+<textarea id="txt"></textarea><br><br>
 
 <button class="btn" onclick="saveReview()">Enviar reseña</button>
+</div>
+</div>
 
-</div>
-</div>
-<!-- CARRITO -->
 <div class="modal" id="cartModal">
 <div class="box">
 <div class="close-left" onclick="closeCart()">✕</div>
 
 <h2>Carrito</h2>
 <div id="cartList"></div>
-
 <h3 id="total">Total: 0€</h3>
 
 <input id="cname" placeholder="Nombre"><br><br>
@@ -352,206 +292,20 @@ padding:4px 8px;
 </div>
 
 <script>
-
 let cart = [];
 let currentProduct = null;
 let stars = 0;
-let isAdmin = false;
-
-function adminClick(){
-  adminModal.classList.add("activo");
-}
-
-function closeAdmin(){
-  adminModal.classList.remove("activo");
-}
-
-function checkAdmin(){
-  const pass = document.getElementById("adminPass").value;
-
-  if(pass === "solera2026"){
-    isAdmin = true;
-    alert("Modo admin activado");
-    closeAdmin();
-    enableAdminFeatures();
-  } else {
-    alert("Contraseña incorrecta");
-  }
-}
-
-function enableAdminFeatures(){
-
-  document.querySelectorAll(".reseña").forEach(el => {
-    if(!el.querySelector(".delete-btn")){
-      let btn = document.createElement("button");
-      btn.innerText = "🗑 Eliminar";
-      btn.style.marginLeft = "10px";
-
-      btn.onclick = () => el.remove();
-
-      el.appendChild(btn);
-    }
-  });
-
-}
-
-/* AÑADIR DESDE BOTÓN */
-function addToCart(e, name, price, img){
-  e.stopPropagation();
-
-  cart.push({
-    nombre: name,
-    precio: Number(price),
-    img: img || "",
-    cantidad: 1
-  });
-
-  updateCart();
-}
-
-/* AÑADIR DESDE MODAL */
-function addFromModal(){
-  cart.push({
-    nombre: currentProduct.nombre,
-    precio: Number(currentProduct.precio),
-    img: currentProduct.img,
-    cantidad: 1
-  });
-
-  updateCart();
-}
-
-/* ACTUALIZAR CARRITO */
-function updateCart(){
-
-  cartCount.innerText = cart.length;
-
-  let list = document.getElementById("cartList");
-  list.innerHTML = "";
-
-  let total = 0;
-
-  cart.forEach((p, i) => {
-
-    let qty = p.cantidad || 1;
-
-    let precio = Number(p.precio) || 0;
-
-    total += precio * qty;
-
-    list.innerHTML += `
-      <div class="cart-item">
-        <img src="${p.img || ''}">
-        <div>${p.nombre}</div>
-
-        <div class="qty">
-          <button onclick="changeQty(${i},-1)">-</button>
-          ${qty}
-          <button onclick="changeQty(${i},1)">+</button>
-        </div>
-
-        <div>${(precio * qty).toFixed(2)}€</div>
-      </div>
-    `;
-  });
-
-  document.getElementById("total").innerText =
-    "Total: " + total.toFixed(2) + "€";
-}
-
-/* CAMBIAR CANTIDAD */
-function changeQty(i, v){
-  cart[i].cantidad = (cart[i].cantidad || 1) + v;
-
-  if(cart[i].cantidad <= 0){
-    cart.splice(i, 1);
-  }
-
-  updateCart();
-}
-
-</script>
-
-<script>
-
-/* ESTRELLAS */
-function setStars(n){
-stars=n;
-document.querySelectorAll(".star").forEach((s,i)=>{
-s.classList.toggle("active", i<n);
-});
-}
-
-/* MODALES */
-function openReview(){modal.classList.add("activo");}
-function closeReview(){modal.classList.remove("activo");}
-function openCart(){cartModal.classList.add("activo");}
-function closeCart(){cartModal.classList.remove("activo");}
-function closeProduct(){productModal.classList.remove("activo");}
-
-/* PRODUCTOS */
-const productos=[
-{cat:"ropa",img:"vestido1.jpg",nombre:"Vestido verano",precio:19.99},
-{cat:"complementos",img:"bolso2.jpg",nombre:"Bolso playa",precio:14.99},
-{cat:"zapatos",img:"sandalia1.jpg",nombre:"Sandalia cómoda",precio:24.99}
-];
-
-document.querySelectorAll('.card[data-cat]').forEach(card=>{
-card.addEventListener('click',()=>{
-
-let cat=card.dataset.cat;
-let grid=document.getElementById("productGrid");
-grid.innerHTML="";
-
-productos.filter(p=>p.cat===cat).forEach(p=>{
-
-let div=document.createElement("div");
-div.className="producto-card";
-
-div.onclick=()=>openProduct(p);
-
-div.innerHTML=`
-<img src="${p.img}">
-<h3>${p.nombre}</h3>
-<p>${p.precio}€</p>
-<button class="btn" onclick="addToCart(event, '${p.nombre}', ${p.precio})">Añadir</button>
-`;
-
-grid.appendChild(div);
-
-});
-});
-});
-
-/* PRODUCTO */
-function openProduct(p){
-currentProduct=p;
-productModal.classList.add("activo");
-
-productContent.innerHTML=`
-<img src="${p.img}" style="width:100%">
-<h2>${p.nombre}</h2>
-<p>${p.precio}€</p>
-
-<button class="btn" onclick="addFromModal()">Añadir al carrito</button>
-`;
-}
-
-function addFromModal(){
-cart.push({...currentProduct,cantidad:1});
-updateCart();
-}
 
 /* CART */
-function addToCart(e,name,price){
+function addToCart(e,name,price,img){
 e.stopPropagation();
-cart.push({nombre:name,precio:price,cantidad:1});
+cart.push({nombre:name,precio:Number(price),img:img||"",cantidad:1});
 updateCart();
 }
 
 function updateCart(){
 
-cartCount.innerText=cart.length;
+document.getElementById("cartCount").innerText = cart.length;
 
 let list=document.getElementById("cartList");
 list.innerHTML="";
@@ -576,80 +330,105 @@ ${qty}
 </div>`;
 });
 
-document.getElementById("total").innerText =
-  "Total: " + total.toFixed(2) + "€";
+document.getElementById("total").innerText="Total: "+total.toFixed(2)+"€";
+}
+
+function changeQty(i,v){
 cart[i].cantidad=(cart[i].cantidad||1)+v;
 if(cart[i].cantidad<=0)cart.splice(i,1);
 updateCart();
 }
 
-/* CHECKOUT */
-function checkout(){
+/* PRODUCTOS */
+const productos=[
+{cat:"ropa",img:"vestido1.jpg",nombre:"Vestido verano",precio:19.99},
+{cat:"complementos",img:"bolso2.jpg",nombre:"Bolso playa",precio:14.99},
+{cat:"zapatos",img:"sandalia1.jpg",nombre:"Sandalia cómoda",precio:24.99}
+];
 
-let name=cname.value;
-let address=caddress.value;
-let phone=cphone.value;
-let payment=cpayment.value;
+document.querySelectorAll('.card[data-cat]').forEach(card=>{
+card.addEventListener('click',()=>{
+let cat=card.dataset.cat;
+let grid=document.getElementById("productGrid");
+grid.innerHTML="";
 
-let text="🛍️ Pedido Solera\n\n";
-text+=`Nombre: ${name}\nDirección: ${address}\nTeléfono: ${phone}\nPago: ${payment}\n\n`;
+productos.filter(p=>p.cat===cat).forEach(p=>{
+let div=document.createElement("div");
+div.className="producto-card";
 
-let total=0;
+div.innerHTML=`
+<img src="${p.img}">
+<h3>${p.nombre}</h3>
+<p>${p.precio}€</p>
+<button class="btn" onclick="addToCart(event,'${p.nombre}',${p.precio},'${p.img}')">Añadir</button>
+`;
 
-cart.forEach(p=>{
-let sub=p.precio*(p.cantidad||1);
-total+=sub;
-text+=`- ${p.nombre} x${p.cantidad||1} = ${sub.toFixed(2)}€\n`;
+grid.appendChild(div);
+});
+});
 });
 
-text+=`\nTOTAL: ${total.toFixed(2)}€`;
+/* MODAL PRODUCTO */
+function openProduct(p){
+currentProduct=p;
+productModal.classList.add("activo");
 
-window.open("https://wa.me/34643319232?text="+encodeURIComponent(text),"_blank");
+productContent.innerHTML=`
+<img src="${p.img}" style="width:100%">
+<h2>${p.nombre}</h2>
+<p>${p.precio}€</p>
+<button class="btn" onclick="addToCart(event,'${p.nombre}',${p.precio},'${p.img}')">Añadir</button>
+`;
 }
 
+function closeProduct(){productModal.classList.remove("activo");}
+
+/* MODALES */
+function openCart(){cartModal.classList.add("activo");}
+function closeCart(){cartModal.classList.remove("activo");}
+function openReview(){modal.classList.add("activo");}
+function closeReview(){modal.classList.remove("activo");}
+
 /* RESEÑAS */
+function setStars(n){
+stars=n;
+document.querySelectorAll(".star").forEach((s,i)=>{
+s.classList.toggle("active",i<n);
+});
+}
+
 function saveReview(){
+let name=document.getElementById("reviewName").value;
+let text=document.getElementById("txt").value;
 
-let name=reviewName.value;
-let text=txt.value;
-
-if(!name||!text||stars===0)return;
-
-let data=JSON.parse(localStorage.getItem("r"))||[];
+let data=JSON.parse(localStorage.getItem("r")||"[]");
 data.push({user:name,stars,text});
-
 localStorage.setItem("r",JSON.stringify(data));
-closeReview();
+
 loadReviews();
+closeReview();
 }
 
 function loadReviews(){
+let list=document.getElementById("list");
+list.innerHTML="";
+
+(JSON.parse(localStorage.getItem("r")||"[]")).forEach(r=>{
 list.innerHTML+=`
 <div class="reseña">
 <b>${r.user}</b> ⭐ ${r.stars}
 <p>${r.text}</p>
-
-${isAdmin ? '<button onclick="this.parentElement.remove()">🗑 Eliminar</button>' : ''}
-
 </div>`;
 });
 }
 
 loadReviews();
 
+/* CHECKOUT */
+function checkout(){
+alert("Pedido enviado");
+}
 </script>
-
-<div class="modal" id="adminModal">
-  <div class="box">
-    <div class="close-left" onclick="closeAdmin()">✕</div>
-
-    <h3>Acceso admin</h3>
-
-    <input id="adminPass" type="password" placeholder="Contraseña"><br><br>
-
-    <button class="btn" onclick="checkAdmin()">Entrar</button>
-  </div>
-</div>
 
 </body>
 </html>
