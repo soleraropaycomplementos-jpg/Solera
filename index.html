@@ -239,7 +239,15 @@ border-radius:8px;
 .qty button{
 padding:4px 8px;
 }
+.star{
+font-size:30px;
+cursor:pointer;
+color:lightgray;
+}
 
+.star.active{
+color:gold;
+}
 </style>
 </head>
 
@@ -302,15 +310,16 @@ padding:4px 8px;
 
 <input id="reviewName" placeholder="Tu nombre"><br><br>
 
-<div id="stars">
-<span class="star" onclick="setStar(1)">★</span>
-<span class="star" onclick="setStar(2)">★</span>
-<span class="star" onclick="setStar(3)">★</span>
-<span class="star" onclick="setStar(4)">★</span>
-<span class="star" onclick="setStar(5)">★</span>
+<div id="starBox">
+  <span class="star" onclick="setStars(1)">★</span>
+  <span class="star" onclick="setStars(2)">★</span>
+  <span class="star" onclick="setStars(3)">★</span>
+  <span class="star" onclick="setStars(4)">★</span>
+  <span class="star" onclick="setStars(5)">★</span>
 </div>
 
-<button class="btn" onclick="openM()">Dejar reseña</button>
+<button class="btn" onclick="openReview()">Dejar reseña</button>
+
 <div class="reseñas-box" id="list"></div>
 </section>
 
@@ -327,10 +336,11 @@ padding:4px 8px;
 
 <div class="modal" id="modal">
 <div class="box">
-<div class="close-left" onclick="modal.classList.remove('activo')">✕</div>
+<div class="close-left" onclick="closeReview()">✕</div>
 
-<textarea id="txt"></textarea>
+<textarea id="txt" placeholder="Escribe tu reseña..."></textarea>
 <button class="btn" onclick="saveReview()">Enviar</button>
+
 </div>
 </div>
 
@@ -429,7 +439,60 @@ alert("Comentarios próximamente");
 }
 
 /* resto igual... (sin cambios en lógica base) */
+let stars = 0;
 
+function setStars(n){
+stars = n;
+document.querySelectorAll(".star").forEach((s,i)=>{
+s.classList.toggle("active", i < n);
+});
+}
+
+function openReview(){
+document.getElementById("modal").classList.add("activo");
+}
+
+function closeReview(){
+document.getElementById("modal").classList.remove("activo");
+}
+
+function saveReview(){
+
+let name = document.getElementById("reviewName").value;
+let text = document.getElementById("txt").value;
+
+if(!name || !text || stars === 0) return;
+
+let data = JSON.parse(localStorage.getItem("r")) || [];
+
+data.push({
+user:name,
+stars:stars,
+text:text
+});
+
+localStorage.setItem("r", JSON.stringify(data));
+
+closeReview();
+loadReviews();
+}
+
+function loadReviews(){
+
+let list = document.getElementById("list");
+list.innerHTML="";
+
+(JSON.parse(localStorage.getItem("r")) || []).forEach(r=>{
+list.innerHTML += `
+<div class="reseña">
+<b>${r.user}</b> - ⭐ ${r.stars}<br>
+<p>${r.text}</p>
+</div>
+`;
+});
+}
+
+loadReviews();
 </script>
 
 </body>
