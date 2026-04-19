@@ -1,3 +1,4 @@
+
 <!DOCTYPE html>
 <html lang="es">
 <head>
@@ -116,6 +117,23 @@ border-radius:8px;
 cursor:pointer;
 }
 
+/* SOCIAL */
+.social-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
+gap:15px;
+}
+
+.social-card{
+background:white;
+padding:15px;
+border-radius:12px;
+text-align:center;
+text-decoration:none;
+color:black;
+box-shadow:0 4px 10px rgba(0,0,0,0.1);
+}
+
 /* RESEÑAS */
 .reseñas-box{
 max-width:600px;
@@ -166,7 +184,7 @@ font-size:22px;
 cursor:pointer;
 }
 
-/* ⭐ estrellas */
+/* ⭐ ESTRELLAS */
 .estrellas{
 display:flex;
 flex-direction:row-reverse;
@@ -191,7 +209,7 @@ color:gold;
 color:gold;
 }
 
-/* 🛒 carrito */
+/* 🛒 CARRITO */
 #cartIcon{
 position:fixed;
 top:15px;
@@ -202,6 +220,21 @@ padding:10px 14px;
 border-radius:50px;
 cursor:pointer;
 z-index:99999;
+}
+
+/* 🔔 TOAST */
+#toast{
+position:fixed;
+bottom:20px;
+left:50%;
+transform:translateX(-50%);
+background:#055160;
+color:white;
+padding:12px 18px;
+border-radius:10px;
+display:none;
+z-index:99999;
+font-weight:600;
 }
 
 </style>
@@ -252,19 +285,29 @@ z-index:99999;
 <div id="productGrid"></div>
 </section>
 
-<!-- CONTACTO -->
+<!-- CONTACTO (RESTORED) -->
 <section id="contacto">
 <h2>Contacto</h2>
+
+<div class="social-grid">
+
+<a class="social-card" href="mailto:soleraropaycomplementos@gmail.com">Gmail</a>
+<a class="social-card" href="https://wa.me/34643319232">WhatsApp</a>
+<a class="social-card" href="https://www.instagram.com/solerashopp">Instagram</a>
+<a class="social-card" href="https://www.facebook.com/share/18feHPTPbK/">Facebook</a>
+<a class="social-card" href="https://www.tiktok.com/@solerashop8">TikTok</a>
+
+</div>
 </section>
 
-<!-- RESEÑAS (RESTAURADO) -->
+<!-- RESEÑAS -->
 <section id="reseñas">
 <h2>Reseñas</h2>
 <button class="btn" onclick="openM()">Dejar reseña</button>
 <div class="reseñas-box" id="list"></div>
 </section>
 
-<!-- PRODUCTO POPUP (RESTAURADO) -->
+<!-- MODAL PRODUCTO -->
 <div class="modal" id="productModal">
 <div class="box">
 
@@ -281,7 +324,7 @@ z-index:99999;
 </div>
 </div>
 
-<!-- RESEÑA POPUP -->
+<!-- MODAL RESEÑA -->
 <div class="modal" id="modal">
 <div class="box">
 
@@ -301,7 +344,7 @@ z-index:99999;
 </div>
 </div>
 
-<!-- 🛒 CARRITO MODAL -->
+<!-- 🛒 MODAL CARRITO -->
 <div class="modal" id="cartModal">
 <div class="box">
 
@@ -329,6 +372,9 @@ z-index:99999;
 
 </div>
 </div>
+
+<!-- 🔔 TOAST -->
+<div id="toast">Añadido al carrito ✔</div>
 
 <script>
 
@@ -373,7 +419,7 @@ addButtons();
 });
 });
 
-/* 🟢 BOTÓN CARRITO EN PRODUCTOS */
+/* 🟢 BOTONES CARRITO + CANTIDAD */
 function addButtons(){
 
 document.querySelectorAll('.producto-card').forEach(card=>{
@@ -386,11 +432,16 @@ btn.innerText="Añadir al carrito";
 
 btn.onclick=()=>{
 
+let qty=parseInt(prompt("¿Cuántas unidades quieres?",1));
+if(!qty || qty<1) return;
+
 let nombre=card.querySelector("h3").innerText;
 let precio=parseFloat(card.querySelector("p").innerText);
 
-cart.push({nombre,precio});
+cart.push({nombre,precio,cantidad:qty});
 updateCart();
+
+showToast();
 
 };
 
@@ -400,8 +451,65 @@ card.appendChild(btn);
 
 }
 
-/* 🟢 POPUP PRODUCTO */
+/* 🔔 TOAST */
+function showToast(){
+let t=document.getElementById("toast");
+t.style.display="block";
+
+setTimeout(()=>t.style.display="none",1200);
+}
+
+/* 🛒 CART */
+function updateCart(){
+
+document.getElementById("cartCount").innerText=cart.length;
+
+let list=document.getElementById("cartList");
+list.innerHTML="";
+
+let total=0;
+
+cart.forEach((p,i)=>{
+total+=p.precio*(p.cantidad||1);
+
+list.innerHTML+=`
+<div style="display:flex;justify-content:space-between;">
+<span>${p.nombre} x${p.cantidad||1}</span>
+<span>${(p.precio*(p.cantidad||1)).toFixed(2)}€</span>
+<button onclick="cart.splice(${i},1);updateCart()">❌</button>
+</div>
+`;
+});
+
+document.getElementById("total").innerText="Total: "+total.toFixed(2)+"€";
+
+}
+
+/* 🛒 MODAL */
+function openCart(){document.getElementById("cartModal").classList.add("activo");}
+function closeCart(){document.getElementById("cartModal").classList.remove("activo");}
+
+/* 💳 CHECKOUT */
+function checkout(){
+
+let name=cname.value;
+let address=caddress.value;
+let phone=cphone.value;
+let payment=cpayment.value;
+
+let text="🛍️ Pedido Solera\n\n";
+
+cart.forEach(p=>{
+text+="- "+p.nombre+" x"+(p.cantidad||1)+"\n";
+});
+
+window.open("https://wa.me/34643319232?text="+encodeURIComponent(text),"_blank");
+
+}
+
+/* 🟢 PRODUCTO */
 function openProduct(p){
+
 currentProduct=p;
 
 document.getElementById("productModal").classList.add("activo");
@@ -415,99 +523,44 @@ document.getElementById("productContent").innerHTML=`
 <button class="btn" onclick="addFromModal('${p.nombre}',${p.precio})">Añadir al carrito</button>
 `;
 
-loadComments();
 }
 
 function closeProduct(){
 document.getElementById("productModal").classList.remove("activo");
 }
 
-/* 🟢 COMPARTIR */
+/* COMPARTIR */
 function shareProduct(name){
 if(navigator.share){
-navigator.share({
-title:"Solera",
-text:"Mira este producto: "+name,
-url:window.location.href
-});
+navigator.share({title:"Solera",text:name,url:location.href});
 }
 }
 
-/* 🟢 AÑADIR DESDE POPUP */
+/* ADD MODAL */
 function addFromModal(nombre,precio){
-cart.push({nombre,precio});
+cart.push({nombre,precio,cantidad:1});
 updateCart();
+showToast();
 }
 
-/* 🟢 CARRITO */
-function updateCart(){
-
-document.getElementById("cartCount").innerText=cart.length;
-
-let list=document.getElementById("cartList");
-list.innerHTML="";
-
-let total=0;
-
-cart.forEach((p,i)=>{
-total+=p.precio;
-
-list.innerHTML+=`
-<div style="display:flex;justify-content:space-between;">
-<span>${p.nombre}</span>
-<span>${p.precio}€</span>
-<button onclick="cart.splice(${i},1);updateCart()">❌</button>
-</div>
-`;
-});
-
-document.getElementById("total").innerText="Total: "+total.toFixed(2)+"€";
-
-}
-
-/* 🟢 MODALES */
-function openCart(){document.getElementById("cartModal").classList.add("activo");}
-function closeCart(){document.getElementById("cartModal").classList.remove("activo");}
-
-/* 🟢 CHECKOUT */
-function checkout(){
-
-let name=cname.value;
-let address=caddress.value;
-let phone=cphone.value;
-let payment=cpayment.value;
-
-let text="🛍️ Pedido\n\n";
-
-cart.forEach(p=>{
-text+="- "+p.nombre+" "+p.precio+"€\n";
-});
-
-window.open("https://wa.me/34643319232?text="+encodeURIComponent(text),"_blank");
-
-}
-
-/* 🟢 RESEÑAS */
-function openM(){
-document.getElementById("modal").classList.add("activo");
-}
+/* RESEÑAS */
+function openM(){modal.classList.add("activo");}
 
 function saveReview(){
-let t=document.getElementById("txt").value;
+let t=txt.value;
 if(!t)return;
 
 let data=JSON.parse(localStorage.getItem("r"))||[];
 data.push({user:currentUser,text:t});
 localStorage.setItem("r",JSON.stringify(data));
-document.getElementById("modal").classList.remove("activo");
+modal.classList.remove("activo");
 loadReviews();
 }
 
 function loadReviews(){
-let c=document.getElementById("list");
-c.innerHTML="";
+list.innerHTML="";
 (JSON.parse(localStorage.getItem("r"))||[]).forEach(r=>{
-c.innerHTML+=`<div class="reseña"><b>${r.user}</b><p>${r.text}</p></div>`;
+list.innerHTML+=`<div class="reseña"><b>${r.user}</b><p>${r.text}</p></div>`;
 });
 }
 
