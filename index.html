@@ -356,6 +356,44 @@ padding:4px 8px;
 let cart = [];
 let currentProduct = null;
 let stars = 0;
+let isAdmin = false;
+
+function adminClick(){
+  adminModal.classList.add("activo");
+}
+
+function closeAdmin(){
+  adminModal.classList.remove("activo");
+}
+
+function checkAdmin(){
+  const pass = document.getElementById("adminPass").value;
+
+  if(pass === "solera2026"){
+    isAdmin = true;
+    alert("Modo admin activado");
+    closeAdmin();
+    enableAdminFeatures();
+  } else {
+    alert("Contraseña incorrecta");
+  }
+}
+
+function enableAdminFeatures(){
+
+  document.querySelectorAll(".reseña").forEach(el => {
+    if(!el.querySelector(".delete-btn")){
+      let btn = document.createElement("button");
+      btn.innerText = "🗑 Eliminar";
+      btn.style.marginLeft = "10px";
+
+      btn.onclick = () => el.remove();
+
+      el.appendChild(btn);
+    }
+  });
+
+}
 
 /* AÑADIR DESDE BOTÓN */
 function addToCart(e, name, price, img){
@@ -538,9 +576,7 @@ ${qty}
 </div>`;
 });
 
-totalEl.innerText="Total: "+total.toFixed(2)+"€";
-}
-
+document.getElementById("total").innerText =
 function changeQty(i,v){
 cart[i].cantidad=(cart[i].cantidad||1)+v;
 if(cart[i].cantidad<=0)cart.splice(i,1);
@@ -588,12 +624,13 @@ loadReviews();
 }
 
 function loadReviews(){
-list.innerHTML="";
-(JSON.parse(localStorage.getItem("r"))||[]).forEach(r=>{
 list.innerHTML+=`
 <div class="reseña">
 <b>${r.user}</b> ⭐ ${r.stars}
 <p>${r.text}</p>
+
+${isAdmin ? '<button onclick="this.parentElement.remove()">🗑 Eliminar</button>' : ''}
+
 </div>`;
 });
 }
@@ -601,6 +638,18 @@ list.innerHTML+=`
 loadReviews();
 
 </script>
+
+<div class="modal" id="adminModal">
+  <div class="box">
+    <div class="close-left" onclick="closeAdmin()">✕</div>
+
+    <h3>Acceso admin</h3>
+
+    <input id="adminPass" type="password" placeholder="Contraseña"><br><br>
+
+    <button class="btn" onclick="checkAdmin()">Entrar</button>
+  </div>
+</div>
 
 </body>
 </html>
