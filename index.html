@@ -17,6 +17,7 @@ background:#eaf6f6;
 padding-top:60px;
 }
 
+/* NAV */
 nav{
 background:#055160;
 position:fixed;
@@ -34,6 +35,7 @@ text-decoration:none;
 font-weight:600;
 }
 
+/* HEADER */
 header{
 height:340px;
 position:relative;
@@ -55,10 +57,11 @@ color:white;
 text-align:center;
 }
 
+/* SECCIONES */
 section{padding:40px 25px;}
 h2{text-align:center;}
 
-/* ===== CATEGORÍAS CONSISTENTES ===== */
+/* CATEGORÍAS */
 .grid{
 display:grid;
 grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
@@ -75,8 +78,6 @@ cursor:pointer;
 transition:.2s;
 }
 
-.card:hover{transform:scale(1.03);}
-
 .card img{
 width:100%;
 height:160px;
@@ -84,7 +85,7 @@ object-fit:cover;
 background:#ddd;
 }
 
-/* ===== NOVEDADES ===== */
+/* NOVEDADES */
 .slider{
 display:flex;
 overflow-x:auto;
@@ -99,7 +100,7 @@ min-width:200px;
 scroll-snap-align:start;
 }
 
-/* ===== BOTÓN RESEÑA ANIMADO ===== */
+/* BOTÓN RESEÑA */
 .btn{
 display:block;
 margin:15px auto;
@@ -110,20 +111,9 @@ border:none;
 border-radius:8px;
 cursor:pointer;
 transition:.3s;
-animation:pulse 2s infinite;
 }
 
-.btn:hover{
-transform:scale(1.05);
-}
-
-@keyframes pulse{
-0%{box-shadow:0 0 0 0 rgba(5,81,96,.5);}
-70%{box-shadow:0 0 0 10px rgba(5,81,96,0);}
-100%{box-shadow:0 0 0 0 rgba(5,81,96,0);}
-}
-
-/* ===== CONTACTO ===== */
+/* CONTACTO */
 .social-grid{
 display:grid;
 grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
@@ -140,7 +130,32 @@ color:black;
 box-shadow:0 4px 10px rgba(0,0,0,0.1);
 }
 
-/* ===== MODAL PRODUCTO ===== */
+.social-card i{
+font-size:22px;
+margin-bottom:5px;
+display:block;
+}
+
+/* RESEÑAS */
+.reseñas-box{
+max-width:600px;
+margin:auto;
+height:300px;
+overflow-y:auto;
+border:1px solid #ddd;
+border-radius:12px;
+padding:10px;
+background:white;
+}
+
+.reseña{
+background:#f7f7f7;
+margin:10px 0;
+padding:10px;
+border-radius:10px;
+}
+
+/* MODAL */
 .modal{
 position:fixed;
 inset:0;
@@ -162,32 +177,7 @@ max-width:420px;
 text-align:center;
 }
 
-.box img{
-width:100%;
-border-radius:10px;
-background:#ddd;
-}
-
-/* ===== RESEÑAS ===== */
-.reseñas-box{
-max-width:600px;
-margin:auto;
-height:300px;
-overflow-y:auto;
-border:1px solid #ddd;
-border-radius:12px;
-padding:10px;
-background:white;
-}
-
-.reseña{
-background:#f7f7f7;
-margin:10px 0;
-padding:10px;
-border-radius:10px;
-}
-
-/* ===== ESTRELLAS ===== */
+/* ESTRELLAS */
 .estrellas{
 display:flex;
 flex-direction:row-reverse;
@@ -210,12 +200,12 @@ margin-top:10px;
 padding:10px;
 }
 
-/* ===== IMAGEN FALLBACK ===== */
+/* IMAGEN FALLBACK */
 img.error{
 content:url("https://via.placeholder.com/300x200?text=Imagen+no+disponible");
 }
 
-/* ===== FOOTER ===== */
+/* FOOTER */
 footer{
 background:#055160;
 color:white;
@@ -228,7 +218,7 @@ padding:20px;
 <body>
 
 <header>
-<img src="./playa.jpg" onerror="this.classList.add('error')">
+<img src="./playa.jpg">
 <div class="texto">
 <h1>Solera</h1>
 <p>Moda verano</p>
@@ -249,18 +239,18 @@ padding:20px;
 
 <div class="slider">
 
-<div class="card" onclick="openProduct('Vestido playa','19,99€','./vestido.jpg')">
-<img src="./vestido.jpg" onerror="this.classList.add('error')">
+<div class="card">
+<img src="./vestido.jpg">
 <h3>Vestido playa</h3>
 </div>
 
-<div class="card" onclick="openProduct('Bolso verano','29,99€','./bolso.jpg')">
-<img src="./bolso.jpg" onerror="this.classList.add('error')">
+<div class="card">
+<img src="./bolso.jpg">
 <h3>Bolso verano</h3>
 </div>
 
-<div class="card" onclick="openProduct('Sandalias','22,99€','./sandalias.jpg')">
-<img src="./sandalias.jpg" onerror="this.classList.add('error')">
+<div class="card">
+<img src="./sandalias.jpg">
 <h3>Sandalias</h3>
 </div>
 
@@ -274,17 +264,17 @@ padding:20px;
 <div class="grid">
 
 <div class="card">
-<img src="./ropa.jpg" onerror="this.classList.add('error')">
+<img src="./ropa.jpg">
 <h3>Ropa</h3>
 </div>
 
 <div class="card">
-<img src="./bolso.jpg" onerror="this.classList.add('error')">
+<img src="./bolso.jpg">
 <h3>Complementos</h3>
 </div>
 
 <div class="card">
-<img src="./sandalias.jpg" onerror="this.classList.add('error')">
+<img src="./sandalias.jpg">
 <h3>Zapatos</h3>
 </div>
 
@@ -297,13 +287,13 @@ padding:20px;
 
 <div class="grid">
 
-<div class="card" onclick="openProduct('Vestido playa','19,99€','./vestido.jpg')">
-<img src="./vestido.jpg" onerror="this.classList.add('error')">
+<div class="card">
+<img src="./vestido.jpg">
 <h3>Vestido playa</h3>
 </div>
 
-<div class="card" onclick="openProduct('Vestido rosa','24,99€','./vestido2.jpg')">
-<img src="./vestido2.jpg" onerror="this.classList.add('error')">
+<div class="card">
+<img src="./vestido2.jpg">
 <h3>Vestido rosa</h3>
 </div>
 
@@ -318,15 +308,28 @@ padding:20px;
 <div class="social-grid">
 
 <a href="mailto:soleraropaycomplementos@gmail.com" class="social-card">
-<i class="fa-solid fa-envelope"></i><br>Gmail
+<i class="fa-solid fa-envelope"></i>
+Gmail
 </a>
 
-<a href="https://api.whatsapp.com/send?phone=34643319232&text=Buenas,%20me%20gustaría%20información%20de%20Solera%20🌞🏖️" class="social-card">
-<i class="fa-brands fa-whatsapp"></i><br>WhatsApp
+<a href="https://api.whatsapp.com/send?phone=34643319232&text=Buenas,%20me%20gustaría%20información%20sobre%20Solera%20🌞🏖️👜" class="social-card">
+<i class="fa-brands fa-whatsapp"></i>
+WhatsApp
 </a>
 
-<a href="#" class="social-card">
-<i class="fa-brands fa-instagram"></i><br>Instagram
+<a href="https://instagram.com" class="social-card">
+<i class="fa-brands fa-instagram"></i>
+Instagram
+</a>
+
+<a href="https://facebook.com" class="social-card">
+<i class="fa-brands fa-facebook"></i>
+Facebook
+</a>
+
+<a href="https://tiktok.com" class="social-card">
+<i class="fa-brands fa-tiktok"></i>
+TikTok
 </a>
 
 </div>
@@ -344,16 +347,7 @@ padding:20px;
 
 </section>
 
-<!-- MODAL PRODUCTO -->
-<div class="modal" id="modalProduct">
-<div class="box">
-<img id="pimg">
-<h3 id="ptitle"></h3>
-<p id="pprice"></p>
-</div>
-</div>
-
-<!-- MODAL RESEÑA -->
+<!-- MODAL -->
 <div class="modal" id="modal">
 
 <div class="box">
@@ -379,14 +373,6 @@ padding:20px;
 </footer>
 
 <script>
-
-/* PRODUCTO */
-function openProduct(t,p,img){
-document.getElementById("ptitle").innerText=t;
-document.getElementById("pprice").innerText=p;
-document.getElementById("pimg").src=img;
-document.getElementById("modalProduct").classList.add("activo");
-}
 
 /* RESEÑAS */
 function openM(){
@@ -427,9 +413,11 @@ c.appendChild(x);
 
 load();
 
-/* IMAGEN FALLBACK GLOBAL */
+/* IMAGENES ROTAS */
 document.querySelectorAll("img").forEach(img=>{
-img.onerror=()=>img.classList.add("error");
+img.onerror=function(){
+this.classList.add("error");
+};
 });
 
 </script>
