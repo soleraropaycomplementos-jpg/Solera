@@ -149,7 +149,7 @@ font-size:22px;
 cursor:pointer;
 }
 
-/* CARRITO */
+/* CARRITO ICON */
 #cartIcon{
 position:fixed;
 top:15px;
@@ -159,8 +159,10 @@ color:white;
 padding:10px 14px;
 border-radius:50px;
 cursor:pointer;
+z-index:9999;
 }
 
+/* TOAST */
 #toast{
 position:fixed;
 bottom:20px;
@@ -168,9 +170,10 @@ left:50%;
 transform:translateX(-50%);
 background:#055160;
 color:white;
-padding:12px;
+padding:12px 18px;
 border-radius:10px;
 display:none;
+z-index:99999;
 }
 
 </style>
@@ -193,6 +196,7 @@ display:none;
 <a href="#reseñas">Reseñas</a>
 </nav>
 
+<!-- CARRITO -->
 <div id="cartIcon" onclick="openCart()">🛒 <span id="cartCount">0</span></div>
 
 <!-- NOVEDADES -->
@@ -225,9 +229,9 @@ display:none;
 <div class="social-grid">
 <a class="social-card" href="mailto:soleraropaycomplementos@gmail.com">Gmail</a>
 <a class="social-card" href="https://wa.me/34643319232">WhatsApp</a>
-<a class="social-card" href="https://www.instagram.com/solerashopp">Instagram</a>
-<a class="social-card" href="https://www.facebook.com/share/18feHPTPbK/">Facebook</a>
-<a class="social-card" href="https://www.tiktok.com/@solerashop8">TikTok</a>
+<a class="social-card" href="https://instagram.com/solerashopp">Instagram</a>
+<a class="social-card" href="https://facebook.com/share/18feHPTPbK/">Facebook</a>
+<a class="social-card" href="https://tiktok.com/@solerashop8">TikTok</a>
 </div>
 
 </section>
@@ -238,7 +242,7 @@ display:none;
 <div id="list"></div>
 </section>
 
-<!-- PRODUCTO MODAL -->
+<!-- PRODUCT MODAL -->
 <div class="modal" id="productModal">
 <div class="box">
 <div class="close-left" onclick="closeProduct()">✕</div>
@@ -246,7 +250,7 @@ display:none;
 </div>
 </div>
 
-<!-- CARRITO MODAL -->
+<!-- CART MODAL -->
 <div class="modal" id="cartModal">
 <div class="box">
 <div class="close-left" onclick="closeCart()">✕</div>
@@ -304,13 +308,12 @@ div.innerHTML=`
 <p>${p.precio}€</p>
 
 <div>
-<button onclick="p.cantidad=Math.max(1,(p.cantidad||1)-1);this.parentElement.querySelector('span').innerText=p.cantidad;">-</button>
+<button onclick="p.cantidad=Math.max(1,(p.cantidad||1)-1);this.nextElementSibling.innerText=p.cantidad;">-</button>
 <span>1</span>
-<button onclick="p.cantidad=(p.cantidad||1)+1;this.parentElement.querySelector('span').innerText=p.cantidad;">+</button>
+<button onclick="p.cantidad=(p.cantidad||1)+1;this.previousElementSibling.innerText=p.cantidad;">+</button>
 </div>
 
 <button class="btn" onclick="addToCart(${productos.indexOf(p)})">Añadir</button>
-
 <button onclick="shareProduct('${p.nombre}',${p.precio})">Compartir</button>
 `;
 
@@ -326,26 +329,32 @@ updateCart();
 }
 
 function shareProduct(nombre,precio){
-navigator.share?.({
+if(navigator.share){
+navigator.share({
 title:nombre,
 text:`${nombre} - ${precio}€`,
 url:window.location.href
 });
 }
+}
 
+/* CART */
 function updateCart(){
+
 let list=document.getElementById("cartList");
 list.innerHTML="";
+
 let total=0;
 
 cart.forEach((p,i)=>{
+
 let subtotal=p.precio*p.cantidad;
 total+=subtotal;
 
 list.innerHTML+=`
 <div style="display:flex;gap:10px;align-items:center;margin-bottom:10px;">
 <img src="${p.img}" style="width:50px;height:50px">
-<div style="flex:1">
+<div style="flex:1;text-align:left">
 ${p.nombre}<br>${p.precio}€ x ${p.cantidad}
 </div>
 <button onclick="cart.splice(${i},1);updateCart()">❌</button>
@@ -360,7 +369,7 @@ document.getElementById("cartCount").innerText=cart.length;
 function openCart(){cartModal.classList.add("activo");}
 function closeCart(){cartModal.classList.remove("activo");}
 
-/* WHATSAPP COMPLETO */
+/* WHATSAPP */
 function checkout(){
 
 let name=cname.value;
@@ -368,7 +377,7 @@ let address=caddress.value;
 let phone=cphone.value;
 let payment=cpayment.value;
 
-let text="🛍️ PEDIDO\n\n";
+let text="🛍️ PEDIDO SOLERA\n\n";
 text+=`Nombre: ${name}\nDirección: ${address}\nTel: ${phone}\nPago: ${payment}\n\n`;
 
 let total=0;
