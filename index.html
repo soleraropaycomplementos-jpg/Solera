@@ -14,10 +14,8 @@ margin:0;
 font-family:Poppins,sans-serif;
 background:#eaf6f6;
 padding-top:60px;
-
-/* 🔥 EVITA ZOOM EN MÓVIL */
--webkit-text-size-adjust: 100%;
-touch-action: manipulation;
+-webkit-text-size-adjust:100%;
+touch-action:manipulation;
 }
 
 /* NAV */
@@ -60,12 +58,10 @@ color:white;
 text-align:center;
 }
 
-/* 🔥 LOGO ANTI ZOOM */
 #logo{
 cursor:pointer;
 user-select:none;
-touch-action: manipulation;
--webkit-user-select:none;
+touch-action:manipulation;
 }
 
 /* GRID */
@@ -75,7 +71,7 @@ grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
 gap:20px;
 }
 
-/* CATEGORÍAS */
+/* PRODUCTOS */
 .card{
 background:white;
 border-radius:15px;
@@ -91,10 +87,10 @@ height:160px;
 object-fit:cover;
 }
 
-/* PRODUCTOS */
+/* PRODUCTOS GRID */
 #productGrid{
 display:grid;
-grid-template-columns:repeat(auto-fill, minmax(180px, 1fr));
+grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
 gap:18px;
 margin-top:20px;
 }
@@ -105,11 +101,6 @@ border-radius:16px;
 overflow:hidden;
 box-shadow:0 6px 18px rgba(0,0,0,0.12);
 cursor:pointer;
-transition:.2s;
-}
-
-.producto-card:hover{
-transform:translateY(-4px);
 }
 
 .producto-card img{
@@ -128,23 +119,6 @@ color:white;
 border:none;
 border-radius:8px;
 cursor:pointer;
-}
-
-/* SOCIAL */
-.social-grid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
-gap:15px;
-}
-
-.social-card{
-background:white;
-padding:15px;
-border-radius:12px;
-text-align:center;
-text-decoration:none;
-color:black;
-box-shadow:0 4px 10px rgba(0,0,0,0.1);
 }
 
 /* RESEÑAS */
@@ -199,7 +173,7 @@ cursor:pointer;
 
 /* COMMENTS */
 #comments{
-max-height:220px;
+max-height:250px;
 overflow-y:auto;
 padding:10px;
 border:1px solid #ddd;
@@ -215,7 +189,6 @@ margin-bottom:10px;
 
 <header>
 <img src="playa.jpg">
-
 <div class="texto">
 <h1 id="logo">Solera</h1>
 <p>Moda verano</p>
@@ -232,7 +205,6 @@ margin-bottom:10px;
 <!-- NOVEDADES -->
 <section id="novedades">
 <h2>Novedades</h2>
-
 <div class="grid">
 <div class="card"><img src="vestido1.jpg"><h3>Vestido</h3></div>
 <div class="card"><img src="bolso2.jpg"><h3>Bolso</h3></div>
@@ -300,10 +272,9 @@ margin-bottom:10px;
 
 <script>
 
-/* ADMIN FIX SIN ZOOM */
+/* ADMIN */
 let admin=false;
 let taps=0;
-let lastTap=0;
 
 /* USER */
 let currentUser=localStorage.getItem("user")||"user";
@@ -318,33 +289,14 @@ localStorage.setItem("user",n);
 }
 }
 
-/* ADMIN 5 TOQUES SIN ZOOM */
+/* ADMIN FIX */
 document.addEventListener("DOMContentLoaded",()=>{
 
 const logo=document.getElementById("logo");
 
-if(!logo)return;
-
-logo.addEventListener("click",(e)=>{
-e.preventDefault();
-handleTap();
-});
-
-logo.addEventListener("touchend",(e)=>{
-e.preventDefault();
-handleTap();
-});
-
-function handleTap(){
-
-let now=Date.now();
-
-if(now-lastTap>2000){
-taps=0;
-}
-
-lastTap=now;
+logo.addEventListener("click",()=>{
 taps++;
+setTimeout(()=>taps=0,2000);
 
 if(taps===5){
 
@@ -361,7 +313,7 @@ alert("Incorrecto");
 
 taps=0;
 }
-}
+});
 
 });
 
@@ -409,6 +361,7 @@ document.getElementById("productContent").innerHTML=`
 <h3>${p.nombre}</h3>
 <p>${p.precio}</p>
 `;
+
 loadComments();
 }
 
@@ -416,13 +369,13 @@ function closeProduct(){
 document.getElementById("productModal").classList.remove("activo");
 }
 
-/* COMMENTS */
+/* COMMENTS GLOBAL SIMULADO */
 function getComments(){
-return JSON.parse(localStorage.getItem("c_"+currentProduct.nombre))||[];
+return JSON.parse(localStorage.getItem("GLOBAL_COMMENTS"))||[];
 }
 
 function saveComments(c){
-localStorage.setItem("c_"+currentProduct.nombre,JSON.stringify(c));
+localStorage.setItem("GLOBAL_COMMENTS",JSON.stringify(c));
 }
 
 function addComment(){
@@ -447,7 +400,32 @@ document.getElementById("commentText").value="";
 loadComments();
 }
 
-/* LOAD COMMENTS */
+/* RESPUESTAS */
+function replyComment(id){
+
+askUser();
+
+let text=prompt("Responder:");
+if(!text)return;
+
+let data=getComments();
+
+data=data.map(c=>{
+if(c.id===id){
+c.replies.push({
+user:currentUser,
+text:text,
+date:new Date().toLocaleDateString()
+});
+}
+return c;
+});
+
+saveComments(data);
+loadComments();
+}
+
+/* RENDER */
 function loadComments(){
 
 let c=document.getElementById("comments");
@@ -460,7 +438,8 @@ data.forEach(cm=>{
 let replies="";
 
 cm.replies.forEach(r=>{
-replies+=`<div style="margin-left:15px;font-size:12px;background:#eee;padding:5px;border-radius:6px;margin-top:5px;">
+replies+=`
+<div style="margin-left:15px;font-size:12px;background:#eee;padding:5px;border-radius:6px;margin-top:5px;">
 <strong>${r.user}</strong>: ${r.text}
 </div>`;
 });
@@ -473,6 +452,8 @@ div.className="reseña";
 div.innerHTML=`
 <strong>${cm.user}</strong> · ${cm.date}
 <p>${cm.text}</p>
+
+<button onclick="replyComment(${cm.id})" class="btn" style="padding:5px;font-size:12px;">Responder</button>
 
 ${canDelete?`<button onclick="deleteComment(${cm.id})" style="background:red;color:white;border:none;padding:5px;border-radius:6px;">✕</button>`:""}
 
