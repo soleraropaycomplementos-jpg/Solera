@@ -57,10 +57,6 @@ color:white;
 text-align:center;
 }
 
-/* SECCIONES */
-section{padding:40px 25px;}
-h2{text-align:center;}
-
 /* GRID */
 .grid{
 display:grid;
@@ -83,21 +79,6 @@ height:160px;
 object-fit:cover;
 }
 
-/* NOVEDADES */
-.slider{
-display:flex;
-overflow-x:auto;
-gap:15px;
-scroll-snap-type:x mandatory;
-}
-
-.slider::-webkit-scrollbar{display:none;}
-
-.slider .card{
-min-width:200px;
-scroll-snap-align:start;
-}
-
 /* BOTÓN */
 .btn{
 display:block;
@@ -110,7 +91,7 @@ border-radius:8px;
 cursor:pointer;
 }
 
-/* CONTACTO */
+/* SOCIAL */
 .social-grid{
 display:grid;
 grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
@@ -125,12 +106,6 @@ text-align:center;
 text-decoration:none;
 color:black;
 box-shadow:0 4px 10px rgba(0,0,0,0.1);
-}
-
-.social-card i{
-font-size:22px;
-margin-bottom:5px;
-display:block;
 }
 
 /* RESEÑAS */
@@ -152,7 +127,7 @@ padding:10px;
 border-radius:10px;
 }
 
-/* MODAL RESEÑA */
+/* MODAL GENERAL */
 .modal{
 position:fixed;
 inset:0;
@@ -172,6 +147,17 @@ border-radius:16px;
 width:95%;
 max-width:650px;
 text-align:center;
+position:relative;
+}
+
+/* X cerrar */
+.close{
+position:absolute;
+top:10px;
+right:15px;
+font-size:22px;
+cursor:pointer;
+font-weight:bold;
 }
 
 /* ESTRELLAS */
@@ -198,13 +184,12 @@ margin-top:10px;
 padding:10px;
 }
 
-/* MODAL PRODUCTO */
-#productModal .box img{
+/* PRODUCTOS MODAL */
+#productBox img{
 width:100%;
 border-radius:10px;
 }
 
-/* FOOTER */
 footer{
 background:#055160;
 color:white;
@@ -236,7 +221,7 @@ padding:20px;
 <section id="novedades">
 <h2>Novedades</h2>
 
-<div class="slider">
+<div class="grid">
 <div class="card"><img src="vestido.jpg"><h3>Vestido playa</h3></div>
 <div class="card"><img src="bolso.jpg"><h3>Bolso verano</h3></div>
 <div class="card"><img src="sandalias.jpg"><h3>Sandalias</h3></div>
@@ -254,36 +239,16 @@ padding:20px;
 </div>
 </section>
 
-<!-- ROPA (PRODUCTOS RESTAURADOS) -->
+<!-- ROPA -->
 <section id="ropa">
 <h2>Ropa</h2>
 
 <div class="grid">
-
 <div class="card" onclick="openProduct('vestido')">
 <img src="vestido.jpg">
 <h3>Vestido playa</h3>
 <p>19,99€</p>
 </div>
-
-<div class="card" onclick="openProduct('vestido2')">
-<img src="vestido2.jpg">
-<h3>Vestido rosa</h3>
-<p>24,99€</p>
-</div>
-
-<div class="card" onclick="openProduct('bolso')">
-<img src="bolso.jpg">
-<h3>Bolso verano</h3>
-<p>15,99€</p>
-</div>
-
-<div class="card" onclick="openProduct('sandalias')">
-<img src="sandalias.jpg">
-<h3>Sandalias</h3>
-<p>12,99€</p>
-</div>
-
 </div>
 </section>
 
@@ -293,43 +258,31 @@ padding:20px;
 <h2>Contacto</h2>
 
 <div class="social-grid">
-
-<a href="mailto:soleraropaycomplementos@gmail.com" class="social-card">
-<i class="fa-solid fa-envelope"></i>Gmail
-</a>
-
-<a href="https://api.whatsapp.com/send?phone=34643319232&text=Buenas,%20me%20gustaría%20información%20sobre%20Solera%20🌞🏖️" class="social-card">
-<i class="fa-brands fa-whatsapp"></i>WhatsApp
-</a>
-
-<a href="https://instagram.com" class="social-card">
-<i class="fa-brands fa-instagram"></i>Instagram
-</a>
-
-<a href="https://facebook.com" class="social-card">
-<i class="fa-brands fa-facebook"></i>Facebook
-</a>
-
-<a href="https://tiktok.com" class="social-card">
-<i class="fa-brands fa-tiktok"></i>TikTok
-</a>
-
+<a class="social-card" href="mailto:soleraropaycomplementos@gmail.com"><i class="fa-solid fa-envelope"></i>Gmail</a>
+<a class="social-card" href="#"><i class="fa-brands fa-whatsapp"></i>WhatsApp</a>
+<a class="social-card" href="#"><i class="fa-brands fa-instagram"></i>Instagram</a>
+<a class="social-card" href="#"><i class="fa-brands fa-facebook"></i>Facebook</a>
+<a class="social-card" href="#"><i class="fa-brands fa-tiktok"></i>TikTok</a>
 </div>
 
 </section>
 
 <!-- RESEÑAS -->
 <section id="reseñas">
+
 <h2>Reseñas</h2>
 
 <button class="btn" onclick="openM()">Dejar reseña</button>
 
 <div class="reseñas-box" id="list"></div>
+
 </section>
 
 <!-- MODAL RESEÑA -->
 <div class="modal" id="modal">
 <div class="box">
+
+<div class="close" onclick="closeM()">✕</div>
 
 <div class="estrellas">
 <input type="radio" id="5" name="e" value="5"><label for="5">★</label>
@@ -362,7 +315,12 @@ function openM(){
 document.getElementById("modal").classList.add("activo");
 }
 
+function closeM(){
+document.getElementById("modal").classList.remove("activo");
+}
+
 function save(){
+
 let e=document.querySelector('input[name="e"]:checked');
 let t=document.getElementById("txt").value;
 if(!e||t==="")return;
@@ -371,6 +329,7 @@ let d=JSON.parse(localStorage.getItem("r"))||[];
 d.push({estrellas:e.value,texto:t});
 localStorage.setItem("r",JSON.stringify(d));
 load();
+closeM();
 }
 
 function load(){
@@ -390,11 +349,8 @@ load();
 /* PRODUCTOS */
 function openProduct(id){
 
-const p = {
-vestido:{img:"vestido.jpg",title:"Vestido playa",price:"19,99€",desc:"Vestido ligero de verano."},
-vestido2:{img:"vestido2.jpg",title:"Vestido rosa",price:"24,99€",desc:"Vestido elegante rosa."},
-bolso:{img:"bolso.jpg",title:"Bolso verano",price:"15,99€",desc:"Bolso ideal para playa."},
-sandalias:{img:"sandalias.jpg",title:"Sandalias",price:"12,99€",desc:"Sandalias cómodas verano."}
+const p={
+vestido:{img:"vestido.jpg",title:"Vestido playa",price:"19,99€",desc:"Vestido de verano ligero."}
 };
 
 let x=p[id];
