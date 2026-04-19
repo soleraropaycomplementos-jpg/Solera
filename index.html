@@ -115,7 +115,7 @@ border-radius:8px;
 cursor:pointer;
 }
 
-/* ❤️ FAVORITO BUTTON */
+/* ❤️ HEART */
 .heart-btn{
 position:absolute;
 top:10px;
@@ -132,8 +132,7 @@ height:100%;
 stroke:#fff;
 stroke-width:2;
 fill:transparent;
-filter:drop-shadow(0 1px 2px rgba(0,0,0,0.6));
-transition:0.25s;
+transition:0.2s;
 }
 
 .heart-btn.active svg{
@@ -142,7 +141,7 @@ stroke:red;
 transform:scale(1.1);
 }
 
-/* ICONOS */
+/* ICONS */
 #cartIcon, #favIcon{
 position:fixed;
 top:15px;
@@ -188,7 +187,7 @@ font-size:22px;
 cursor:pointer;
 }
 
-/* TOASTS */
+/* TOAST */
 #toast, #favToast{
 position:fixed;
 left:50%;
@@ -201,34 +200,8 @@ font-weight:600;
 color:white;
 }
 
-#toast{
-bottom:20px;
-background:#055160;
-}
-
-#favToast{
-bottom:70px;
-background:#b30000;
-}
-
-/* LISTAS */
-.reseñas-box{
-max-width:600px;
-margin:auto;
-height:300px;
-overflow-y:auto;
-border:1px solid #ddd;
-border-radius:12px;
-padding:10px;
-background:white;
-}
-
-.reseña{
-background:#f7f7f7;
-margin:10px 0;
-padding:10px;
-border-radius:10px;
-}
+#toast{bottom:20px;background:#055160;}
+#favToast{bottom:70px;background:#b30000;}
 
 </style>
 </head>
@@ -256,7 +229,6 @@ border-radius:10px;
 
 <!-- CATEGORÍAS -->
 <section id="categorias">
-
 <h2>Categorías</h2>
 
 <div class="grid">
@@ -268,7 +240,7 @@ border-radius:10px;
 <div id="productGrid"></div>
 </section>
 
-<!-- MODAL PRODUCTO -->
+<!-- PRODUCT MODAL -->
 <div class="modal" id="productModal">
 <div class="box">
 <div class="close-left" onclick="closeProduct()">✕</div>
@@ -277,7 +249,7 @@ border-radius:10px;
 </div>
 </div>
 
-<!-- MODAL CARRITO -->
+<!-- CART -->
 <div class="modal" id="cartModal">
 <div class="box">
 <div class="close-left" onclick="closeCart()">✕</div>
@@ -287,7 +259,7 @@ border-radius:10px;
 </div>
 </div>
 
-<!-- MODAL FAVORITOS -->
+<!-- FAVORITOS -->
 <div class="modal" id="favModal">
 <div class="box">
 <div class="close-left" onclick="closeFav()">✕</div>
@@ -312,7 +284,6 @@ const productos=[
 {cat:"zapatos",img:"sandalia1.jpg",nombre:"Sandalia cómoda",precio:24.99}
 ];
 
-/* SAVE */
 function save(){
 localStorage.setItem("cart",JSON.stringify(cart));
 localStorage.setItem("favs",JSON.stringify(favs));
@@ -359,7 +330,7 @@ grid.appendChild(div);
 
 /* CART */
 function addToCart(p){
-let item = cart.find(x=>x.nombre===p.nombre);
+let item=cart.find(x=>x.nombre===p.nombre);
 if(item) item.cantidad++;
 else cart.push({...p,cantidad:1});
 
@@ -393,11 +364,11 @@ document.getElementById("total").innerText="Total: "+total.toFixed(2)+"€";
 function toggleFav(e,name){
 e.stopPropagation();
 
-let product = productos.find(p=>p.nombre===name);
-let exists = favs.find(f=>f.nombre===name);
+let product=productos.find(p=>p.nombre===name);
+let exists=favs.find(f=>f.nombre===name);
 
 if(exists){
-favs = favs.filter(f=>f.nombre!==name);
+favs=favs.filter(f=>f.nombre!==name);
 }else{
 favs.push(product);
 showFavToast();
@@ -426,9 +397,8 @@ let list=document.getElementById("favList");
 list.innerHTML="";
 
 favs.forEach((p,i)=>{
-
 list.innerHTML+=`
-<div style="display:flex;justify-content:space-between;align-items:center;margin:10px 0;padding:10px;background:#f4f4f4;border-radius:10px;">
+<div style="display:flex;justify-content:space-between;margin:10px 0;padding:10px;background:#f4f4f4;border-radius:10px;">
 <img src="${p.img}" style="width:50px;height:50px;object-fit:cover;border-radius:8px;">
 <div style="flex:1;text-align:left;margin-left:10px;">
 <b>${p.nombre}</b><br>${p.precio}€
@@ -447,7 +417,7 @@ updateFav();
 renderFavs();
 }
 
-/* PRODUCT */
+/* MODAL PRODUCT */
 function openProduct(p){
 currentProduct=p;
 productModal.classList.add("activo");
@@ -462,7 +432,7 @@ function closeProduct(){productModal.classList.remove("activo");}
 
 function addFromModal(){addToCart(currentProduct);toast();}
 
-/* MODALS */
+/* CART MODAL */
 function openCart(){cartModal.classList.add("activo");}
 function closeCart(){cartModal.classList.remove("activo");}
 
