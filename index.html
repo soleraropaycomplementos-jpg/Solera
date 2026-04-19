@@ -58,55 +58,72 @@ text-align:center;
 section{padding:40px 25px;}
 h2{text-align:center;}
 
-/* CATEGORÍAS */
-.categorias-grid{
+/* ===== CATEGORÍAS CONSISTENTES ===== */
+.grid{
 display:grid;
 grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
 gap:20px;
 }
 
-.categoria-card{
+.card{
 background:white;
 border-radius:15px;
 overflow:hidden;
 text-align:center;
 box-shadow:0 4px 12px rgba(0,0,0,0.1);
+cursor:pointer;
+transition:.2s;
 }
 
-.categoria-card img{
+.card:hover{transform:scale(1.03);}
+
+.card img{
 width:100%;
 height:160px;
 object-fit:cover;
+background:#ddd;
 }
 
-/* NOVEDADES */
-.novedades-wrapper{display:flex;align-items:center;}
-
-.novedades-slider{
+/* ===== NOVEDADES ===== */
+.slider{
 display:flex;
 overflow-x:auto;
 gap:15px;
 scroll-snap-type:x mandatory;
-width:100%;
 }
 
-.novedades-slider::-webkit-scrollbar{display:none;}
+.slider::-webkit-scrollbar{display:none;}
 
-.novedades-slider .categoria-card{
+.slider .card{
 min-width:200px;
 scroll-snap-align:start;
 }
 
-.flecha{
-background:rgba(0,0,0,0.6);
+/* ===== BOTÓN RESEÑA ANIMADO ===== */
+.btn{
+display:block;
+margin:15px auto;
+padding:12px 20px;
+background:#055160;
 color:white;
 border:none;
-border-radius:50%;
-font-size:26px;
-padding:10px;
+border-radius:8px;
+cursor:pointer;
+transition:.3s;
+animation:pulse 2s infinite;
 }
 
-/* CONTACTO */
+.btn:hover{
+transform:scale(1.05);
+}
+
+@keyframes pulse{
+0%{box-shadow:0 0 0 0 rgba(5,81,96,.5);}
+70%{box-shadow:0 0 0 10px rgba(5,81,96,0);}
+100%{box-shadow:0 0 0 0 rgba(5,81,96,0);}
+}
+
+/* ===== CONTACTO ===== */
 .social-grid{
 display:grid;
 grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
@@ -123,41 +140,7 @@ color:black;
 box-shadow:0 4px 10px rgba(0,0,0,0.1);
 }
 
-/* RESEÑAS */
-#reseñas{
-background:white;
-padding:40px 20px;
-}
-
-.reseñas-box{
-max-width:600px;
-margin:auto;
-height:300px;
-overflow-y:auto;
-border:1px solid #ddd;
-border-radius:12px;
-padding:10px;
-}
-
-.reseña{
-background:#f7f7f7;
-margin:10px 0;
-padding:10px;
-border-radius:10px;
-}
-
-.btn{
-display:block;
-margin:15px auto;
-padding:10px 18px;
-background:#055160;
-color:white;
-border:none;
-border-radius:8px;
-cursor:pointer;
-}
-
-/* MODAL */
+/* ===== MODAL PRODUCTO ===== */
 .modal{
 position:fixed;
 inset:0;
@@ -175,10 +158,36 @@ background:white;
 padding:20px;
 border-radius:12px;
 width:90%;
-max-width:400px;
+max-width:420px;
 text-align:center;
 }
 
+.box img{
+width:100%;
+border-radius:10px;
+background:#ddd;
+}
+
+/* ===== RESEÑAS ===== */
+.reseñas-box{
+max-width:600px;
+margin:auto;
+height:300px;
+overflow-y:auto;
+border:1px solid #ddd;
+border-radius:12px;
+padding:10px;
+background:white;
+}
+
+.reseña{
+background:#f7f7f7;
+margin:10px 0;
+padding:10px;
+border-radius:10px;
+}
+
+/* ===== ESTRELLAS ===== */
 .estrellas{
 display:flex;
 flex-direction:row-reverse;
@@ -201,6 +210,12 @@ margin-top:10px;
 padding:10px;
 }
 
+/* ===== IMAGEN FALLBACK ===== */
+img.error{
+content:url("https://via.placeholder.com/300x200?text=Imagen+no+disponible");
+}
+
+/* ===== FOOTER ===== */
 footer{
 background:#055160;
 color:white;
@@ -213,7 +228,7 @@ padding:20px;
 <body>
 
 <header>
-<img src="./playa.jpg">
+<img src="./playa.jpg" onerror="this.classList.add('error')">
 <div class="texto">
 <h1>Solera</h1>
 <p>Moda verano</p>
@@ -232,30 +247,22 @@ padding:20px;
 <section id="novedades">
 <h2>Novedades</h2>
 
-<div class="novedades-wrapper">
+<div class="slider">
 
-<button class="flecha" onclick="move(-1)">‹</button>
-
-<div class="novedades-slider" id="slider">
-
-<div class="categoria-card">
-<img src="./vestido.jpg">
+<div class="card" onclick="openProduct('Vestido playa','19,99€','./vestido.jpg')">
+<img src="./vestido.jpg" onerror="this.classList.add('error')">
 <h3>Vestido playa</h3>
 </div>
 
-<div class="categoria-card">
-<img src="./bolso.jpg">
+<div class="card" onclick="openProduct('Bolso verano','29,99€','./bolso.jpg')">
+<img src="./bolso.jpg" onerror="this.classList.add('error')">
 <h3>Bolso verano</h3>
 </div>
 
-<div class="categoria-card">
-<img src="./sandalias.jpg">
+<div class="card" onclick="openProduct('Sandalias','22,99€','./sandalias.jpg')">
+<img src="./sandalias.jpg" onerror="this.classList.add('error')">
 <h3>Sandalias</h3>
 </div>
-
-</div>
-
-<button class="flecha" onclick="move(1)">›</button>
 
 </div>
 </section>
@@ -264,20 +271,20 @@ padding:20px;
 <section id="categorias">
 <h2>Categorías</h2>
 
-<div class="categorias-grid">
+<div class="grid">
 
-<div class="categoria-card">
-<img src="./ropa.jpg">
+<div class="card">
+<img src="./ropa.jpg" onerror="this.classList.add('error')">
 <h3>Ropa</h3>
 </div>
 
-<div class="categoria-card">
-<img src="./bolso.jpg">
+<div class="card">
+<img src="./bolso.jpg" onerror="this.classList.add('error')">
 <h3>Complementos</h3>
 </div>
 
-<div class="categoria-card">
-<img src="./sandalias.jpg">
+<div class="card">
+<img src="./sandalias.jpg" onerror="this.classList.add('error')">
 <h3>Zapatos</h3>
 </div>
 
@@ -288,20 +295,144 @@ padding:20px;
 <section id="ropa">
 <h2>Ropa</h2>
 
-<div class="categorias-grid">
+<div class="grid">
 
-<div class="categoria-card">
-<img src="./vestido.jpg">
+<div class="card" onclick="openProduct('Vestido playa','19,99€','./vestido.jpg')">
+<img src="./vestido.jpg" onerror="this.classList.add('error')">
 <h3>Vestido playa</h3>
 </div>
 
-<div class="categoria-card">
-<img src="./vestido2.jpg">
-<h3>Vestido rosa verano</h3>
+<div class="card" onclick="openProduct('Vestido rosa','24,99€','./vestido2.jpg')">
+<img src="./vestido2.jpg" onerror="this.classList.add('error')">
+<h3>Vestido rosa</h3>
 </div>
 
 </div>
 </section>
+
+<!-- CONTACTO -->
+<section id="contacto">
+
+<h2>Contacto</h2>
+
+<div class="social-grid">
+
+<a href="mailto:soleraropaycomplementos@gmail.com" class="social-card">
+<i class="fa-solid fa-envelope"></i><br>Gmail
+</a>
+
+<a href="https://api.whatsapp.com/send?phone=34643319232&text=Buenas,%20me%20gustaría%20información%20de%20Solera%20🌞🏖️" class="social-card">
+<i class="fa-brands fa-whatsapp"></i><br>WhatsApp
+</a>
+
+<a href="#" class="social-card">
+<i class="fa-brands fa-instagram"></i><br>Instagram
+</a>
+
+</div>
+
+</section>
+
+<!-- RESEÑAS -->
+<section id="reseñas">
+
+<h2>Reseñas</h2>
+
+<button class="btn" onclick="openM()">Dejar reseña</button>
+
+<div class="reseñas-box" id="list"></div>
+
+</section>
+
+<!-- MODAL PRODUCTO -->
+<div class="modal" id="modalProduct">
+<div class="box">
+<img id="pimg">
+<h3 id="ptitle"></h3>
+<p id="pprice"></p>
+</div>
+</div>
+
+<!-- MODAL RESEÑA -->
+<div class="modal" id="modal">
+
+<div class="box">
+
+<div class="estrellas">
+<input type="radio" id="5" name="e" value="5"><label for="5">★</label>
+<input type="radio" id="4" name="e" value="4"><label for="4">★</label>
+<input type="radio" id="3" name="e" value="3"><label for="3">★</label>
+<input type="radio" id="2" name="e" value="2"><label for="2">★</label>
+<input type="radio" id="1" name="e" value="1"><label for="1">★</label>
+</div>
+
+<textarea id="txt"></textarea>
+
+<button class="btn" onclick="save()">Enviar</button>
+
+</div>
+
+</div>
+
+<footer>
+<p>© 2026 Solera</p>
+</footer>
+
+<script>
+
+/* PRODUCTO */
+function openProduct(t,p,img){
+document.getElementById("ptitle").innerText=t;
+document.getElementById("pprice").innerText=p;
+document.getElementById("pimg").src=img;
+document.getElementById("modalProduct").classList.add("activo");
+}
+
+/* RESEÑAS */
+function openM(){
+document.getElementById("modal").classList.add("activo");
+}
+
+function save(){
+
+let e=document.querySelector('input[name="e"]:checked');
+let t=document.getElementById("txt").value;
+
+if(!e||t==="")return;
+
+let d=JSON.parse(localStorage.getItem("r"))||[];
+
+d.push({estrellas:e.value,texto:t});
+
+localStorage.setItem("r",JSON.stringify(d));
+
+load();
+}
+
+function load(){
+
+let c=document.getElementById("list");
+c.innerHTML="";
+
+let d=JSON.parse(localStorage.getItem("r"))||[];
+
+d.forEach(r=>{
+let x=document.createElement("div");
+x.className="reseña";
+x.innerHTML="⭐".repeat(r.estrellas)+"<p>"+r.texto+"</p>";
+c.appendChild(x);
+});
+
+}
+
+load();
+
+/* IMAGEN FALLBACK GLOBAL */
+document.querySelectorAll("img").forEach(img=>{
+img.onerror=()=>img.classList.add("error");
+});
+
+</script>
 
 </body>
 </html>
