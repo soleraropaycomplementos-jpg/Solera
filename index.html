@@ -17,7 +17,6 @@ background:#eaf6f6;
 padding-top:60px;
 }
 
-/* NAV */
 nav{
 background:#055160;
 position:fixed;
@@ -35,7 +34,6 @@ text-decoration:none;
 font-weight:600;
 }
 
-/* HEADER */
 header{
 height:340px;
 position:relative;
@@ -57,11 +55,10 @@ color:white;
 text-align:center;
 }
 
-/* SECCIONES */
 section{padding:40px 25px;}
 h2{text-align:center;}
 
-/* CATEGORÍAS (SOLO MINIATURA) */
+/* CATEGORÍAS */
 .categorias-grid{
 display:grid;
 grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
@@ -74,7 +71,6 @@ border-radius:15px;
 overflow:hidden;
 text-align:center;
 box-shadow:0 4px 12px rgba(0,0,0,0.1);
-cursor:pointer;
 }
 
 .categoria-card img{
@@ -127,7 +123,7 @@ color:black;
 box-shadow:0 4px 10px rgba(0,0,0,0.1);
 }
 
-/* MODAL PRODUCTO */
+/* MODAL */
 .modal{
 position:fixed;
 inset:0;
@@ -226,17 +222,17 @@ padding:20px;
 
 <div class="novedades-slider" id="slider">
 
-<div class="categoria-card" onclick="openM('v1')">
+<div class="categoria-card">
 <img src="vestido.jpg">
 <h3>Vestido playa</h3>
 </div>
 
-<div class="categoria-card" onclick="openM('b1')">
+<div class="categoria-card">
 <img src="bolso.jpg">
 <h3>Bolso verano</h3>
 </div>
 
-<div class="categoria-card" onclick="openM('s1')">
+<div class="categoria-card">
 <img src="sandalias.jpg">
 <h3>Sandalias</h3>
 </div>
@@ -275,37 +271,55 @@ padding:20px;
 
 </section>
 
-<!-- MODALES PRODUCTO -->
-<div class="modal" id="v1">
-<div class="box">
-<img src="vestido.jpg">
-<h2>Vestido playa</h2>
-<p>19,99€</p>
-<p>Vestido ligero ideal para verano.</p>
-</div>
-</div>
-
-<div class="modal" id="b1">
-<div class="box">
-<img src="bolso.jpg">
-<h2>Bolso verano</h2>
-<p>29,99€</p>
-<p>Perfecto para playa y uso diario.</p>
-</div>
-</div>
-
-<div class="modal" id="s1">
-<div class="box">
-<img src="sandalias.jpg">
-<h2>Sandalias playa</h2>
-<p>22,99€</p>
-<p>Comodidad total para verano.</p>
-</div>
-</div>
-
 <!-- ROPA -->
 <section id="ropa">
 <h2>Ropa</h2>
+
+<div class="categorias-grid">
+
+<div class="categoria-card">
+<img src="vestido.jpg">
+<h3>Vestido playa</h3>
+<p>19,99€</p>
+</div>
+
+<div class="categoria-card">
+<img src="vestido2.jpg">
+<h3>Vestido rosa verano</h3>
+<p>24,99€</p>
+</div>
+
+</div>
+</section>
+
+<!-- COMPLEMENTOS -->
+<section id="complementos">
+<h2>Complementos</h2>
+
+<div class="categorias-grid">
+
+<div class="categoria-card">
+<img src="bolso.jpg">
+<h3>Bolso verano</h3>
+<p>29,99€</p>
+</div>
+
+</div>
+</section>
+
+<!-- ZAPATOS -->
+<section id="zapatos">
+<h2>Zapatos</h2>
+
+<div class="categorias-grid">
+
+<div class="categoria-card">
+<img src="sandalias.jpg">
+<h3>Sandalias playa</h3>
+<p>22,99€</p>
+</div>
+
+</div>
 </section>
 
 <!-- CONTACTO -->
@@ -319,7 +333,7 @@ padding:20px;
 <i class="fa-solid fa-envelope"></i><br>Gmail
 </a>
 
-<a href="https://api.whatsapp.com/send?phone=34643319232&text=Buenas,%20me%20gustar%C3%ADa%20obtener%20informaci%C3%B3n%20🌞🏖️👗👜" class="social-card">
+<a href="https://api.whatsapp.com/send?phone=34643319232&text=Buenas,%20me%20gustar%C3%ADa%20obtener%20informaci%C3%B3n%20sobre%20los%20productos%20de%20Solera%20🌞🏖️👜👗" class="social-card">
 <i class="fa-brands fa-whatsapp"></i><br>WhatsApp
 </a>
 
@@ -354,14 +368,6 @@ padding:20px;
 function move(dir){
 document.getElementById("slider").scrollBy({left:dir*220,behavior:"smooth"});
 }
-
-function openM(id){
-document.getElementById(id).classList.add("activo");
-}
-
-document.querySelectorAll(".modal").forEach(m=>{
-m.addEventListener("click",()=>m.classList.remove("activo"));
-});
 
 </script>
 
