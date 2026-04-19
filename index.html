@@ -82,13 +82,6 @@ object-fit:cover;
 }
 
 /* PRODUCTOS */
-.productos{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(160px,1fr));
-gap:15px;
-padding-top:20px;
-}
-
 .producto-card{
 background:white;
 border-radius:12px;
@@ -100,12 +93,12 @@ text-align:center;
 
 .producto-card img{
 width:100%;
-height:140px;
+height:150px;
 object-fit:cover;
 }
 
 .producto-card h3{
-margin:8px 0 0;
+margin:8px 0;
 }
 
 /* BOTÓN */
@@ -162,7 +155,7 @@ padding:10px;
 border-radius:10px;
 }
 
-/* MODAL RESEÑAS */
+/* MODAL GENERAL */
 .modal{
 position:fixed;
 inset:0;
@@ -180,7 +173,7 @@ background:white;
 padding:30px;
 border-radius:16px;
 width:95%;
-max-width:600px;
+max-width:850px; /* 🔥 MÁS GRANDE */
 text-align:center;
 position:relative;
 }
@@ -191,11 +184,6 @@ top:10px;
 right:15px;
 font-size:22px;
 cursor:pointer;
-}
-
-/* PRODUCT MODAL */
-#productModal .box{
-max-width:500px;
 }
 
 /* ESTRELLAS */
@@ -252,10 +240,11 @@ padding:20px;
 <!-- NOVEDADES -->
 <section id="novedades">
 <h2>Novedades</h2>
+
 <div class="grid">
-<div class="card"><img src="vestido.jpg"><h3>Vestido</h3></div>
-<div class="card"><img src="bolso.jpg"><h3>Bolso</h3></div>
-<div class="card"><img src="sandalias.jpg"><h3>Sandalias</h3></div>
+<div class="card"><img src="vestido1.jpg"><h3>Vestido</h3></div>
+<div class="card"><img src="bolso2.jpg"><h3>Bolso</h3></div>
+<div class="card"><img src="sandalia1.jpg"><h3>Sandalias</h3></div>
 </div>
 </section>
 
@@ -269,9 +258,7 @@ padding:20px;
 <div class="card"><img src="zapatos.jpg"><h3>Zapatos</h3></div>
 </div>
 
-<!-- PRODUCTOS DINÁMICOS -->
-<div class="productos" id="productGrid"></div>
-
+<div class="grid" id="productGrid"></div>
 </section>
 
 <!-- CONTACTO -->
@@ -284,19 +271,19 @@ padding:20px;
 <i class="fa-solid fa-envelope"></i>Gmail
 </a>
 
-<a class="social-card" href="https://www.tiktok.com/@solerashop8?_r=1&_t=ZN-95faAZtu4Tm" target="_blank">
+<a class="social-card" href="https://wa.me/34643319232?text=Hola%20quiero%20info%20sobre%20Solera">
 <i class="fa-brands fa-whatsapp"></i>WhatsApp
 </a>
 
-<a class="social-card" href="https://www.instagram.com/solerashopp?igsh=bzdndTJlaGxpNXpl&utm_source=qr" target="_blank">
+<a class="social-card" href="https://www.instagram.com/solerashopp" target="_blank">
 <i class="fa-brands fa-instagram"></i>Instagram
 </a>
 
-<a class="social-card" href="https://www.facebook.com/share/18feHPTPbK/?mibextid=wwXIfr" target="_blank">
+<a class="social-card" href="https://www.facebook.com/share/18feHPTPbK/" target="_blank">
 <i class="fa-brands fa-facebook"></i>Facebook
 </a>
 
-<a class="social-card" href="https://www.tiktok.com/@solerashop8?_r=1&_t=ZN-95faAZtu4Tm" target="_blank">
+<a class="social-card" href="https://www.tiktok.com/@solerashop8" target="_blank">
 <i class="fa-brands fa-tiktok"></i>TikTok
 </a>
 
@@ -329,7 +316,6 @@ padding:20px;
 </div>
 
 <textarea id="txt"></textarea>
-
 <button class="btn" onclick="save()">Enviar</button>
 
 </div>
@@ -338,7 +324,9 @@ padding:20px;
 <!-- MODAL PRODUCTO -->
 <div class="modal" id="productModal">
 <div class="box">
+
 <div class="close" onclick="closeProduct()">✕</div>
+
 <div id="productContent"></div>
 
 <h3>Comentarios</h3>
@@ -356,12 +344,12 @@ padding:20px;
 
 <script>
 
-/* ADMIN RESEÑAS */
+/* ADMIN */
 let admin=false;
 let currentUser="";
 let taps=0;
 
-document.getElementById("logo").addEventListener("click",function(){
+document.getElementById("logo").addEventListener("click",()=>{
 taps++;
 setTimeout(()=>taps=0,2000);
 
@@ -392,9 +380,7 @@ let t=document.getElementById("txt").value;
 if(!e||t==="")return;
 
 let d=JSON.parse(localStorage.getItem("r"))||[];
-
 d.push({id:Date.now(),user:currentUser,estrellas:e.value,texto:t});
-
 localStorage.setItem("r",JSON.stringify(d));
 load();
 closeM();
@@ -426,14 +412,13 @@ ${canDelete?`<button onclick="del(${r.id})" style="background:red;color:white;bo
 c.appendChild(x);
 });
 }
-
 load();
 
 /* PRODUCTOS */
 const productos=[
-{cat:"ropa",img:"vestido.jpg",nombre:"Vestido verano",precio:"19,99€"},
-{cat:"complementos",img:"bolso.jpg",nombre:"Bolso playa",precio:"14,99€"},
-{cat:"zapatos",img:"sandalias.jpg",nombre:"Sandalias cómodas",precio:"24,99€"}
+{cat:"ropa",img:"vestido1.jpg",nombre:"Vestido verano",precio:"19,99€"},
+{cat:"complementos",img:"bolso2.jpg",nombre:"Bolso playa",precio:"14,99€"},
+{cat:"zapatos",img:"sandalia1.jpg",nombre:"Sandalia cómoda",precio:"24,99€"}
 ];
 
 document.querySelectorAll(".card").forEach((c,i)=>{
@@ -457,7 +442,6 @@ div.innerHTML=`
 `;
 
 div.onclick=()=>openProduct(p);
-
 grid.appendChild(div);
 });
 });
@@ -472,7 +456,7 @@ currentProduct=p;
 document.getElementById("productModal").classList.add("activo");
 
 document.getElementById("productContent").innerHTML=`
-<img src="${p.img}" style="width:100%;border-radius:10px;">
+<img src="${p.img}" style="width:100%;max-height:420px;object-fit:cover;border-radius:12px;">
 <h3>${p.nombre}</h3>
 <p>${p.precio}</p>
 `;
@@ -497,13 +481,7 @@ let text=document.getElementById("commentText").value;
 if(!text)return;
 
 let c=getComments();
-
-c.push({
-id:Date.now(),
-user:currentUser||"user",
-text:text,
-date:new Date().toLocaleDateString()
-});
+c.push({id:Date.now(),user:currentUser||"user",text:text,date:new Date().toLocaleDateString()});
 
 saveComments(c);
 document.getElementById("commentText").value="";
