@@ -127,6 +127,12 @@ color:black;
 box-shadow:0 4px 10px rgba(0,0,0,0.1);
 }
 
+.social-card i{
+font-size:22px;
+margin-bottom:5px;
+display:block;
+}
+
 /* RESEÑAS */
 .reseñas-box{
 max-width:600px;
@@ -146,7 +152,7 @@ padding:10px;
 border-radius:10px;
 }
 
-/* MODAL */
+/* MODAL RESEÑA */
 .modal{
 position:fixed;
 inset:0;
@@ -168,6 +174,7 @@ max-width:650px;
 text-align:center;
 }
 
+/* ESTRELLAS */
 .estrellas{
 display:flex;
 flex-direction:row-reverse;
@@ -191,6 +198,13 @@ margin-top:10px;
 padding:10px;
 }
 
+/* MODAL PRODUCTO */
+#productModal .box img{
+width:100%;
+border-radius:10px;
+}
+
+/* FOOTER */
 footer{
 background:#055160;
 color:white;
@@ -202,7 +216,6 @@ padding:20px;
 
 <body>
 
-<!-- PORTADA -->
 <header>
 <img src="playa.jpg">
 <div class="texto">
@@ -211,7 +224,6 @@ padding:20px;
 </div>
 </header>
 
-<!-- NAV -->
 <nav>
 <a href="#novedades">Novedades</a>
 <a href="#categorias">Categorías</a>
@@ -225,22 +237,9 @@ padding:20px;
 <h2>Novedades</h2>
 
 <div class="slider">
-
-<div class="card">
-<img src="vestido.jpg">
-<h3>Vestido playa</h3>
-</div>
-
-<div class="card">
-<img src="bolso.jpg">
-<h3>Bolso verano</h3>
-</div>
-
-<div class="card">
-<img src="sandalias.jpg">
-<h3>Sandalias</h3>
-</div>
-
+<div class="card"><img src="vestido.jpg"><h3>Vestido playa</h3></div>
+<div class="card"><img src="bolso.jpg"><h3>Bolso verano</h3></div>
+<div class="card"><img src="sandalias.jpg"><h3>Sandalias</h3></div>
 </div>
 </section>
 
@@ -249,39 +248,40 @@ padding:20px;
 <h2>Categorías</h2>
 
 <div class="grid">
-
-<div class="card">
-<img src="ropa.jpg">
-<h3>Ropa</h3>
-</div>
-
-<div class="card">
-<img src="bolso.jpg">
-<h3>Complementos</h3>
-</div>
-
-<div class="card">
-<img src="sandalias.jpg">
-<h3>Zapatos</h3>
-</div>
-
+<div class="card"><img src="ropa.jpg"><h3>Ropa</h3></div>
+<div class="card"><img src="bolso.jpg"><h3>Complementos</h3></div>
+<div class="card"><img src="sandalias.jpg"><h3>Zapatos</h3></div>
 </div>
 </section>
 
-<!-- ROPA -->
+<!-- ROPA (PRODUCTOS RESTAURADOS) -->
 <section id="ropa">
 <h2>Ropa</h2>
 
 <div class="grid">
 
-<div class="card">
+<div class="card" onclick="openProduct('vestido')">
 <img src="vestido.jpg">
 <h3>Vestido playa</h3>
+<p>19,99€</p>
 </div>
 
-<div class="card">
+<div class="card" onclick="openProduct('vestido2')">
 <img src="vestido2.jpg">
 <h3>Vestido rosa</h3>
+<p>24,99€</p>
+</div>
+
+<div class="card" onclick="openProduct('bolso')">
+<img src="bolso.jpg">
+<h3>Bolso verano</h3>
+<p>15,99€</p>
+</div>
+
+<div class="card" onclick="openProduct('sandalias')">
+<img src="sandalias.jpg">
+<h3>Sandalias</h3>
+<p>12,99€</p>
 </div>
 
 </div>
@@ -295,28 +295,23 @@ padding:20px;
 <div class="social-grid">
 
 <a href="mailto:soleraropaycomplementos@gmail.com" class="social-card">
-<i class="fa-solid fa-envelope"></i>
-Gmail
+<i class="fa-solid fa-envelope"></i>Gmail
 </a>
 
-<a href="https://api.whatsapp.com/send?phone=34643319232&text=Buenas,%20quiero%20información%20de%20Solera%20🌞🏖️" class="social-card">
-<i class="fa-brands fa-whatsapp"></i>
-WhatsApp
+<a href="https://api.whatsapp.com/send?phone=34643319232&text=Buenas,%20me%20gustaría%20información%20sobre%20Solera%20🌞🏖️" class="social-card">
+<i class="fa-brands fa-whatsapp"></i>WhatsApp
 </a>
 
 <a href="https://instagram.com" class="social-card">
-<i class="fa-brands fa-instagram"></i>
-Instagram
+<i class="fa-brands fa-instagram"></i>Instagram
 </a>
 
 <a href="https://facebook.com" class="social-card">
-<i class="fa-brands fa-facebook"></i>
-Facebook
+<i class="fa-brands fa-facebook"></i>Facebook
 </a>
 
 <a href="https://tiktok.com" class="social-card">
-<i class="fa-brands fa-tiktok"></i>
-TikTok
+<i class="fa-brands fa-tiktok"></i>TikTok
 </a>
 
 </div>
@@ -325,18 +320,15 @@ TikTok
 
 <!-- RESEÑAS -->
 <section id="reseñas">
-
 <h2>Reseñas</h2>
 
 <button class="btn" onclick="openM()">Dejar reseña</button>
 
 <div class="reseñas-box" id="list"></div>
-
 </section>
 
-<!-- MODAL -->
+<!-- MODAL RESEÑA -->
 <div class="modal" id="modal">
-
 <div class="box">
 
 <div class="estrellas">
@@ -352,7 +344,11 @@ TikTok
 <button class="btn" onclick="save()">Enviar</button>
 
 </div>
+</div>
 
+<!-- MODAL PRODUCTO -->
+<div class="modal" id="productModal">
+<div class="box" id="productBox"></div>
 </div>
 
 <footer>
@@ -361,31 +357,25 @@ TikTok
 
 <script>
 
+/* RESEÑAS */
 function openM(){
 document.getElementById("modal").classList.add("activo");
 }
 
 function save(){
-
 let e=document.querySelector('input[name="e"]:checked');
 let t=document.getElementById("txt").value;
-
 if(!e||t==="")return;
 
 let d=JSON.parse(localStorage.getItem("r"))||[];
-
 d.push({estrellas:e.value,texto:t});
-
 localStorage.setItem("r",JSON.stringify(d));
-
 load();
 }
 
 function load(){
-
 let c=document.getElementById("list");
 c.innerHTML="";
-
 let d=JSON.parse(localStorage.getItem("r"))||[];
 
 d.forEach(r=>{
@@ -394,10 +384,34 @@ x.className="reseña";
 x.innerHTML="⭐".repeat(r.estrellas)+"<p>"+r.texto+"</p>";
 c.appendChild(x);
 });
+}
+load();
 
+/* PRODUCTOS */
+function openProduct(id){
+
+const p = {
+vestido:{img:"vestido.jpg",title:"Vestido playa",price:"19,99€",desc:"Vestido ligero de verano."},
+vestido2:{img:"vestido2.jpg",title:"Vestido rosa",price:"24,99€",desc:"Vestido elegante rosa."},
+bolso:{img:"bolso.jpg",title:"Bolso verano",price:"15,99€",desc:"Bolso ideal para playa."},
+sandalias:{img:"sandalias.jpg",title:"Sandalias",price:"12,99€",desc:"Sandalias cómodas verano."}
+};
+
+let x=p[id];
+
+document.getElementById("productBox").innerHTML=`
+<img src="${x.img}">
+<h2>${x.title}</h2>
+<h3>${x.price}</h3>
+<p>${x.desc}</p>
+`;
+
+document.getElementById("productModal").classList.add("activo");
 }
 
-load();
+document.getElementById("productModal").onclick=function(){
+this.classList.remove("activo");
+};
 
 </script>
 
