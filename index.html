@@ -13,9 +13,9 @@ margin:0;
 font-family:Poppins,sans-serif;
 background:#eaf6f6;
 padding-top:60px;
+-webkit-text-size-adjust:100%;
 }
 
-/* NAV */
 nav{
 background:#055160;
 position:fixed;
@@ -33,7 +33,6 @@ text-decoration:none;
 font-weight:600;
 }
 
-/* HEADER */
 header{
 height:340px;
 position:relative;
@@ -55,9 +54,8 @@ color:white;
 text-align:center;
 }
 
-#logo{cursor:pointer;}
+#logo{cursor:pointer;user-select:none;}
 
-/* GRID */
 .grid{
 display:grid;
 grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
@@ -71,6 +69,7 @@ overflow:hidden;
 text-align:center;
 box-shadow:0 4px 12px rgba(0,0,0,0.1);
 cursor:pointer;
+position:relative;
 }
 
 .card img{
@@ -79,7 +78,6 @@ height:160px;
 object-fit:cover;
 }
 
-/* PRODUCTS */
 #productGrid{
 display:grid;
 grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
@@ -115,34 +113,23 @@ border-radius:8px;
 cursor:pointer;
 }
 
-/* ❤️ HEART */
-.heart-btn{
+/* ❤️ FAVORITOS */
+.heart{
 position:absolute;
 top:10px;
 right:10px;
-width:28px;
-height:28px;
+font-size:22px;
 cursor:pointer;
-z-index:5;
-}
-
-.heart-btn svg{
-width:100%;
-height:100%;
-stroke:#fff;
-stroke-width:2;
-fill:transparent;
+color:rgba(0,0,0,0.3);
 transition:0.2s;
 }
 
-.heart-btn.active svg{
-fill:red;
-stroke:red;
-transform:scale(1.1);
+.heart.active{
+color:red;
 }
 
-/* ICONS */
-#cartIcon, #favIcon{
+/* ICONOS TOP */
+#cartIcon,#favIcon{
 position:fixed;
 top:15px;
 background:#055160;
@@ -154,9 +141,8 @@ z-index:99999;
 }
 
 #cartIcon{right:15px;}
-#favIcon{right:80px;}
+#favIcon{right:75px;}
 
-/* MODAL */
 .modal{
 position:fixed;
 inset:0;
@@ -187,21 +173,37 @@ font-size:22px;
 cursor:pointer;
 }
 
-/* TOAST */
-#toast, #favToast{
+#toast{
 position:fixed;
+bottom:20px;
 left:50%;
 transform:translateX(-50%);
+background:#055160;
+color:white;
 padding:12px 18px;
 border-radius:10px;
 display:none;
 z-index:99999;
 font-weight:600;
-color:white;
 }
 
-#toast{bottom:20px;background:#055160;}
-#favToast{bottom:70px;background:#b30000;}
+.reseñas-box{
+max-width:600px;
+margin:auto;
+height:300px;
+overflow-y:auto;
+border:1px solid #ddd;
+border-radius:12px;
+padding:10px;
+background:white;
+}
+
+.reseña{
+background:#f7f7f7;
+margin:10px 0;
+padding:10px;
+border-radius:10px;
+}
 
 </style>
 </head>
@@ -240,12 +242,11 @@ color:white;
 <div id="productGrid"></div>
 </section>
 
-<!-- PRODUCT MODAL -->
+<!-- MODAL PRODUCTO -->
 <div class="modal" id="productModal">
 <div class="box">
 <div class="close-left" onclick="closeProduct()">✕</div>
 <div id="productContent"></div>
-<button class="btn" onclick="addFromModal()">Añadir al carrito</button>
 </div>
 </div>
 
@@ -253,9 +254,22 @@ color:white;
 <div class="modal" id="cartModal">
 <div class="box">
 <div class="close-left" onclick="closeCart()">✕</div>
+
 <h2>Carrito</h2>
 <div id="cartList"></div>
 <h3 id="total"></h3>
+
+<input id="cname" placeholder="Nombre"><br><br>
+<input id="caddress" placeholder="Dirección"><br><br>
+<input id="cphone" placeholder="Teléfono"><br><br>
+
+<select id="cpayment">
+<option>Bizum</option>
+<option>Transferencia</option>
+<option>Contra reembolso</option>
+</select>
+
+<button class="btn" onclick="checkout()">Finalizar compra</button>
 </div>
 </div>
 
@@ -268,48 +282,38 @@ color:white;
 </div>
 </div>
 
-<!-- TOASTS -->
-<div id="toast">Añadido ✔</div>
-<div id="favToast">Añadido a favoritos ❤️</div>
+<div id="toast">✔ Acción realizada</div>
 
 <script>
 
-let cart = JSON.parse(localStorage.getItem("cart")) || [];
-let favs = JSON.parse(localStorage.getItem("favs")) || [];
+let cart=[];
+let favorites=JSON.parse(localStorage.getItem("fav"))||[];
 let currentProduct=null;
 
+/* PRODUCTOS */
 const productos=[
 {cat:"ropa",img:"vestido1.jpg",nombre:"Vestido verano",precio:19.99},
 {cat:"complementos",img:"bolso2.jpg",nombre:"Bolso playa",precio:14.99},
 {cat:"zapatos",img:"sandalia1.jpg",nombre:"Sandalia cómoda",precio:24.99}
 ];
 
-function save(){
-localStorage.setItem("cart",JSON.stringify(cart));
-localStorage.setItem("favs",JSON.stringify(favs));
-}
-
-/* GRID */
-document.querySelectorAll(".card[data-cat]").forEach(card=>{
+/* RENDER */
+document.querySelectorAll('.card[data-cat]').forEach(card=>{
 card.onclick=()=>{
+
 let cat=card.dataset.cat;
 let grid=document.getElementById("productGrid");
 grid.innerHTML="";
 
 productos.filter(p=>p.cat===cat).forEach(p=>{
 
-let liked = favs.some(f=>f.nombre===p.nombre);
+let fav = favorites.some(f=>f.nombre===p.nombre);
 
 let div=document.createElement("div");
 div.className="producto-card";
 
 div.innerHTML=`
-<div class="heart-btn ${liked?'active':''}" onclick="toggleFav(event,'${p.nombre}')">
-<svg viewBox="0 0 24 24">
-<path d="M12 21s-7-4.6-9.5-9C.5 7.5 3 4 6.5 4c2 0 3.5 1 4.5 2.5C12 5 13.5 4 15.5 4 19 4 21.5 7.5 21.5 12c-2.5 4.4-9.5 9-9.5 9z"/>
-</svg>
-</div>
-
+<div class="heart ${fav?'active':''}" onclick="toggleFav(event,'${p.nombre}')">❤</div>
 <img src="${p.img}">
 <h3>${p.nombre}</h3>
 <p>${p.precio}€</p>
@@ -320,121 +324,118 @@ div.onclick=()=>openProduct(p);
 
 div.querySelector("button").onclick=(e)=>{
 e.stopPropagation();
-addToCart(p);
+cart.push({...p,cantidad:1});
+updateCart();
+toast();
 };
 
 grid.appendChild(div);
+
 });
+
 };
 });
-
-/* CART */
-function addToCart(p){
-let item=cart.find(x=>x.nombre===p.nombre);
-if(item) item.cantidad++;
-else cart.push({...p,cantidad:1});
-
-save();
-updateCart();
-toast();
-}
-
-function updateCart(){
-document.getElementById("cartCount").innerText=cart.length;
-
-let list=document.getElementById("cartList");
-list.innerHTML="";
-
-let total=0;
-
-cart.forEach((p,i)=>{
-total+=p.precio*p.cantidad;
-
-list.innerHTML+=`
-<div style="display:flex;justify-content:space-between;">
-${p.nombre} x${p.cantidad}
-<button onclick="cart.splice(${i},1);save();updateCart()">❌</button>
-</div>`;
-});
-
-document.getElementById("total").innerText="Total: "+total.toFixed(2)+"€";
-}
 
 /* FAVORITOS */
 function toggleFav(e,name){
 e.stopPropagation();
 
-let product=productos.find(p=>p.nombre===name);
-let exists=favs.find(f=>f.nombre===name);
+let p = productos.find(x=>x.nombre===name);
+let index = favorites.findIndex(f=>f.nombre===name);
 
-if(exists){
-favs=favs.filter(f=>f.nombre!==name);
+if(index>-1){
+favorites.splice(index,1);
 }else{
-favs.push(product);
-showFavToast();
+favorites.push(p);
 }
 
-save();
-updateFav();
-renderFavs();
+localStorage.setItem("fav",JSON.stringify(favorites));
+toast();
+renderFav();
+updateFavCount();
 }
 
-function updateFav(){
-document.getElementById("favCount").innerText=favs.length;
+function updateFavCount(){
+document.getElementById("favCount").innerText=favorites.length;
 }
 
 function openFav(){
 document.getElementById("favModal").classList.add("activo");
-renderFavs();
+renderFav();
 }
 
 function closeFav(){
 document.getElementById("favModal").classList.remove("activo");
 }
 
-function renderFavs(){
+function renderFav(){
 let list=document.getElementById("favList");
 list.innerHTML="";
 
-favs.forEach((p,i)=>{
+favorites.forEach((p,i)=>{
 list.innerHTML+=`
-<div style="display:flex;justify-content:space-between;margin:10px 0;padding:10px;background:#f4f4f4;border-radius:10px;">
+<div style="display:flex;justify-content:space-between;align-items:center;margin:10px 0;">
 <img src="${p.img}" style="width:50px;height:50px;object-fit:cover;border-radius:8px;">
-<div style="flex:1;text-align:left;margin-left:10px;">
-<b>${p.nombre}</b><br>${p.precio}€
+<span>${p.nombre}</span>
+<button onclick="cart.push({...favorites[${i}],cantidad:1);updateCart();toast()">🛒</button>
 </div>
-
-<button class="btn" onclick='addToCart(${JSON.stringify(p)})'>Carrito</button>
-<button class="btn" style="background:red;" onclick="removeFav(${i})">X</button>
-</div>`;
+`;
 });
 }
 
-function removeFav(i){
-favs.splice(i,1);
-save();
-updateFav();
-renderFavs();
+/* CART */
+function updateCart(){
+document.getElementById("cartCount").innerText=cart.length;
+
+let list=document.getElementById("cartList");
+list.innerHTML="";
+let total=0;
+
+cart.forEach((p,i)=>{
+total+=p.precio;
+
+list.innerHTML+=`
+<div style="display:flex;justify-content:space-between;">
+${p.nombre} - ${p.precio}€
+<button onclick="cart.splice(${i},1);updateCart()">❌</button>
+</div>`;
+});
+
+document.getElementById("total").innerText="Total: "+total.toFixed(2)+"€";
 }
 
-/* MODAL PRODUCT */
+/* PRODUCT */
 function openProduct(p){
 currentProduct=p;
-productModal.classList.add("activo");
+document.getElementById("productModal").classList.add("activo");
 
-productContent.innerHTML=`
+document.getElementById("productContent").innerHTML=`
 <img src="${p.img}" style="width:100%">
 <h2>${p.nombre}</h2>
-<p>${p.precio}€</p>`;
+<p>${p.precio}€</p>
+<button class="btn" onclick="cart.push({...currentProduct,cantidad:1});updateCart();toast()">Añadir al carrito</button>
+`;
 }
 
-function closeProduct(){productModal.classList.remove("activo");}
-
-function addFromModal(){addToCart(currentProduct);toast();}
+function closeProduct(){
+document.getElementById("productModal").classList.remove("activo");
+}
 
 /* CART MODAL */
-function openCart(){cartModal.classList.add("activo");}
-function closeCart(){cartModal.classList.remove("activo");}
+function openCart(){document.getElementById("cartModal").classList.add("activo");}
+function closeCart(){document.getElementById("cartModal").classList.remove("activo");}
+
+/* CHECKOUT */
+function checkout(){
+
+let text="🛍 Pedido Solera\n\n";
+
+cart.forEach(p=>{
+text+=`- ${p.nombre} €${p.precio}\n`;
+});
+
+window.open("https://wa.me/34643319232?text="+encodeURIComponent(text));
+}
 
 /* TOAST */
 function toast(){
@@ -443,15 +444,7 @@ t.style.display="block";
 setTimeout(()=>t.style.display="none",1200);
 }
 
-function showFavToast(){
-let t=document.getElementById("favToast");
-t.style.display="block";
-setTimeout(()=>t.style.display="none",1200);
-}
-
-/* INIT */
-updateCart();
-updateFav();
+updateFavCount();
 
 </script>
 
