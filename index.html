@@ -173,7 +173,7 @@ background:white;
 padding:30px;
 border-radius:16px;
 width:95%;
-max-width:850px; /* 🔥 MÁS GRANDE */
+max-width:850px;
 text-align:center;
 position:relative;
 }
@@ -253,11 +253,23 @@ padding:20px;
 <h2>Categorías</h2>
 
 <div class="grid">
-<div class="card"><img src="ropa.jpg"><h3>Ropa</h3></div>
-<div class="card"><img src="complementos.jpg"><h3>Complementos</h3></div>
-<div class="card"><img src="zapatos.jpg"><h3>Zapatos</h3></div>
+
+<!-- 🔥 CORREGIDO CON DATA-CAT -->
+<div class="card" data-cat="ropa">
+<img src="ropa.jpg"><h3>Ropa</h3>
 </div>
 
+<div class="card" data-cat="complementos">
+<img src="complementos.jpg"><h3>Complementos</h3>
+</div>
+
+<div class="card" data-cat="zapatos">
+<img src="zapatos.jpg"><h3>Zapatos</h3>
+</div>
+
+</div>
+
+<!-- PRODUCTOS -->
 <div class="grid" id="productGrid"></div>
 </section>
 
@@ -271,7 +283,7 @@ padding:20px;
 <i class="fa-solid fa-envelope"></i>Gmail
 </a>
 
-<a class="social-card" href="https://wa.me/34643319232?text=Hola%20quiero%20info%20sobre%20Solera">
+<a class="social-card" href="https://wa.me/34643319232">
 <i class="fa-brands fa-whatsapp"></i>WhatsApp
 </a>
 
@@ -316,24 +328,8 @@ padding:20px;
 </div>
 
 <textarea id="txt"></textarea>
+
 <button class="btn" onclick="save()">Enviar</button>
-
-</div>
-</div>
-
-<!-- MODAL PRODUCTO -->
-<div class="modal" id="productModal">
-<div class="box">
-
-<div class="close" onclick="closeProduct()">✕</div>
-
-<div id="productContent"></div>
-
-<h3>Comentarios</h3>
-<div id="comments"></div>
-
-<textarea id="commentText" placeholder="Escribe comentario..."></textarea>
-<button class="btn" onclick="addComment()">Enviar</button>
 
 </div>
 </div>
@@ -344,7 +340,7 @@ padding:20px;
 
 <script>
 
-/* ADMIN */
+/* ADMIN RESEÑAS */
 let admin=false;
 let currentUser="";
 let taps=0;
@@ -414,20 +410,20 @@ c.appendChild(x);
 }
 load();
 
-/* PRODUCTOS */
+/* 🔥 PRODUCTOS */
 const productos=[
 {cat:"ropa",img:"vestido1.jpg",nombre:"Vestido verano",precio:"19,99€"},
 {cat:"complementos",img:"bolso2.jpg",nombre:"Bolso playa",precio:"14,99€"},
 {cat:"zapatos",img:"sandalia1.jpg",nombre:"Sandalia cómoda",precio:"24,99€"}
 ];
 
-document.querySelectorAll(".card").forEach((c,i)=>{
-c.addEventListener("click",()=>{
+/* 🔥 FIX CATEGORÍAS */
+document.querySelectorAll('#categorias .card').forEach(card=>{
+card.addEventListener('click',()=>{
 
-let cats=["ropa","complementos","zapatos"];
-let cat=cats[i];
-
+let cat=card.dataset.cat;
 let grid=document.getElementById("productGrid");
+
 grid.innerHTML="";
 
 productos.filter(p=>p.cat===cat).forEach(p=>{
@@ -441,78 +437,11 @@ div.innerHTML=`
 <p>${p.precio}</p>
 `;
 
-div.onclick=()=>openProduct(p);
 grid.appendChild(div);
+
 });
 });
 });
-
-/* PRODUCT MODAL */
-let currentProduct=null;
-
-function openProduct(p){
-currentProduct=p;
-
-document.getElementById("productModal").classList.add("activo");
-
-document.getElementById("productContent").innerHTML=`
-<img src="${p.img}" style="width:100%;max-height:420px;object-fit:cover;border-radius:12px;">
-<h3>${p.nombre}</h3>
-<p>${p.precio}</p>
-`;
-
-loadComments();
-}
-
-function closeProduct(){
-document.getElementById("productModal").classList.remove("activo");
-}
-
-function getComments(){
-return JSON.parse(localStorage.getItem("c_"+currentProduct.nombre))||[];
-}
-
-function saveComments(c){
-localStorage.setItem("c_"+currentProduct.nombre,JSON.stringify(c));
-}
-
-function addComment(){
-let text=document.getElementById("commentText").value;
-if(!text)return;
-
-let c=getComments();
-c.push({id:Date.now(),user:currentUser||"user",text:text,date:new Date().toLocaleDateString()});
-
-saveComments(c);
-document.getElementById("commentText").value="";
-loadComments();
-}
-
-function loadComments(){
-let c=document.getElementById("comments");
-c.innerHTML="";
-let data=getComments();
-
-data.forEach(cm=>{
-let div=document.createElement("div");
-div.className="reseña";
-
-div.innerHTML=`
-<strong>${cm.user}</strong> · ${cm.date}
-<p>${cm.text}</p>
-${admin?`<button onclick="deleteComment(${cm.id})" style="background:red;color:white;border:none">✕</button>`:""}
-`;
-
-c.appendChild(div);
-});
-}
-
-function deleteComment(id){
-let c=getComments();
-c=c.filter(x=>x.id!==id);
-saveComments(c);
-loadComments();
-}
 
 </script>
 
