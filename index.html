@@ -57,42 +57,6 @@ header .texto {
     text-align: center;
 }
 
-/* SECCIONES */
-section {
-    padding: 40px 25px;
-}
-
-h2 {
-    text-align: center;
-}
-
-/* CATEGORÍAS */
-.categorias-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
-    gap: 20px;
-}
-
-.categoria-card {
-    background: white;
-    border-radius: 15px;
-    overflow: hidden;
-    text-decoration: none;
-    color: black;
-    box-shadow: 0 4px 14px rgba(0,0,0,0.1);
-}
-
-.categoria-card img {
-    width: 100%;
-    height: 160px;
-    object-fit: cover;
-}
-
-.categoria-card h3 {
-    text-align: center;
-    padding: 10px;
-}
-
 /* PRODUCTOS */
 .caja {
     background: white;
@@ -102,62 +66,55 @@ h2 {
     max-width: 500px;
     box-shadow: 0 3px 10px rgba(0,0,0,0.08);
     text-align: center;
-    cursor: pointer;
 }
 
-.nuevo::after {
-    content: "NUEVO";
-    background: red;
-    color: white;
-    font-size: 11px;
-    padding: 3px 6px;
-    margin-left: 6px;
-    border-radius: 5px;
+/* =========================
+   RESEÑAS (CUADRO SCROLL)
+========================= */
+
+#reseñas {
+    background: #fff;
+    padding: 40px 20px;
 }
 
-/* NOVEDADES */
-.novedades-wrapper {
-    display: flex;
-    align-items: center;
-}
+.reseñas-box {
+    max-width: 600px;
+    margin: auto;
 
-.novedades-slider {
-    display: flex;
-    gap: 15px;
-    overflow-x: auto;
+    height: 300px;           /* 🔥 clave */
+    overflow-y: auto;        /* scroll interno */
+    border: 2px solid #ddd;
+    border-radius: 12px;
     padding: 10px;
-    width: 100%;
-    scroll-snap-type: x mandatory;
-    -webkit-overflow-scrolling: touch;
+    background: #f9f9f9;
 }
 
-.novedades-slider::-webkit-scrollbar {
-    display: none;
+/* cada reseña */
+.reseña {
+    background: white;
+    margin-bottom: 10px;
+    padding: 12px;
+    border-radius: 10px;
+    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
 }
 
-.novedades-slider .categoria-card {
-    min-width: 200px;
-    flex: 0 0 auto;
-    scroll-snap-align: start;
-}
-
-/* FLECHAS PC */
-.flecha {
-    background: rgba(0,0,0,0.6);
+/* botón */
+.btn-reseña {
+    display: block;
+    margin: 20px auto;
+    padding: 12px 20px;
+    background: #055160;
     color: white;
     border: none;
-    font-size: 28px;
-    padding: 10px;
+    border-radius: 8px;
     cursor: pointer;
-    border-radius: 50%;
 }
 
-@media (max-width: 768px) {
-    .flecha { display: none !important; }
-}
+/* =========================
+   MODAL RESEÑA
+========================= */
 
-/* MODAL PRODUCTOS */
-.modal {
+.modal-reseña {
     position: fixed;
     top: 0;
     left: 0;
@@ -170,49 +127,52 @@ h2 {
     z-index: 9999;
 }
 
-.modal:target {
+.modal-reseña.activo {
     display: flex;
 }
 
-.modal-contenido {
+.modal-box {
     background: white;
-    padding: 20px;
+    padding: 25px;
     border-radius: 12px;
-    text-align: center;
-    max-width: 90%;
+    width: 90%;
+    max-width: 400px;
 }
 
-.modal-contenido img {
-    width: 280px;
-    border-radius: 10px;
+/* ESTRELLAS */
+.estrellas {
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: center;
+    font-size: 30px;
 }
 
-.cerrar {
-    display: block;
-    text-align: right;
-    font-size: 22px;
-    text-decoration: none;
+.estrellas input { display: none; }
+
+.estrellas label {
+    color: lightgray;
+    cursor: pointer;
 }
 
-/* CONTACTO */
-.social-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-    gap: 15px;
+.estrellas input:checked ~ label,
+.estrellas label:hover,
+.estrellas label:hover ~ label {
+    color: gold;
 }
 
-.social-card {
-    background: white;
-    border-radius: 14px;
-    text-align: center;
-    padding: 15px;
-    text-decoration: none;
-    color: black;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+textarea {
+    width: 100%;
+    margin-top: 10px;
+    padding: 10px;
 }
 
-.social-card img {
-    width: 45px;
+.modal-box button {
+    margin-top: 10px;
+    width: 100%;
+    padding: 10px;
+    background: #055160;
+    color: white;
+    border: none;
 }
 
 /* FOOTER */
@@ -228,130 +188,117 @@ footer {
 <body>
 
 <header>
-    <img src="playa.jpg">
-    <div class="texto">
-        <h1>Solera</h1>
-        <p>Moda verano</p>
-    </div>
+<img src="playa.jpg">
+<div class="texto">
+<h1>Solera</h1>
+<p>Moda verano</p>
+</div>
 </header>
 
 <nav>
-    <a href="#inicio">Inicio</a>
-    <a href="#novedades">Novedades</a>
-    <a href="#categorias">Categorías</a>
-    <a href="#contacto">Contacto</a>
+<a href="#ropa">Ropa</a>
+<a href="#reseñas">Reseñas</a>
 </nav>
-
-<!-- NOVEDADES (ESTABLE) -->
-<section id="novedades">
-<h2>Novedades</h2>
-
-<div class="novedades-wrapper">
-<button class="flecha" onclick="move(-1)">&#10094;</button>
-
-<div class="novedades-slider">
-
-<a href="#r1" class="categoria-card">
-<img src="vestido1.jpg">
-<h3>Vestido blanco</h3>
-</a>
-
-<a href="#c1" class="categoria-card">
-<img src="bolso1.jpg">
-<h3>Bolso playa</h3>
-</a>
-
-<a href="#z1" class="categoria-card">
-<img src="zapato1.jpg">
-<h3>Sandalia</h3>
-</a>
-
-</div>
-
-<button class="flecha" onclick="move(1)">&#10095;</button>
-</div>
-</section>
-
-<!-- CATEGORÍAS -->
-<section id="categorias">
-<h2>Categorías</h2>
-
-<div class="categorias-grid">
-<a href="#ropa" class="categoria-card"><img src="ropa.jpg"><h3>Ropa</h3></a>
-<a href="#complementos" class="categoria-card"><img src="complementos.jpg"><h3>Complementos</h3></a>
-<a href="#zapatos" class="categoria-card"><img src="zapatos.jpg"><h3>Zapatos</h3></a>
-</div>
-</section>
 
 <!-- ROPA -->
 <section id="ropa">
 <h2>Ropa</h2>
-
-<div class="caja nuevo"><a href="#r1"><img src="vestido1.jpg" width="120"></a><p>Vestido blanco</p><p>22€</p></div>
-<div class="caja"><a href="#r2"><img src="vestido2.jpg" width="120"></a><p>Vestido azul</p><p>25€</p></div>
-<div class="caja"><a href="#r3"><img src="vestido3.jpg" width="120"></a><p>Vestido flores</p><p>28€</p></div>
-<div class="caja"><a href="#r4"><img src="vestido4.jpg" width="120"></a><p>Vestido corto</p><p>19€</p></div>
+<div class="caja">Vestido ejemplo</div>
 </section>
 
-<!-- COMPLEMENTOS -->
-<section id="complementos">
-<h2>Complementos</h2>
+<!-- ================= RESEÑAS ================= -->
 
-<div class="caja nuevo"><a href="#c1"><img src="bolso1.jpg" width="120"></a><p>Bolso playa</p><p>15€</p></div>
-<div class="caja"><a href="#c2"><img src="bolso2.jpg" width="120"></a><p>Bolso blanco</p><p>18€</p></div>
-<div class="caja"><a href="#c3"><img src="bolso3.jpg" width="120"></a><p>Bolso grande</p><p>20€</p></div>
-<div class="caja"><a href="#c4"><img src="bolso4.jpg" width="120"></a><p>Bolso verano</p><p>22€</p></div>
+<section id="reseñas">
+<h2>Opiniones de clientes</h2>
+
+<button class="btn-reseña" onclick="abrir()">Dejar reseña</button>
+
+<div class="reseñas-box" id="lista"></div>
+
 </section>
 
-<!-- ZAPATOS -->
-<section id="zapatos">
-<h2>Zapatos</h2>
+<!-- MODAL -->
+<div class="modal-reseña" id="modal">
 
-<div class="caja nuevo"><a href="#z1"><img src="zapato1.jpg" width="120"></a><p>Sandalia</p><p>24€</p></div>
-<div class="caja"><a href="#z2"><img src="zapato2.jpg" width="120"></a><p>Cuña</p><p>26€</p></div>
-<div class="caja"><a href="#z3"><img src="zapato3.jpg" width="120"></a><p>Plana</p><p>19€</p></div>
-<div class="caja"><a href="#z4"><img src="zapato4.jpg" width="120"></a><p>Deportiva</p><p>30€</p></div>
-</section>
+<div class="modal-box">
 
-<!-- MODALES (FUNCIONAN TODOS) -->
-<div id="r1" class="modal"><div class="modal-contenido"><a href="#ropa" class="cerrar">✖</a><img src="vestido1.jpg"><h2>Vestido blanco</h2><p>22€</p></div></div>
-<div id="r2" class="modal"><div class="modal-contenido"><a href="#ropa" class="cerrar">✖</a><img src="vestido2.jpg"><h2>Vestido azul</h2><p>25€</p></div></div>
-<div id="r3" class="modal"><div class="modal-contenido"><a href="#ropa" class="cerrar">✖</a><img src="vestido3.jpg"><h2>Vestido flores</h2><p>28€</p></div></div>
-<div id="r4" class="modal"><div class="modal-contenido"><a href="#ropa" class="cerrar">✖</a><img src="vestido4.jpg"><h2>Vestido corto</h2><p>19€</p></div></div>
+<h3>Escribe tu reseña</h3>
 
-<!-- CONTACTO CORREGIDO -->
-<section id="contacto">
-<h2>Contacto</h2>
+<div class="estrellas">
+<input type="radio" id="5" name="e" value="5"><label for="5">★</label>
+<input type="radio" id="4" name="e" value="4"><label for="4">★</label>
+<input type="radio" id="3" name="e" value="3"><label for="3">★</label>
+<input type="radio" id="2" name="e" value="2"><label for="2">★</label>
+<input type="radio" id="1" name="e" value="1"><label for="1">★</label>
+</div>
 
-<div class="social-grid">
+<textarea id="txt"></textarea>
 
-<a href="https://instagram.com/solerashopp" class="social-card">
-<img src="instagram.png"><p>Instagram</p></a>
-
-<a href="https://www.tiktok.com/@solerashop8" class="social-card">
-<img src="tiktok.png"><p>TikTok</p></a>
-
-<a href="https://www.facebook.com/share/1Ay1WQhBA1/" class="social-card">
-<img src="facebook.png"><p>Facebook</p></a>
-
-<a href="mailto:soleraropaycomplementos@gmail.com" class="social-card">
-<img src="gmail.png"><p>Email</p></a>
-
-<a href="https://api.whatsapp.com/send?phone=34643319232&text=Buenas%2C%20me%20gustar%C3%ADa%20obtener%20informaci%C3%B3n%20sobre%20los%20productos%20de%20Solera%20🌞🏖️" class="social-card">
-<img src="whatsapp.png"><p>WhatsApp</p></a>
+<button onclick="guardar()">Enviar</button>
+<button onclick="cerrar()">Cerrar</button>
 
 </div>
-</section>
 
+</div>
+
+<!-- FOOTER -->
 <footer>
 <p>© 2026 Solera</p>
 </footer>
 
 <script>
-function move(dir){
-    const slider = document.querySelector(".novedades-slider");
-    slider.scrollBy({left: dir * 220, behavior:"smooth"});
+
+function abrir(){
+    document.getElementById("modal").classList.add("activo");
 }
+
+function cerrar(){
+    document.getElementById("modal").classList.remove("activo");
+}
+
+function guardar(){
+
+    const est = document.querySelector('input[name="e"]:checked');
+    const txt = document.getElementById("txt").value;
+
+    if(!est || txt === "") return alert("Completa todo");
+
+    let datos = JSON.parse(localStorage.getItem("r")) || [];
+
+    datos.push({
+        estrellas: est.value,
+        texto: txt
+    });
+
+    localStorage.setItem("r", JSON.stringify(datos));
+
+    cerrar();
+    mostrar();
+}
+
+function mostrar(){
+
+    const cont = document.getElementById("lista");
+    cont.innerHTML = "";
+
+    let datos = JSON.parse(localStorage.getItem("r")) || [];
+
+    datos.forEach(r => {
+
+        const div = document.createElement("div");
+        div.className = "reseña";
+
+        div.innerHTML =
+        "⭐".repeat(r.estrellas) +
+        "<p>" + r.texto + "</p>";
+
+        cont.appendChild(div);
+    });
+
+}
+
+mostrar();
+
 </script>
 
 </body>
