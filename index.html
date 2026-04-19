@@ -258,15 +258,17 @@ font-weight:600;
 
 <div id="cartIcon" onclick="openCart()">🛒 <span id="cartCount">0</span></div>
 
+<!-- NOVEDADES -->
 <section id="novedades">
 <h2>Novedades</h2>
 <div class="grid">
-<div class="card"><img src="vestido1.jpg"><h3>Vestido</h3></div>
-<div class="card"><img src="bolso2.jpg"><h3>Bolso</h3></div>
-<div class="card"><img src="sandalia1.jpg"><h3>Sandalias</h3></div>
+<div class="card" onclick="openProduct(productos[0])"><img src="vestido1.jpg"><h3>Vestido</h3></div>
+<div class="card" onclick="openProduct(productos[1])"><img src="bolso2.jpg"><h3>Bolso</h3></div>
+<div class="card" onclick="openProduct(productos[2])"><img src="sandalia1.jpg"><h3>Sandalias</h3></div>
 </div>
 </section>
 
+<!-- CATEGORÍAS -->
 <section id="categorias">
 <h2>Categorías</h2>
 
@@ -279,6 +281,7 @@ font-weight:600;
 <div id="productGrid"></div>
 </section>
 
+<!-- CONTACTO -->
 <section id="contacto">
 <h2>Contacto</h2>
 
@@ -291,12 +294,14 @@ font-weight:600;
 </div>
 </section>
 
+<!-- RESEÑAS -->
 <section id="reseñas">
 <h2>Reseñas</h2>
 <button class="btn" onclick="openM()">Dejar reseña</button>
 <div class="reseñas-box" id="list"></div>
 </section>
 
+<!-- MODAL PRODUCTO -->
 <div class="modal" id="productModal">
 <div class="box">
 <div class="close-left" onclick="closeProduct()">✕</div>
@@ -304,9 +309,11 @@ font-weight:600;
 </div>
 </div>
 
+<!-- MODAL RESEÑA -->
 <div class="modal" id="modal">
 <div class="box">
 <div class="close-left" onclick="modal.classList.remove('activo')">✕</div>
+
 <div class="estrellas">
 <input type="radio" id="5" name="e" value="5"><label for="5">★</label>
 <input type="radio" id="4" name="e" value="4"><label for="4">★</label>
@@ -314,18 +321,20 @@ font-weight:600;
 <input type="radio" id="2" name="e" value="2"><label for="2">★</label>
 <input type="radio" id="1" name="e" value="1"><label for="1">★</label>
 </div>
+
 <textarea id="txt"></textarea>
 <button class="btn" onclick="saveReview()">Enviar</button>
 </div>
 </div>
 
+<!-- CARRITO -->
 <div class="modal" id="cartModal">
 <div class="box">
 <div class="close-left" onclick="closeCart()">✕</div>
 
-<h2>Tu carrito</h2>
+<h2>Carrito</h2>
 <div id="cartList"></div>
-<h3 id="total">Total: 0€</h3>
+<h3 id="total"></h3>
 
 <input id="cname" placeholder="Nombre"><br><br>
 <input id="caddress" placeholder="Dirección"><br><br>
@@ -338,7 +347,6 @@ font-weight:600;
 </select>
 
 <button class="btn" onclick="checkout()">Confirmar pedido</button>
-
 </div>
 </div>
 
@@ -346,43 +354,89 @@ font-weight:600;
 
 <script>
 
+/* PRODUCTOS */
+const productos=[
+{cat:"ropa",img:"vestido1.jpg",nombre:"Vestido verano",precio:19.99},
+{cat:"complementos",img:"bolso2.jpg",nombre:"Bolso playa",precio:14.99},
+{cat:"zapatos",img:"sandalia1.jpg",nombre:"Sandalia cómoda",precio:24.99}
+];
+
 let cart=[];
 
-function checkout(){
+/* CATEGORÍAS */
+document.querySelectorAll('.card[data-cat]').forEach(c=>{
+c.onclick=()=>{
+let cat=c.dataset.cat;
+let grid=document.getElementById("productGrid");
+grid.innerHTML="";
 
-let name=cname.value;
-let address=caddress.value;
-let phone=cphone.value;
-let payment=cpayment.value;
+productos.filter(p=>p.cat===cat).forEach(p=>{
+let div=document.createElement("div");
+div.className="producto-card";
 
-if(!name || !address || !phone){
-alert("Rellena todos los datos");
-return;
+div.innerHTML=`
+<img src="${p.img}">
+<h3>${p.nombre}</h3>
+<p>${p.precio}€</p>
+<button class="btn" onclick='addToCart("${p.nombre}",${p.precio})'>Añadir</button>
+`;
+
+div.onclick=()=>openProduct(p);
+grid.appendChild(div);
+});
+};
+});
+
+/* PRODUCTO */
+function openProduct(p){
+productModal.classList.add("activo");
+
+productContent.innerHTML=`
+<img src="${p.img}" style="width:100%">
+<h2>${p.nombre}</h2>
+<p>${p.precio}€</p>
+
+<button class="btn" onclick='addToCart("${p.nombre}",${p.precio})'>Añadir al carrito</button>
+`;
 }
+
+function closeProduct(){
+productModal.classList.remove("activo");
+}
+
+/* CARRITO */
+function addToCart(name,price){
+cart.push({name,price});
+cartCount.innerText=cart.length;
+toast.style.display="block";
+setTimeout(()=>toast.style.display="none",1000);
+}
+
+/* CHECKOUT WHATSAPP */
+function checkout(){
 
 let text="🛍️ PEDIDO SOLERA\n\n";
 
-text+="👤 Nombre: "+name+"\n";
-text+="📍 Dirección: "+address+"\n";
-text+="📞 Teléfono: "+phone+"\n";
-text+="💳 Pago: "+payment+"\n\n";
-
-text+="🛒 PRODUCTOS:\n";
-
-let total=0;
+text+="Nombre: "+cname.value+"\n";
+text+="Dirección: "+caddress.value+"\n";
+text+="Teléfono: "+cphone.value+"\n\n";
 
 cart.forEach(p=>{
-let qty=p.cantidad||1;
-let subtotal=p.precio*qty;
-
-text+="- "+p.nombre+" x"+qty+" = "+subtotal.toFixed(2)+"€\n";
-total+=subtotal;
+text+="- "+p.name+"\n";
 });
 
-text+="\n💰 TOTAL: "+total.toFixed(2)+"€";
+window.open("https://wa.me/34643319232?text="+encodeURIComponent(text));
+}
 
-window.open("https://wa.me/34643319232?text="+encodeURIComponent(text),"_blank");
+/* RESEÑAS */
+function openM(){modal.classList.add("activo");}
 
+function saveReview(){
+let t=txt.value;
+let r=JSON.parse(localStorage.getItem("r"))||[];
+r.push({text:t});
+localStorage.setItem("r",JSON.stringify(r));
+modal.classList.remove("activo");
 }
 
 </script>
