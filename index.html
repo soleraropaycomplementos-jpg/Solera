@@ -183,31 +183,6 @@ font-size:22px;
 cursor:pointer;
 }
 
-/* ⭐ ESTRELLAS */
-.estrellas{
-display:flex;
-flex-direction:row-reverse;
-justify-content:center;
-font-size:40px;
-margin-bottom:15px;
-}
-
-.estrellas input{display:none;}
-
-.estrellas label{
-color:lightgray;
-cursor:pointer;
-}
-
-.estrellas label:hover,
-.estrellas label:hover ~ label{
-color:gold;
-}
-
-.estrellas input:checked ~ label{
-color:gold;
-}
-
 /* 🛒 CARRITO */
 #cartIcon{
 position:fixed;
@@ -256,12 +231,8 @@ font-weight:600;
 <a href="#reseñas">Reseñas</a>
 </nav>
 
-<!-- 🛒 CARRITO -->
-<div id="cartIcon" onclick="openCart()">
-🛒 <span id="cartCount">0</span>
-</div>
+<div id="cartIcon" onclick="openCart()">🛒 <span id="cartCount">0</span></div>
 
-<!-- NOVEDADES -->
 <section id="novedades">
 <h2>Novedades</h2>
 <div class="grid">
@@ -271,7 +242,6 @@ font-weight:600;
 </div>
 </section>
 
-<!-- CATEGORÍAS -->
 <section id="categorias">
 <h2>Categorías</h2>
 
@@ -284,10 +254,8 @@ font-weight:600;
 <div id="productGrid"></div>
 </section>
 
-<!-- CONTACTO -->
 <section id="contacto">
 <h2>Contacto</h2>
-
 <div class="social-grid">
 <a class="social-card" href="mailto:soleraropaycomplementos@gmail.com">Gmail</a>
 <a class="social-card" href="https://wa.me/34643319232">WhatsApp</a>
@@ -295,57 +263,27 @@ font-weight:600;
 <a class="social-card" href="https://www.facebook.com/share/18feHPTPbK/">Facebook</a>
 <a class="social-card" href="https://www.tiktok.com/@solerashop8">TikTok</a>
 </div>
-
 </section>
 
-<!-- RESEÑAS -->
 <section id="reseñas">
 <h2>Reseñas</h2>
 <button class="btn" onclick="openM()">Dejar reseña</button>
 <div class="reseñas-box" id="list"></div>
 </section>
 
-<!-- PRODUCTO MODAL -->
 <div class="modal" id="productModal">
 <div class="box">
-
 <div class="close-left" onclick="closeProduct()">✕</div>
-
 <div id="productContent"></div>
-
 </div>
 </div>
 
-<!-- RESEÑA MODAL -->
-<div class="modal" id="modal">
-<div class="box">
-
-<div class="close-left" onclick="document.getElementById('modal').classList.remove('activo')">✕</div>
-
-<div class="estrellas">
-<input type="radio" id="5" name="e" value="5"><label for="5">★</label>
-<input type="radio" id="4" name="e" value="4"><label for="4">★</label>
-<input type="radio" id="3" name="e" value="3"><label for="3">★</label>
-<input type="radio" id="2" name="e" value="2"><label for="2">★</label>
-<input type="radio" id="1" name="e" value="1"><label for="1">★</label>
-</div>
-
-<textarea id="txt"></textarea>
-<button class="btn" onclick="saveReview()">Enviar</button>
-
-</div>
-</div>
-
-<!-- 🛒 MODAL CARRITO -->
 <div class="modal" id="cartModal">
 <div class="box">
-
 <div class="close-left" onclick="closeCart()">✕</div>
 
 <h2>Tu carrito</h2>
-
 <div id="cartList"></div>
-
 <h3 id="total">Total: 0€</h3>
 
 <hr>
@@ -370,8 +308,6 @@ font-weight:600;
 <script>
 
 let cart=[];
-let currentProduct=null;
-let currentUser=localStorage.getItem("user")||"user";
 
 /* PRODUCTOS */
 const productos=[
@@ -380,128 +316,55 @@ const productos=[
 {cat:"zapatos",img:"sandalia1.jpg",nombre:"Sandalia cómoda",precio:24.99}
 ];
 
-/* CATEGORÍAS */
 document.querySelectorAll('.card[data-cat]').forEach(card=>{
-card.addEventListener('click',()=>{
-
-let cat=card.dataset.cat;
+card.onclick=()=>{
 let grid=document.getElementById("productGrid");
 grid.innerHTML="";
 
-productos.filter(p=>p.cat===cat).forEach(p=>{
+productos.filter(p=>p.cat===card.dataset.cat).forEach(p=>{
 
 let div=document.createElement("div");
 div.className="producto-card";
-
-div.addEventListener("click",()=>openProduct(p));
 
 div.innerHTML=`
 <img src="${p.img}">
 <h3>${p.nombre}</h3>
 <p>${p.precio}€</p>
-<button class="btn addBtn">Añadir al carrito</button>
+<button class="btn">Añadir al carrito</button>
 `;
 
-div.querySelector(".addBtn").addEventListener("click",(e)=>{
+div.querySelector("button").onclick=(e)=>{
 e.stopPropagation();
-cart.push({nombre:p.nombre,precio:p.precio,cantidad:1,img:p.img});
+let qty=parseInt(prompt("Cantidad:",1));
+if(!qty)return;
+
+let existe=cart.find(x=>x.nombre===p.nombre);
+if(existe) existe.cantidad+=qty;
+else cart.push({...p,cantidad:qty});
+
 updateCart();
 showToast();
-});
+};
+
+div.onclick=()=>openProduct(p);
 
 grid.appendChild(div);
 
 });
-
-});
-});
-
-/* TOAST */
-function showToast(){
-let t=document.getElementById("toast");
-t.style.display="block";
-setTimeout(()=>t.style.display="none",1200);
-}
-
-/* CART */
-function updateCart(){
-
-document.getElementById("cartCount").innerText=cart.length;
-
-let list=document.getElementById("cartList");
-list.innerHTML="";
-
-let total=0;
-
-cart.forEach((p,i)=>{
-
-let qty=p.cantidad||1;
-total+=p.precio*qty;
-
-list.innerHTML+=`
-<div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px;padding:8px;border-bottom:1px solid #eee;">
-
-<img src="${p.img}" style="width:55px;height:55px;object-fit:cover;border-radius:8px;">
-
-<div style="flex:1;text-align:left;">
-<strong>${p.nombre}</strong><br>
-<small>${p.precio}€</small>
-</div>
-
-<div style="display:flex;align-items:center;gap:6px;">
-<button onclick="changeQty(${i},-1)">−</button>
-<span>${qty}</span>
-<button onclick="changeQty(${i},1)">+</button>
-</div>
-
-<button onclick="cart.splice(${i},1);updateCart()">❌</button>
-
-</div>
-`;
+};
 });
 
-document.getElementById("total").innerText="Total: "+total.toFixed(2)+"€";
-}
-
-function changeQty(i,val){
-cart[i].cantidad=(cart[i].cantidad||1)+val;
-if(cart[i].cantidad<=0) cart.splice(i,1);
-updateCart();
-}
-
-/* CART MODAL */
-function openCart(){document.getElementById("cartModal").classList.add("activo");}
-function closeCart(){document.getElementById("cartModal").classList.remove("activo");}
-
-/* CHECKOUT */
-function checkout(){
-
-let name=cname.value;
-let address=caddress.value;
-let phone=cphone.value;
-let payment=cpayment.value;
-
-let text="🛍️ Pedido Solera\n\n";
-text+="Nombre: "+name+"\nDirección: "+address+"\nTeléfono: "+phone+"\nPago: "+payment+"\n\n";
-
-cart.forEach(p=>{
-text+="- "+p.nombre+" x"+p.cantidad+" = "+(p.precio*p.cantidad).toFixed(2)+"€\n";
-});
-
-window.open("https://wa.me/34643319232?text="+encodeURIComponent(text),"_blank");
-}
-
-/* PRODUCT */
+/* MODAL PRODUCTO */
 function openProduct(p){
-currentProduct=p;
 document.getElementById("productModal").classList.add("activo");
 
 document.getElementById("productContent").innerHTML=`
-<img src="${p.img}" style="width:100%;max-height:350px;object-fit:contain;">
+<img src="${p.img}" style="width:100%">
 <h2>${p.nombre}</h2>
 <p>${p.precio}€</p>
 
-<button class="btn" onclick="addFromModal('${p.nombre}',${p.precio})">Añadir al carrito</button>
+<button class="btn" onclick="shareProduct('${p.nombre}')">Compartir</button>
+<button class="btn" onclick="addFromModal('${p.nombre}',${p.precio},'${p.img}')">Añadir al carrito</button>
 `;
 }
 
@@ -509,34 +372,71 @@ function closeProduct(){
 document.getElementById("productModal").classList.remove("activo");
 }
 
-function addFromModal(nombre,precio){
-cart.push({nombre,precio,cantidad:1,img:""});
+/* COMPARTIR */
+function shareProduct(name){
+if(navigator.share){
+navigator.share({
+title:"Solera",
+text:"Mira este producto: "+name,
+url:window.location.href
+});
+}else{
+alert("No compatible");
+}
+}
+
+/* CARRITO */
+function addFromModal(nombre,precio,img){
+let qty=parseInt(prompt("Cantidad:",1));
+if(!qty)return;
+
+let existe=cart.find(x=>x.nombre===nombre);
+if(existe) existe.cantidad+=qty;
+else cart.push({nombre,precio,img,cantidad:qty});
+
 updateCart();
 showToast();
 }
 
-/* RESEÑAS */
-function openM(){modal.classList.add("activo");}
+function updateCart(){
+document.getElementById("cartCount").innerText=cart.reduce((a,b)=>a+b.cantidad,0);
 
-function saveReview(){
-let t=txt.value;
-if(!t)return;
+let html="";
+let total=0;
 
-let data=JSON.parse(localStorage.getItem("r"))||[];
-data.push({user:currentUser,text:t});
-localStorage.setItem("r",JSON.stringify(data));
-modal.classList.remove("activo");
-loadReviews();
-}
-
-function loadReviews(){
-list.innerHTML="";
-(JSON.parse(localStorage.getItem("r"))||[]).forEach(r=>{
-list.innerHTML+=`<div class="reseña"><b>${r.user}</b><p>${r.text}</p></div>`;
+cart.forEach((p,i)=>{
+total+=p.precio*p.cantidad;
+html+=`
+<div>
+<img src="${p.img}" width="40">
+${p.nombre} x${p.cantidad}
+<button onclick="cart.splice(${i},1);updateCart()">❌</button>
+</div>`;
 });
+
+document.getElementById("cartList").innerHTML=html;
+document.getElementById("total").innerText="Total: "+total.toFixed(2)+"€";
 }
 
-loadReviews();
+function openCart(){cartModal.classList.add("activo");}
+function closeCart(){cartModal.classList.remove("activo");}
+
+/* CHECKOUT */
+function checkout(){
+let text="Pedido:\n";
+
+cart.forEach(p=>{
+text+=p.nombre+" x"+p.cantidad+"\n";
+});
+
+window.open("https://wa.me/34643319232?text="+encodeURIComponent(text));
+}
+
+/* TOAST */
+function showToast(){
+toast.style.display="block";
+setTimeout(()=>toast.style.display="none",1200);
+}
 
 </script>
 
