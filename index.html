@@ -95,8 +95,6 @@ border-radius:16px;
 overflow:hidden;
 box-shadow:0 6px 18px rgba(0,0,0,0.12);
 cursor:pointer;
-padding-bottom:10px;
-text-align:center;
 }
 
 .producto-card img{
@@ -107,7 +105,7 @@ object-fit:cover;
 
 .btn{
 display:block;
-margin:10px auto;
+margin:15px auto;
 padding:12px 20px;
 background:#055160;
 color:white;
@@ -239,12 +237,6 @@ color:gold;
 <a href="#reseñas">Reseñas</a>
 </nav>
 
-<!-- 🛒 CARRITO ICONO -->
-<div id="cartIcon" onclick="openCart()"
-style="position:fixed;top:15px;right:15px;background:#055160;color:white;padding:10px 14px;border-radius:50px;cursor:pointer;z-index:99999;">
-🛒 <span id="cartCount">0</span>
-</div>
-
 <!-- NOVEDADES -->
 <section id="novedades">
 <h2>Novedades</h2>
@@ -275,169 +267,3 @@ style="position:fixed;top:15px;right:15px;background:#055160;color:white;padding
 
 <div id="productGrid"></div>
 </section>
-
-<!-- CONTACTO -->
-<section id="contacto">
-<h2>Contacto</h2>
-
-<div class="social-grid">
-
-<a class="social-card" href="mailto:soleraropaycomplementos@gmail.com">
-<i class="fa-solid fa-envelope"></i> Gmail
-</a>
-
-<a class="social-card" href="https://wa.me/34643319232?text=Buenas%20quiero%20información%20sobre%20Solera%20🌞🏖️">
-<i class="fa-brands fa-whatsapp"></i> WhatsApp
-</a>
-
-<a class="social-card" href="https://www.instagram.com/solerashopp">
-<i class="fa-brands fa-instagram"></i> Instagram
-</a>
-
-<a class="social-card" href="https://www.facebook.com/share/18feHPTPbK/">
-<i class="fa-brands fa-facebook"></i> Facebook
-</a>
-
-<a class="social-card" href="https://www.tiktok.com/@solerashop8">
-<i class="fa-brands fa-tiktok"></i> TikTok
-</a>
-
-</div>
-</section>
-
-<!-- RESEÑAS -->
-<section id="reseñas">
-<h2>Reseñas</h2>
-<button class="btn" onclick="openM()">Dejar reseña</button>
-<div class="reseñas-box" id="list"></div>
-</section>
-
-<!-- 🛒 MODAL CARRITO -->
-<div class="modal" id="cartModal">
-<div class="box">
-
-<div class="close-left" onclick="closeCart()">✕</div>
-
-<h2>Tu carrito</h2>
-
-<div id="cartList"></div>
-
-<h3 id="total">Total: 0€</h3>
-
-<hr>
-
-<input id="cname" placeholder="Nombre"><br><br>
-<input id="caddress" placeholder="Dirección"><br><br>
-<input id="cphone" placeholder="Teléfono"><br><br>
-
-<select id="cpayment">
-<option>Bizum</option>
-<option>Transferencia</option>
-<option>Contra reembolso</option>
-</select>
-
-<button class="btn" onclick="checkout()">Confirmar pedido</button>
-
-</div>
-</div>
-
-<script>
-
-let cart = [];
-
-/* ➕ BOTONES A PRODUCTOS */
-document.querySelectorAll('.producto-card').forEach(card=>{
-
-let btn = document.createElement("button");
-btn.innerText = "Añadir al carrito";
-btn.className = "btn";
-
-btn.onclick = function(){
-let nombre = card.querySelector("h3").innerText;
-let precio = 20;
-cart.push({nombre,precio});
-updateCart();
-}
-
-card.appendChild(btn);
-
-});
-
-/* 🛒 UPDATE */
-function updateCart(){
-
-document.getElementById("cartCount").innerText = cart.length;
-
-let list = document.getElementById("cartList");
-if(!list) return;
-
-list.innerHTML = "";
-
-let total = 0;
-
-cart.forEach((p,i)=>{
-total += p.precio;
-
-list.innerHTML += `
-<div style="display:flex;justify-content:space-between;padding:6px;border-bottom:1px solid #ddd;">
-<span>${p.nombre}</span>
-<span>${p.precio}€</span>
-<button onclick="removeItem(${i})">❌</button>
-</div>
-`;
-});
-
-document.getElementById("total").innerText = "Total: " + total.toFixed(2) + "€";
-
-}
-
-/* ❌ REMOVE */
-function removeItem(i){
-cart.splice(i,1);
-updateCart();
-}
-
-/* 🛒 OPEN CLOSE */
-function openCart(){
-document.getElementById("cartModal").classList.add("activo");
-}
-
-function closeCart(){
-document.getElementById("cartModal").classList.remove("activo");
-}
-
-/* 💳 WHATSAPP CHECKOUT */
-function checkout(){
-
-let name = document.getElementById("cname").value;
-let address = document.getElementById("caddress").value;
-let phone = document.getElementById("cphone").value;
-let payment = document.getElementById("cpayment").value;
-
-if(!name||!address||!phone){
-alert("Rellena todos los datos");
-return;
-}
-
-let text = "🛍️ Pedido Solera\n\n";
-text += "👤 " + name + "\n📍 " + address + "\n📞 " + phone + "\n💳 " + payment + "\n\n";
-
-let total = 0;
-
-cart.forEach(p=>{
-text += "- " + p.nombre + " " + p.precio + "€\n";
-total += p.precio;
-});
-
-text += "\n💰 Total: " + total.toFixed(2) + "€";
-
-let url = "https://wa.me/34643319232?text=" + encodeURIComponent(text);
-
-window.open(url,"_blank");
-
-}
-
-</script>
-
-</body>
-</html>
