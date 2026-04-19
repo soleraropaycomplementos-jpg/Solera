@@ -94,9 +94,9 @@ background:white;
 border-radius:16px;
 overflow:hidden;
 box-shadow:0 6px 18px rgba(0,0,0,0.12);
-cursor:pointer;
 text-align:center;
 padding-bottom:10px;
+cursor:pointer;
 }
 
 .producto-card img{
@@ -208,7 +208,7 @@ color:gold;
 color:gold;
 }
 
-/* 🛒 CARRITO */
+/* 🛒 */
 #cartIcon{
 position:fixed;
 top:15px;
@@ -221,7 +221,7 @@ cursor:pointer;
 z-index:99999;
 }
 
-/* 🔔 TOAST */
+/* 🔔 */
 #toast{
 position:fixed;
 bottom:20px;
@@ -256,10 +256,8 @@ font-weight:600;
 <a href="#reseñas">Reseñas</a>
 </nav>
 
-<!-- 🛒 CARRITO -->
-<div id="cartIcon" onclick="openCart()">
-🛒 <span id="cartCount">0</span>
-</div>
+<!-- CARRITO -->
+<div id="cartIcon" onclick="openCart()">🛒 <span id="cartCount">0</span></div>
 
 <!-- NOVEDADES -->
 <section id="novedades">
@@ -289,14 +287,13 @@ font-weight:600;
 <h2>Contacto</h2>
 
 <div class="social-grid">
-
 <a class="social-card" href="mailto:soleraropaycomplementos@gmail.com">Gmail</a>
 <a class="social-card" href="https://wa.me/34643319232">WhatsApp</a>
 <a class="social-card" href="https://www.instagram.com/solerashopp">Instagram</a>
 <a class="social-card" href="https://www.facebook.com/share/18feHPTPbK/">Facebook</a>
 <a class="social-card" href="https://www.tiktok.com/@solerashop8">TikTok</a>
-
 </div>
+
 </section>
 
 <!-- RESEÑAS -->
@@ -306,28 +303,19 @@ font-weight:600;
 <div class="reseñas-box" id="list"></div>
 </section>
 
-<!-- MODAL PRODUCTO -->
+<!-- PRODUCTO -->
 <div class="modal" id="productModal">
 <div class="box">
-
 <div class="close-left" onclick="closeProduct()">✕</div>
 
 <div id="productContent"></div>
-
-<h3>Comentarios</h3>
-<div id="comments"></div>
-
-<textarea id="commentText"></textarea>
-<button class="btn" onclick="addComment()">Comentar</button>
-
 </div>
 </div>
 
-<!-- MODAL RESEÑA -->
+<!-- RESEÑA -->
 <div class="modal" id="modal">
 <div class="box">
-
-<div class="close-left" onclick="document.getElementById('modal').classList.remove('activo')">✕</div>
+<div class="close-left" onclick="modal.classList.remove('activo')">✕</div>
 
 <div class="estrellas">
 <input type="radio" id="5" name="e" value="5"><label for="5">★</label>
@@ -343,11 +331,38 @@ font-weight:600;
 </div>
 </div>
 
+<!-- CARRITO -->
+<div class="modal" id="cartModal">
+<div class="box">
+<div class="close-left" onclick="closeCart()">✕</div>
+
+<h2>Carrito</h2>
+<div id="cartList"></div>
+<h3 id="total"></h3>
+
+<input id="cname" placeholder="Nombre"><br><br>
+<input id="caddress" placeholder="Dirección"><br><br>
+<input id="cphone" placeholder="Teléfono"><br><br>
+
+<select id="cpayment">
+<option>Bizum</option>
+<option>Transferencia</option>
+<option>Contra reembolso</option>
+</select>
+
+<button class="btn" onclick="checkout()">Comprar</button>
+
+</div>
+</div>
+
+<div id="toast">Añadido ✔</div>
+
 <script>
 
 let cart=[];
 let currentProduct=null;
-let currentUser=localStorage.getItem("user")||"user";
+let admin=false;
+let clicks=0;
 
 const productos=[
 {cat:"ropa",img:"vestido1.jpg",nombre:"Vestido verano",precio:19.99},
@@ -355,191 +370,116 @@ const productos=[
 {cat:"zapatos",img:"sandalia1.jpg",nombre:"Sandalia cómoda",precio:24.99}
 ];
 
-/* CLICK CATEGORÍAS */
-document.querySelectorAll('.card[data-cat]').forEach(card=>{
-card.addEventListener('click',()=>{
+/* ADMIN FIX */
+document.getElementById("logo").onclick=()=>{
+clicks++;
+setTimeout(()=>clicks=0,2000);
+if(clicks===5){
+let pass=prompt("Admin:");
+if(pass==="solera2026"){
+admin=true;
+alert("Admin activado");
+}
+}
+};
 
+/* PRODUCTOS */
+document.querySelectorAll('.card[data-cat]').forEach(card=>{
+card.onclick=()=>{
 let cat=card.dataset.cat;
 let grid=document.getElementById("productGrid");
 grid.innerHTML="";
 
 productos.filter(p=>p.cat===cat).forEach(p=>{
-
 let div=document.createElement("div");
 div.className="producto-card";
-
-/* FIX CLICK */
-div.addEventListener("click",(e)=>{
-if(e.target.tagName==="BUTTON") return;
-openProduct(p);
-});
 
 div.innerHTML=`
 <img src="${p.img}">
 <h3>${p.nombre}</h3>
 <p>${p.precio}€</p>
+<button class='btn'>Añadir</button>
 `;
 
-grid.appendChild(div);
-
-addButtons();
-
-});
-
-});
-});
-
-/* BOTÓN CARRITO */
-function addButtons(){
-
-document.querySelectorAll('.producto-card').forEach(card=>{
-
-if(card.querySelector(".buyBtn")) return;
-
-let btn=document.createElement("button");
-btn.className="btn buyBtn";
-btn.innerText="Añadir al carrito";
-
-btn.onclick=(e)=>{
-
+div.querySelector("button").onclick=(e)=>{
 e.stopPropagation();
-
-let qty=parseInt(prompt("¿Cuántas unidades?",1));
-if(!qty || qty<1) return;
-
-let nombre=card.querySelector("h3").innerText;
-let precio=parseFloat(card.querySelector("p").innerText);
-
-let existente = cart.find(x=>x.nombre===nombre);
-
-if(existente){
-existente.cantidad += qty;
-}else{
-cart.push({nombre,precio,cantidad:qty});
-}
-
+cart.push({nombre:p.nombre,precio:p.precio,cantidad:1});
 updateCart();
-showToast();
-
+toast();
 };
 
-card.appendChild(btn);
+div.onclick=()=>openProduct(p);
 
+grid.appendChild(div);
 });
-
-}
-
-/* TOAST */
-function showToast(){
-toast.style.display="block";
-setTimeout(()=>toast.style.display="none",1200);
-}
+};
+});
 
 /* CART */
 function updateCart(){
-
-cartCount.innerText = cart.reduce((t,p)=>t+(p.cantidad||1),0);
-
-let list=document.getElementById("cartList");
-if(!list) return;
-
 let total=0;
-list.innerHTML="";
-
-cart.forEach((p,i)=>{
-total+=p.precio*(p.cantidad||1);
-
-list.innerHTML+=`
-<div style="display:flex;justify-content:space-between;">
-<span>${p.nombre} x${p.cantidad||1}</span>
-<span>${(p.precio*(p.cantidad||1)).toFixed(2)}€</span>
+let count=0;
+cart.forEach(p=>{
+total+=p.precio*p.cantidad;
+count+=p.cantidad;
+});
+cartCount.innerText=count;
+cartList.innerHTML=cart.map((p,i)=>`
+<div>
+${p.nombre} x${p.cantidad}
 <button onclick="cart.splice(${i},1);updateCart()">❌</button>
 </div>
-`;
-});
-
-totalEl && (totalEl.innerText="Total: "+total.toFixed(2)+"€");
-
+`).join("");
+total.innerText="Total: "+total.toFixed(2)+"€";
 }
 
-/* CARRITO */
 function openCart(){cartModal.classList.add("activo");}
 function closeCart(){cartModal.classList.remove("activo");}
 
-/* CHECKOUT */
 function checkout(){
-
-let name=cname.value;
-let address=caddress.value;
-let phone=cphone.value;
-let payment=cpayment.value;
-
-let total=0;
-
-let text="🛍️ Pedido Solera\n\n";
-text+="👤 "+name+"\n📍 "+address+"\n📞 "+phone+"\n💳 "+payment+"\n\n";
-
+let msg="Pedido:\n";
 cart.forEach(p=>{
-let sub=p.precio*(p.cantidad||1);
-total+=sub;
-text+=p.nombre+" x"+p.cantidad+" = "+sub.toFixed(2)+"€\n";
+msg+=`${p.nombre} x${p.cantidad}\n`;
 });
+msg+=`\nNombre: ${cname.value}\nDirección: ${caddress.value}\nTel: ${cphone.value}`;
 
-text+="\nTOTAL: "+total.toFixed(2)+"€";
-
-window.open("https://wa.me/34643319232?text="+encodeURIComponent(text),"_blank");
+window.open("https://wa.me/34643319232?text="+encodeURIComponent(msg));
 }
 
-/* PRODUCTO */
+/* PRODUCT */
 function openProduct(p){
-currentProduct=p;
 productModal.classList.add("activo");
-
 productContent.innerHTML=`
-<img src="${p.img}" style="width:100%;max-height:350px;object-fit:contain;">
+<img src="${p.img}">
 <h2>${p.nombre}</h2>
 <p>${p.precio}€</p>
 
-<button class="btn" onclick="shareProduct('${p.nombre}')">Compartir</button>
-<button class="btn" onclick="addFromModal('${p.nombre}',${p.precio})">Añadir al carrito</button>
+<button class='btn' onclick="cart.push({nombre:'${p.nombre}',precio:${p.precio},cantidad:1});updateCart();toast()">Añadir al carrito</button>
+<button class='btn' onclick="navigator.share&&navigator.share({title:'Solera',text:'${p.nombre}',url:location.href})">Compartir</button>
 `;
 }
+function closeProduct(){productModal.classList.remove("activo");}
 
-function closeProduct(){
-productModal.classList.remove("activo");
+/* TOAST */
+function toast(){
+toast.style.display="block";
+setTimeout(()=>toast.style.display="none",1000);
 }
 
-/* SHARE */
-function shareProduct(name){
-if(navigator.share){
-navigator.share({title:"Solera",text:name,url:location.href});
-}
-}
-
-/* ADD */
-function addFromModal(n,p){
-cart.push({nombre:n,precio:p,cantidad:1});
-updateCart();
-showToast();
-}
-
-/* RESEÑAS */
+/* REVIEWS */
 function openM(){modal.classList.add("activo");}
 function saveReview(){
 let t=txt.value;
 if(!t)return;
-
-let d=JSON.parse(localStorage.getItem("r"))||[];
-d.push({user:currentUser,text:t});
-localStorage.setItem("r",JSON.stringify(d));
+let r=JSON.parse(localStorage.getItem("r"))||[];
+r.push({user:"user",text:t});
+localStorage.setItem("r",JSON.stringify(r));
 modal.classList.remove("activo");
 loadReviews();
 }
 function loadReviews(){
-list.innerHTML="";
-(JSON.parse(localStorage.getItem("r"))||[]).forEach(r=>{
-list.innerHTML+=`<div class="reseña"><b>${r.user}</b><p>${r.text}</p></div>`;
-});
+list.innerHTML=(JSON.parse(localStorage.getItem("r"))||[])
+.map(r=>`<div class='reseña'><b>${r.user}</b><p>${r.text}</p></div>`).join("");
 }
 loadReviews();
 
