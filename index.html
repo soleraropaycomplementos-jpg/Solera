@@ -132,6 +132,7 @@ color:black;
 box-shadow:0 4px 10px rgba(0,0,0,0.1);
 }
 
+/* RESEÑAS */
 .reseñas-box{
 max-width:600px;
 margin:auto;
@@ -150,6 +151,7 @@ padding:10px;
 border-radius:10px;
 }
 
+/* MODAL GENERAL */
 .modal{
 position:fixed;
 inset:0;
@@ -180,6 +182,7 @@ font-size:22px;
 cursor:pointer;
 }
 
+/* COMMENTS */
 #comments{
 max-height:250px;
 overflow-y:auto;
@@ -241,7 +244,7 @@ margin-bottom:10px;
 <div id="productGrid"></div>
 </section>
 
-<!-- CONTACTO (REDES ARREGLADAS) -->
+<!-- CONTACTO -->
 <section id="contacto">
 <h2>Contacto</h2>
 
@@ -294,16 +297,35 @@ margin-bottom:10px;
 </div>
 </div>
 
+<!-- ⭐ MODAL RESEÑA (ARREGLADO) -->
+<div class="modal" id="modal">
+<div class="box">
+
+<div class="close-left" onclick="document.getElementById('modal').classList.remove('activo')">✕</div>
+
+<div class="estrellas">
+<input type="radio" id="5" name="e" value="5"><label for="5">★</label>
+<input type="radio" id="4" name="e" value="4"><label for="4">★</label>
+<input type="radio" id="3" name="e" value="3"><label for="3">★</label>
+<input type="radio" id="2" name="e" value="2"><label for="2">★</label>
+<input type="radio" id="1" name="e" value="1"><label for="1">★</label>
+</div>
+
+<textarea id="txt"></textarea>
+<button class="btn" onclick="saveReview()">Enviar</button>
+
+</div>
+</div>
+
 <script>
 
 let admin=false;
 let taps=0;
-
 let currentUser=localStorage.getItem("user")||"user";
 
 function askUser(){
 if(!currentUser || currentUser==="user"){
-let n=prompt("Escribe tu nombre:");
+let n=prompt("Nombre:");
 if(n){
 currentUser=n;
 localStorage.setItem("user",n);
@@ -311,26 +333,20 @@ localStorage.setItem("user",n);
 }
 }
 
-/* ADMIN 5 TOQUES */
+/* ADMIN */
 document.getElementById("logo").addEventListener("click",()=>{
 
 taps++;
 setTimeout(()=>taps=0,2000);
 
 if(taps===5){
-
 let pass=prompt("Contraseña admin:");
-
 if(pass==="solera2026"){
 admin=true;
 alert("Modo admin activado");
 load();
 loadComments();
-}else{
-alert("Incorrecto");
 }
-
-taps=0;
 }
 });
 
@@ -341,7 +357,7 @@ const productos=[
 {cat:"zapatos",img:"sandalia1.jpg",nombre:"Sandalia cómoda",precio:"24,99€"}
 ];
 
-document.querySelectorAll('#categorias .card').forEach(card=>{
+document.querySelectorAll('.card[data-cat]').forEach(card=>{
 card.addEventListener('click',()=>{
 
 let cat=card.dataset.cat;
@@ -377,6 +393,8 @@ document.getElementById("productContent").innerHTML=`
 <img src="${p.img}" style="width:100%;max-height:400px;object-fit:contain;">
 <h3>${p.nombre}</h3>
 <p>${p.precio}</p>
+
+<button class="btn" onclick="shareProduct('${p.nombre}')">Compartir</button>
 `;
 
 loadComments();
@@ -386,7 +404,20 @@ function closeProduct(){
 document.getElementById("productModal").classList.remove("activo");
 }
 
-/* COMENTARIOS LOCALES */
+/* SHARE */
+function shareProduct(name){
+if(navigator.share){
+navigator.share({
+title:"Solera",
+text:"Mira este producto: "+name,
+url:window.location.href
+});
+}else{
+alert("No compatible con este dispositivo");
+}
+}
+
+/* COMENTARIOS */
 function getComments(){
 return JSON.parse(localStorage.getItem("comments_"+currentProduct.nombre))||[];
 }
@@ -417,30 +448,6 @@ document.getElementById("commentText").value="";
 loadComments();
 }
 
-function replyComment(id){
-
-askUser();
-
-let text=prompt("Responder:");
-if(!text)return;
-
-let data=getComments();
-
-data=data.map(c=>{
-if(c.id===id){
-c.replies.push({
-user:currentUser,
-text:text,
-date:new Date().toLocaleDateString()
-});
-}
-return c;
-});
-
-saveComments(data);
-loadComments();
-}
-
 function loadComments(){
 
 let c=document.getElementById("comments");
@@ -458,19 +465,12 @@ replies+=`<div style="margin-left:15px;font-size:12px;background:#eee;padding:5p
 </div>`;
 });
 
-let canDelete=admin || cm.user===currentUser;
-
 let div=document.createElement("div");
 div.className="reseña";
 
 div.innerHTML=`
 <strong>${cm.user}</strong> · ${cm.date}
 <p>${cm.text}</p>
-
-<button onclick="replyComment(${cm.id})" class="btn" style="padding:5px;font-size:12px;">Responder</button>
-
-${canDelete?`<button onclick="deleteComment(${cm.id})" style="background:red;color:white;border:none;padding:5px;border-radius:6px;">✕</button>`:""}
-
 ${replies}
 `;
 
@@ -478,18 +478,49 @@ c.appendChild(div);
 });
 }
 
-function deleteComment(id){
-let data=getComments();
-data=data.filter(c=>c.id!==id);
-saveComments(data);
-loadComments();
-}
-
-/* RESEÑAS */
+/* RESEÑA */
 function openM(){
 askUser();
 document.getElementById("modal").classList.add("activo");
 }
+
+function saveReview(){
+
+let e=document.querySelector('input[name="e"]:checked');
+let t=document.getElementById("txt").value;
+
+if(!e||!t)return;
+
+let data=JSON.parse(localStorage.getItem("r"))||[];
+
+data.push({
+id:Date.now(),
+user:currentUser,
+estrellas:e.value,
+texto:t
+});
+
+localStorage.setItem("r",JSON.stringify(data));
+document.getElementById("modal").classList.remove("activo");
+loadReviews();
+}
+
+function loadReviews(){
+
+let c=document.getElementById("list");
+c.innerHTML="";
+
+let data=JSON.parse(localStorage.getItem("r"))||[];
+
+data.forEach(r=>{
+let div=document.createElement("div");
+div.className="reseña";
+div.innerHTML=`<strong>${r.user}</strong><br>${"⭐".repeat(r.estrellas)}<p>${r.texto}</p>`;
+c.appendChild(div);
+});
+}
+
+loadReviews();
 
 </script>
 
