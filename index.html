@@ -14,8 +14,6 @@ margin:0;
 font-family:Poppins,sans-serif;
 background:#eaf6f6;
 padding-top:60px;
--webkit-text-size-adjust:100%;
-touch-action:manipulation;
 }
 
 nav{
@@ -56,7 +54,7 @@ color:white;
 text-align:center;
 }
 
-#logo{cursor:pointer;user-select:none;}
+#logo{cursor:pointer;}
 
 /* GRID */
 .grid{
@@ -80,7 +78,7 @@ height:160px;
 object-fit:cover;
 }
 
-/* PRODUCTS */
+/* PRODUCTOS */
 #productGrid{
 display:grid;
 grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
@@ -176,21 +174,6 @@ cursor:pointer;
 z-index:99999;
 }
 
-/* TOAST */
-#toast{
-position:fixed;
-bottom:20px;
-left:50%;
-transform:translateX(-50%);
-background:#055160;
-color:white;
-padding:12px 18px;
-border-radius:10px;
-display:none;
-z-index:99999;
-font-weight:600;
-}
-
 /* RESEÑAS */
 .reseñas-box{
 max-width:600px;
@@ -210,15 +193,18 @@ padding:10px;
 border-radius:10px;
 }
 
-/* ⭐ NUEVO */
+/* ESTRELLAS */
 .star{
-font-size:28px;
+font-size:30px;
 cursor:pointer;
 color:lightgray;
 }
-.star.active{color:gold;}
 
-/* CART ITEMS NUEVO */
+.star.active{
+color:gold;
+}
+
+/* CART ITEM */
 .cart-item{
 display:flex;
 align-items:center;
@@ -239,15 +225,7 @@ border-radius:8px;
 .qty button{
 padding:4px 8px;
 }
-.star{
-font-size:30px;
-cursor:pointer;
-color:lightgray;
-}
 
-.star.active{
-color:gold;
-}
 </style>
 </head>
 
@@ -256,7 +234,7 @@ color:gold;
 <header>
 <img src="playa.jpg">
 <div class="texto">
-<h1 id="logo">Solera</h1>
+<h1 id="logo" onclick="adminClick()">Solera</h1>
 <p>Moda verano</p>
 </div>
 </header>
@@ -305,17 +283,18 @@ color:gold;
 </div>
 </section>
 
+<!-- RESEÑAS -->
 <section id="reseñas">
 <h2>Reseñas</h2>
 
 <input id="reviewName" placeholder="Tu nombre"><br><br>
 
-<div id="starBox">
-  <span class="star" onclick="setStars(1)">★</span>
-  <span class="star" onclick="setStars(2)">★</span>
-  <span class="star" onclick="setStars(3)">★</span>
-  <span class="star" onclick="setStars(4)">★</span>
-  <span class="star" onclick="setStars(5)">★</span>
+<div>
+<span class="star" onclick="setStars(1)">★</span>
+<span class="star" onclick="setStars(2)">★</span>
+<span class="star" onclick="setStars(3)">★</span>
+<span class="star" onclick="setStars(4)">★</span>
+<span class="star" onclick="setStars(5)">★</span>
 </div>
 
 <button class="btn" onclick="openReview()">Dejar reseña</button>
@@ -323,32 +302,32 @@ color:gold;
 <div class="reseñas-box" id="list"></div>
 </section>
 
+<!-- PRODUCTO -->
 <div class="modal" id="productModal">
 <div class="box">
 <div class="close-left" onclick="closeProduct()">✕</div>
 
 <div id="productContent"></div>
 
-<button class="btn" onclick="shareProduct()">Compartir</button>
-<button class="btn" onclick="showComments()">Comentarios</button>
 </div>
 </div>
 
+<!-- RESEÑA -->
 <div class="modal" id="modal">
 <div class="box">
 <div class="close-left" onclick="closeReview()">✕</div>
 
-<textarea id="txt" placeholder="Escribe tu reseña..."></textarea>
+<textarea id="txt"></textarea>
 <button class="btn" onclick="saveReview()">Enviar</button>
-
 </div>
 </div>
 
+<!-- CARRITO -->
 <div class="modal" id="cartModal">
 <div class="box">
 <div class="close-left" onclick="closeCart()">✕</div>
 
-<h2>Tu carrito</h2>
+<h2>Carrito</h2>
 <div id="cartList"></div>
 
 <h3 id="total">Total: 0€</h3>
@@ -367,20 +346,26 @@ color:gold;
 </div>
 </div>
 
-<div id="toast">Añadido al carrito ✔</div>
-
 <script>
 
 let cart=[];
 let currentProduct=null;
 let stars=0;
 
-function setStar(n){
+/* ESTRELLAS */
+function setStars(n){
 stars=n;
-document.querySelectorAll('.star').forEach((s,i)=>{
-s.classList.toggle('active', i<n);
+document.querySelectorAll(".star").forEach((s,i)=>{
+s.classList.toggle("active", i<n);
 });
 }
+
+/* MODALES */
+function openReview(){modal.classList.add("activo");}
+function closeReview(){modal.classList.remove("activo");}
+function openCart(){cartModal.classList.add("activo");}
+function closeCart(){cartModal.classList.remove("activo");}
+function closeProduct(){productModal.classList.remove("activo");}
 
 /* PRODUCTOS */
 const productos=[
@@ -389,13 +374,65 @@ const productos=[
 {cat:"zapatos",img:"sandalia1.jpg",nombre:"Sandalia cómoda",precio:24.99}
 ];
 
+document.querySelectorAll('.card[data-cat]').forEach(card=>{
+card.addEventListener('click',()=>{
+
+let cat=card.dataset.cat;
+let grid=document.getElementById("productGrid");
+grid.innerHTML="";
+
+productos.filter(p=>p.cat===cat).forEach(p=>{
+
+let div=document.createElement("div");
+div.className="producto-card";
+
+div.onclick=()=>openProduct(p);
+
+div.innerHTML=`
+<img src="${p.img}">
+<h3>${p.nombre}</h3>
+<p>${p.precio}€</p>
+<button class="btn" onclick="addToCart(event, '${p.nombre}', ${p.precio})">Añadir</button>
+`;
+
+grid.appendChild(div);
+
+});
+});
+});
+
+/* PRODUCTO */
+function openProduct(p){
+currentProduct=p;
+productModal.classList.add("activo");
+
+productContent.innerHTML=`
+<img src="${p.img}" style="width:100%">
+<h2>${p.nombre}</h2>
+<p>${p.precio}€</p>
+
+<button class="btn" onclick="addFromModal()">Añadir al carrito</button>
+`;
+}
+
+function addFromModal(){
+cart.push({...currentProduct,cantidad:1});
+updateCart();
+}
+
 /* CART */
+function addToCart(e,name,price){
+e.stopPropagation();
+cart.push({nombre:name,precio:price,cantidad:1});
+updateCart();
+}
+
 function updateCart(){
-document.getElementById("cartCount").innerText=cart.length;
+
+cartCount.innerText=cart.length;
 
 let list=document.getElementById("cartList");
 list.innerHTML="";
-
 let total=0;
 
 cart.forEach((p,i)=>{
@@ -404,7 +441,7 @@ total+=p.precio*qty;
 
 list.innerHTML+=`
 <div class="cart-item">
-<img src="${p.img}">
+<img src="${p.img||''}">
 <div>${p.nombre}</div>
 
 <div class="qty">
@@ -417,7 +454,7 @@ ${qty}
 </div>`;
 });
 
-document.getElementById("total").innerText="Total: "+total.toFixed(2)+"€";
+totalEl.innerText="Total: "+total.toFixed(2)+"€";
 }
 
 function changeQty(i,v){
@@ -426,73 +463,59 @@ if(cart[i].cantidad<=0)cart.splice(i,1);
 updateCart();
 }
 
-function shareProduct(){
-navigator.share?.({
-title:currentProduct.nombre,
-text:"Mira este producto de Solera",
-url:window.location.href
+/* CHECKOUT */
+function checkout(){
+
+let name=cname.value;
+let address=caddress.value;
+let phone=cphone.value;
+let payment=cpayment.value;
+
+let text="🛍️ Pedido Solera\n\n";
+text+=`Nombre: ${name}\nDirección: ${address}\nTeléfono: ${phone}\nPago: ${payment}\n\n`;
+
+let total=0;
+
+cart.forEach(p=>{
+let sub=p.precio*(p.cantidad||1);
+total+=sub;
+text+=`- ${p.nombre} x${p.cantidad||1} = ${sub.toFixed(2)}€\n`;
 });
+
+text+=`\nTOTAL: ${total.toFixed(2)}€`;
+
+window.open("https://wa.me/34643319232?text="+encodeURIComponent(text),"_blank");
 }
 
-function showComments(){
-alert("Comentarios próximamente");
-}
-
-/* resto igual... (sin cambios en lógica base) */
-let stars = 0;
-
-function setStars(n){
-stars = n;
-document.querySelectorAll(".star").forEach((s,i)=>{
-s.classList.toggle("active", i < n);
-});
-}
-
-function openReview(){
-document.getElementById("modal").classList.add("activo");
-}
-
-function closeReview(){
-document.getElementById("modal").classList.remove("activo");
-}
-
+/* RESEÑAS */
 function saveReview(){
 
-let name = document.getElementById("reviewName").value;
-let text = document.getElementById("txt").value;
+let name=reviewName.value;
+let text=txt.value;
 
-if(!name || !text || stars === 0) return;
+if(!name||!text||stars===0)return;
 
-let data = JSON.parse(localStorage.getItem("r")) || [];
+let data=JSON.parse(localStorage.getItem("r"))||[];
+data.push({user:name,stars,text});
 
-data.push({
-user:name,
-stars:stars,
-text:text
-});
-
-localStorage.setItem("r", JSON.stringify(data));
-
+localStorage.setItem("r",JSON.stringify(data));
 closeReview();
 loadReviews();
 }
 
 function loadReviews(){
-
-let list = document.getElementById("list");
 list.innerHTML="";
-
-(JSON.parse(localStorage.getItem("r")) || []).forEach(r=>{
-list.innerHTML += `
+(JSON.parse(localStorage.getItem("r"))||[]).forEach(r=>{
+list.innerHTML+=`
 <div class="reseña">
-<b>${r.user}</b> - ⭐ ${r.stars}<br>
+<b>${r.user}</b> ⭐ ${r.stars}
 <p>${r.text}</p>
-</div>
-`;
+</div>`;
 });
 }
 
 loadReviews();
+
 </script>
 
 </body>
