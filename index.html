@@ -8,44 +8,195 @@
 <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 <style>
-html{scroll-behavior:smooth;}
-body{margin:0;font-family:Poppins,sans-serif;background:#eaf6f6;padding-top:60px;}
+html { scroll-behavior: smooth; }
 
-nav{background:#055160;position:fixed;top:0;width:100%;text-align:center;padding:14px;z-index:1000;}
-nav a{color:white;margin:0 12px;text-decoration:none;font-weight:600;}
+body{
+margin:0;
+font-family:Poppins,sans-serif;
+background:#eaf6f6;
+padding-top:60px;
+}
 
-header{height:340px;position:relative;}
-header img{width:100%;height:100%;object-fit:cover;filter:brightness(55%);}
-header .texto{position:absolute;top:50%;left:50%;transform:translate(-50%,-50%);color:white;text-align:center;}
+/* NAV */
+nav{
+background:#055160;
+position:fixed;
+top:0;
+width:100%;
+text-align:center;
+padding:14px;
+z-index:1000;
+}
 
-section{padding:40px 25px;}
-h2{text-align:center;}
+nav a{
+color:white;
+margin:0 12px;
+text-decoration:none;
+font-weight:600;
+}
 
-/* CATEGORÍAS */
-.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:20px;}
-.card{background:white;border-radius:15px;overflow:hidden;cursor:pointer;box-shadow:0 4px 12px rgba(0,0,0,0.1);}
-.card img{width:100%;height:160px;object-fit:cover;background:#f5f5f5;}
-.card h3{text-align:center;padding:10px;margin:0;}
+/* HEADER */
+header{
+height:340px;
+position:relative;
+}
 
-/* PRODUCTOS */
-.productos{display:grid;grid-template-columns:repeat(auto-fit,minmax(160px,1fr));gap:15px;}
-.producto{background:white;border-radius:12px;padding:10px;cursor:pointer;text-align:center;}
-.producto img{width:100%;border-radius:10px;}
+header img{
+width:100%;
+height:100%;
+object-fit:cover;
+filter:brightness(55%);
+}
 
-/* MODAL PRODUCTO */
-.modal{position:fixed;inset:0;background:rgba(0,0,0,0.6);display:none;justify-content:center;align-items:center;z-index:9999;}
+header .texto{
+position:absolute;
+top:50%;
+left:50%;
+transform:translate(-50%,-50%);
+color:white;
+text-align:center;
+}
+
+#logo{
+cursor:pointer;
+}
+
+/* GRID */
+.grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
+gap:20px;
+}
+
+.card{
+background:white;
+border-radius:15px;
+overflow:hidden;
+text-align:center;
+box-shadow:0 4px 12px rgba(0,0,0,0.1);
+}
+
+.card img{
+width:100%;
+height:160px;
+object-fit:cover;
+}
+
+/* BOTÓN */
+.btn{
+display:block;
+margin:15px auto;
+padding:12px 20px;
+background:#055160;
+color:white;
+border:none;
+border-radius:8px;
+cursor:pointer;
+}
+
+/* SOCIAL */
+.social-grid{
+display:grid;
+grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
+gap:15px;
+}
+
+.social-card{
+background:white;
+padding:15px;
+border-radius:12px;
+text-align:center;
+text-decoration:none;
+color:black;
+box-shadow:0 4px 10px rgba(0,0,0,0.1);
+}
+
+.social-card i{
+font-size:22px;
+margin-bottom:5px;
+display:block;
+}
+
+/* RESEÑAS */
+.reseñas-box{
+max-width:600px;
+margin:auto;
+height:300px;
+overflow-y:auto;
+border:1px solid #ddd;
+border-radius:12px;
+padding:10px;
+background:white;
+}
+
+.reseña{
+background:#f7f7f7;
+margin:10px 0;
+padding:10px;
+border-radius:10px;
+}
+
+/* MODAL */
+.modal{
+position:fixed;
+inset:0;
+background:rgba(0,0,0,0.7);
+display:none;
+justify-content:center;
+align-items:center;
+z-index:9999;
+}
+
 .modal.activo{display:flex;}
-.modal-box{background:white;padding:20px;border-radius:12px;width:90%;max-width:420px;}
 
-/* COMENTARIOS */
-.comentario{border-top:1px solid #ddd;padding:8px;font-size:14px;}
-.respuestas{margin-left:15px;border-left:2px solid #ccc;padding-left:10px;}
+.box{
+background:white;
+padding:30px;
+border-radius:16px;
+width:95%;
+max-width:600px;
+text-align:center;
+position:relative;
+}
 
-/* INPUT */
-input{width:100%;padding:8px;margin-top:8px;}
+.close{
+position:absolute;
+top:10px;
+right:15px;
+font-size:22px;
+cursor:pointer;
+}
 
-/* FOOTER */
-footer{background:#055160;color:white;text-align:center;padding:20px;}
+/* ESTRELLAS */
+.estrellas{
+display:flex;
+flex-direction:row-reverse;
+justify-content:center;
+font-size:34px;
+margin-bottom:15px;
+}
+
+.estrellas input{display:none;}
+.estrellas label{color:lightgray;cursor:pointer;}
+
+.estrellas input:checked ~ label,
+.estrellas label:hover,
+.estrellas label:hover ~ label{
+color:gold;
+}
+
+textarea{
+width:100%;
+margin-top:10px;
+padding:10px;
+}
+
+footer{
+background:#055160;
+color:white;
+text-align:center;
+padding:20px;
+}
 </style>
 </head>
 
@@ -53,45 +204,108 @@ footer{background:#055160;color:white;text-align:center;padding:20px;}
 
 <header>
 <img src="playa.jpg">
+
 <div class="texto">
-<h1 id="adminTrigger">Solera</h1>
+<h1 id="logo">Solera</h1>
+<p>Moda verano</p>
 </div>
 </header>
 
 <nav>
+<a href="#novedades">Novedades</a>
 <a href="#categorias">Categorías</a>
+<a href="#ropa">Ropa</a>
+<a href="#contacto">Contacto</a>
+<a href="#reseñas">Reseñas</a>
 </nav>
+
+<!-- NOVEDADES -->
+<section id="novedades">
+<h2>Novedades</h2>
+
+<div class="grid">
+<div class="card"><img src="vestido.jpg"><h3>Vestido</h3></div>
+<div class="card"><img src="bolso.jpg"><h3>Bolso</h3></div>
+<div class="card"><img src="sandalias.jpg"><h3>Sandalias</h3></div>
+</div>
+</section>
 
 <!-- CATEGORÍAS -->
 <section id="categorias">
 <h2>Categorías</h2>
 
 <div class="grid">
-
-<div class="card" onclick="filtrar('ropa')">
-<img src="ropa.jpg"><h3>Ropa</h3>
+<div class="card"><img src="ropa.jpg"><h3>Ropa</h3></div>
+<div class="card"><img src="complementos.jpg"><h3>Complementos</h3></div>
+<div class="card"><img src="zapatos.jpg"><h3>Zapatos</h3></div>
 </div>
+</section>
 
-<div class="card" onclick="filtrar('complementos')">
-<img src="complementos.jpg"><h3>Complementos</h3>
-</div>
+<!-- CONTACTO -->
+<section id="contacto">
+<h2>Contacto</h2>
 
-<div class="card" onclick="filtrar('zapatos')">
-<img src="zapatos.jpg"><h3>Zapatos</h3>
+<div class="social-grid">
+
+
+<div class="social-grid">
+
+<a class="social-card" href="mailto:soleraropaycomplementos@gmail.com">
+<i class="fa-solid fa-envelope"></i>Gmail
+</a>
+
+<a class="social-card" href="https://wa.me/34643319232?text=Buenas%20quiero%20información%20sobre%20Solera%20🌞🏖️" target="_blank">
+<i class="fa-brands fa-whatsapp"></i>WhatsApp
+</a>
+
+<a class="social-card" href="https://www.instagram.com/solerashopp?igsh=bzdndTJlaGxpNXpl&utm_source=qr" target="_blank">
+<i class="fa-brands fa-instagram"></i>Instagram
+</a>
+
+<a class="social-card" href="https://www.facebook.com/share/18feHPTPbK/?mibextid=wwXIfr" target="_blank">
+<i class="fa-brands fa-facebook"></i>Facebook
+</a>
+
+<a class="social-card" href="https://www.tiktok.com/@solerashop8?_r=1&_t=ZN-95faAZtu4Tm" target="_blank">
+<i class="fa-brands fa-tiktok"></i>TikTok
+</a>
+
 </div>
 
 </div>
 </section>
 
-<!-- PRODUCTOS -->
-<section id="productos">
-<h2>Productos</h2>
-<div class="productos" id="lista"></div>
+<!-- RESEÑAS -->
+<section id="reseñas">
+
+<h2>Reseñas</h2>
+
+<button class="btn" onclick="openM()">Dejar reseña</button>
+
+<div class="reseñas-box" id="list"></div>
+
 </section>
 
 <!-- MODAL -->
 <div class="modal" id="modal">
-<div class="modal-box" id="contenido"></div>
+
+<div class="box">
+
+<div class="close" onclick="closeM()">✕</div>
+
+<div class="estrellas">
+<input type="radio" id="5" name="e" value="5"><label for="5">★</label>
+<input type="radio" id="4" name="e" value="4"><label for="4">★</label>
+<input type="radio" id="3" name="e" value="3"><label for="3">★</label>
+<input type="radio" id="2" name="e" value="2"><label for="2">★</label>
+<input type="radio" id="1" name="e" value="1"><label for="1">★</label>
+</div>
+
+<textarea id="txt"></textarea>
+
+<button class="btn" onclick="save()">Enviar</button>
+
+</div>
 </div>
 
 <footer>
@@ -100,86 +314,102 @@ footer{background:#055160;color:white;text-align:center;padding:20px;}
 
 <script>
 
-/* ADMIN */
-const ADMIN_PASSWORD = "1234";
-let admin = false;
-let taps = 0;
+let admin=false;
+let currentUser="";
+let taps=0;
 
-document.getElementById("adminTrigger").addEventListener("click", () => {
-    taps++;
-    setTimeout(()=>taps=0,2000);
+/* 🔐 5 TOQUES EN “SOLERA” */
+document.getElementById("logo").addEventListener("click",function(){
 
-    if(taps===5){
-        const p = prompt("Contraseña admin:");
-        if(p===ADMIN_PASSWORD){
-            admin = true;
-            alert("Modo admin activado");
-        } else {
-            alert("Incorrecto");
-        }
-        taps=0;
-    }
-});
+taps++;
+setTimeout(()=>taps=0,2000);
 
-/* PRODUCTOS */
-const productos = [
-{cat:"ropa",img:"vestido.jpg",nombre:"Vestido",precio:"19,99€"},
-{cat:"complementos",img:"bolso.jpg",nombre:"Bolso",precio:"14,99€"},
-{cat:"zapatos",img:"sandalia.jpg",nombre:"Sandalia",precio:"24,99€"}
-];
+if(taps===5){
+let pass=prompt("Contraseña admin:");
 
-function filtrar(cat){
-const cont=document.getElementById("lista");
-cont.innerHTML="";
-
-productos.filter(p=>p.cat===cat).forEach(p=>{
-let d=document.createElement("div");
-d.className="producto";
-d.innerHTML=`<img src="${p.img}"><p>${p.nombre}</p><b>${p.precio}</b>`;
-d.onclick=()=>abrir(p);
-cont.appendChild(d);
-});
+if(pass==="solera2026"){
+admin=true;
+alert("Modo admin activado");
+load();
+}else{
+alert("Incorrecto");
+}
 }
 
-/* MODAL */
-function abrir(p){
+});
 
+/* RESEÑAS */
+function openM(){
+currentUser=prompt("Tu nombre:");
+if(!currentUser)return;
 document.getElementById("modal").classList.add("activo");
-
-document.getElementById("contenido").innerHTML=`
-<h3>${p.nombre}</h3>
-<img src="${p.img}" style="width:100%;border-radius:10px;">
-<p><b>${p.precio}</b></p>
-
-<h4>Comentarios</h4>
-
-<div id="comments">
-
-<div class="comentario">
-<b>user1</b> · hoy
-<p>¿Disponible?</p>
-
-<div class="respuestas">
-<div class="comentario">
-<b>user2</b> · hoy
-<p>Sí 👍</p>
-</div>
-</div>
-
-${admin ? '<button onclick="alert(\'borrado admin\')">Eliminar</button>' : ''}
-</div>
-
-</div>
-
-<input placeholder="Escribe comentario...">
-<button>Enviar</button>
-`;
 }
 
-/* cerrar modal */
-document.getElementById("modal").onclick=e=>{
-if(e.target.id==="modal") e.target.classList.remove("activo");
-};
+function closeM(){
+document.getElementById("modal").classList.remove("activo");
+}
+
+function save(){
+
+let e=document.querySelector('input[name="e"]:checked');
+let t=document.getElementById("txt").value;
+
+if(!e||t==="")return;
+
+let d=JSON.parse(localStorage.getItem("r"))||[];
+
+d.push({
+id:Date.now(),
+user:currentUser,
+estrellas:e.value,
+texto:t
+});
+
+localStorage.setItem("r",JSON.stringify(d));
+
+load();
+closeM();
+}
+
+function del(id){
+
+let d=JSON.parse(localStorage.getItem("r"))||[];
+d=d.filter(r=>r.id!==id);
+localStorage.setItem("r",JSON.stringify(d));
+load();
+}
+
+function load(){
+
+let c=document.getElementById("list");
+c.innerHTML="";
+
+let d=JSON.parse(localStorage.getItem("r"))||[];
+
+d.forEach(r=>{
+
+let canDelete = admin || r.user === currentUser;
+
+let x=document.createElement("div");
+x.className="reseña";
+
+x.innerHTML=`
+<div style="display:flex;justify-content:space-between;align-items:center;">
+<div>
+<strong>${r.user}</strong><br>
+${"⭐".repeat(r.estrellas)}<br>
+<p>${r.texto}</p>
+</div>
+
+${canDelete ? `<button onclick="del(${r.id})" style="background:red;color:white;border:none;border-radius:5px;padding:5px 8px;cursor:pointer">✕</button>` : ""}
+</div>
+`;
+
+c.appendChild(x);
+});
+}
+
+load();
 
 </script>
 
