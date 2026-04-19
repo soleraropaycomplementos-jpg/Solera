@@ -17,6 +17,7 @@ background:#eaf6f6;
 padding-top:60px;
 }
 
+/* NAV */
 nav{
 background:#055160;
 position:fixed;
@@ -31,12 +32,6 @@ nav a{
 color:white;
 margin:0 12px;
 text-decoration:none;
-font-weight:600;
-}
-
-#userTag{
-color:white;
-margin-left:10px;
 font-weight:600;
 }
 
@@ -71,6 +66,7 @@ grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
 gap:20px;
 }
 
+/* CATEGORÍAS */
 .card{
 background:white;
 border-radius:15px;
@@ -192,6 +188,7 @@ font-size:22px;
 cursor:pointer;
 }
 
+/* COMMENTS */
 #comments{
 max-height:220px;
 overflow-y:auto;
@@ -219,9 +216,6 @@ margin-bottom:10px;
 <a href="#categorias">Categorías</a>
 <a href="#contacto">Contacto</a>
 <a href="#reseñas">Reseñas</a>
-
-<a href="#" onclick="openLogin()">Iniciar sesión</a>
-<span id="userTag"></span>
 </nav>
 
 <!-- NOVEDADES -->
@@ -275,21 +269,9 @@ margin-bottom:10px;
 <div class="reseñas-box" id="list"></div>
 </section>
 
-<!-- LOGIN -->
-<div class="modal" id="loginModal">
-<div class="box">
-<div class="close-left" onclick="closeLogin()">✕</div>
-<h2>Iniciar sesión</h2>
-<button class="btn" onclick="login('Google')">Google</button>
-<button class="btn" onclick="login('Facebook')">Facebook</button>
-<button class="btn" onclick="login('Apple')">Apple ID</button>
-</div>
-</div>
-
-<!-- PRODUCTO -->
+<!-- PRODUCTO MODAL -->
 <div class="modal" id="productModal">
 <div class="box">
-
 <div class="close-left" onclick="closeProduct()">✕</div>
 
 <div id="productContent"></div>
@@ -309,44 +291,49 @@ margin-bottom:10px;
 let admin=false;
 let taps=0;
 
-/* LOGIN */
-let user=localStorage.getItem("user")||"";
+/* USER */
+let currentUser = localStorage.getItem("user") || "user";
 
-function openLogin(){
-document.getElementById("loginModal").classList.add("activo");
+/* ASK USER */
+function askUser(){
+if(!currentUser || currentUser==="user"){
+let n = prompt("Escribe tu nombre:");
+if(n){
+currentUser=n;
+localStorage.setItem("user",n);
+}
+}
 }
 
-function closeLogin(){
-document.getElementById("loginModal").classList.remove("activo");
-}
+/* ADMIN 5 CLICS */
+document.addEventListener("DOMContentLoaded", () => {
 
-function login(type){
-let name=prompt("Nombre de usuario");
-if(!name)return;
+const logo = document.getElementById("logo");
 
-user=name;
-localStorage.setItem("user",user);
-document.getElementById("userTag").innerText="👤 "+user;
-closeLogin();
-}
+logo.addEventListener("click", () => {
 
-/* mostrar user */
-if(user){
-document.getElementById("userTag").innerText="👤 "+user;
-}
-
-/* ADMIN 5 CLICS FIJO */
-document.getElementById("logo").addEventListener("click",()=>{
 taps++;
+
 setTimeout(()=>taps=0,2000);
 
 if(taps===5){
+
 let pass=prompt("Contraseña admin:");
+
 if(pass==="solera2026"){
 admin=true;
 alert("Modo admin activado");
-}else alert("Incorrecto");
+load();
+loadComments();
+}else{
+alert("Incorrecto");
 }
+
+taps=0;
+}
+
+});
+
 });
 
 /* PRODUCTOS */
@@ -402,7 +389,7 @@ function closeProduct(){
 document.getElementById("productModal").classList.remove("activo");
 }
 
-/* SHARE NATIVO */
+/* SHARE */
 function shareProduct(){
 if(navigator.share){
 navigator.share({
@@ -410,12 +397,10 @@ title:"Solera",
 text:`${currentProduct.nombre} - ${currentProduct.precio}`,
 url:window.location.href
 });
-}else{
-alert("No compatible");
 }
 }
 
-/* COMENTARIOS */
+/* COMMENTS */
 function getComments(){
 return JSON.parse(localStorage.getItem("c_"+currentProduct.nombre))||[];
 }
@@ -425,29 +410,138 @@ localStorage.setItem("c_"+currentProduct.nombre,JSON.stringify(c));
 }
 
 function addComment(){
+
+askUser();
+
 let text=document.getElementById("commentText").value;
 if(!text)return;
 
 let c=getComments();
-c.push({user:user||"user",text:text,date:new Date().toLocaleDateString()});
+
+c.push({
+id:Date.now(),
+user:currentUser,
+text:text,
+date:new Date().toLocaleDateString(),
+replies:[]
+});
 
 saveComments(c);
 document.getElementById("commentText").value="";
 loadComments();
 }
 
+/* REPLIES */
+function replyComment(id){
+
+askUser();
+
+let text=prompt("Responder:");
+if(!text)return;
+
+let data=getComments();
+
+data=data.map(c=>{
+if(c.id===id){
+c.replies.push({
+user:currentUser,
+text:text,
+date:new Date().toLocaleDateString()
+});
+}
+return c;
+});
+
+saveComments(data);
+loadComments();
+}
+
+/* LOAD COMMENTS */
 function loadComments(){
+
 let c=document.getElementById("comments");
 c.innerHTML="";
+
 let data=getComments();
 
 data.forEach(cm=>{
+
+let replies="";
+
+cm.replies.forEach(r=>{
+replies+=`<div style="margin-left:15px;font-size:12px;background:#eee;padding:5px;border-radius:6px;margin-top:5px;">
+<strong>${r.user}</strong>: ${r.text}
+</div>`;
+});
+
 let div=document.createElement("div");
 div.className="reseña";
-div.innerHTML=`<strong>${cm.user}</strong> · ${cm.date}<p>${cm.text}</p>`;
+
+let canDelete = admin || cm.user===currentUser;
+
+div.innerHTML=`
+<strong>${cm.user}</strong> · ${cm.date}
+<p>${cm.text}</p>
+
+<button onclick="replyComment(${cm.id})" class="btn" style="padding:5px;font-size:12px;">Responder</button>
+
+${canDelete ? `<button onclick="deleteComment(${cm.id})" style="background:red;color:white;border:none;padding:5px;border-radius:6px;cursor:pointer">✕</button>`:""}
+
+${replies}
+`;
+
 c.appendChild(div);
 });
 }
+
+/* DELETE COMMENT */
+function deleteComment(id){
+let data=getComments();
+data=data.filter(c=>c.id!==id);
+saveComments(data);
+loadComments();
+}
+
+/* RESEÑAS */
+function openM(){
+askUser();
+document.getElementById("modal").classList.add("activo");
+}
+
+function load(){
+
+let c=document.getElementById("list");
+c.innerHTML="";
+
+let data=JSON.parse(localStorage.getItem("r"))||[];
+
+data.forEach(r=>{
+
+let canDelete=admin || r.user===currentUser;
+
+let div=document.createElement("div");
+div.className="reseña";
+
+div.innerHTML=`
+<strong>${r.user}</strong><br>
+${"⭐".repeat(r.estrellas)}<br>
+<p>${r.texto}</p>
+
+${canDelete?`<button onclick="del(${r.id})" style="background:red;color:white;border:none;padding:5px;border-radius:6px;">✕</button>`:""}
+`;
+
+c.appendChild(div);
+});
+}
+
+function del(id){
+let data=JSON.parse(localStorage.getItem("r"))||[];
+data=data.filter(r=>r.id!==id);
+localStorage.setItem("r",JSON.stringify(data));
+load();
+}
+
+load();
 
 </script>
 
