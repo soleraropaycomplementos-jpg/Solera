@@ -88,11 +88,6 @@ h2 {
     object-fit: cover;
 }
 
-.categoria-card h3 {
-    text-align: center;
-    padding: 10px;
-}
-
 /* PRODUCTOS */
 .caja {
     background: white;
@@ -100,17 +95,14 @@ h2 {
     margin: 10px auto;
     border-radius: 12px;
     max-width: 500px;
-    box-shadow: 0 3px 10px rgba(0,0,0,0.08);
     text-align: center;
+    box-shadow: 0 3px 10px rgba(0,0,0,0.08);
 }
 
 /* MODAL PRODUCTOS */
 .modal {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    inset: 0;
     background: rgba(0,0,0,0.6);
     display: none;
     justify-content: center;
@@ -134,6 +126,85 @@ h2 {
     text-align: right;
 }
 
+/* ================= NOVEDADES ================= */
+
+.novedades-wrapper {
+    display: flex;
+    align-items: center;
+}
+
+.novedades-slider {
+    display: flex;
+    gap: 15px;
+    overflow-x: auto;
+    width: 100%;
+    scroll-snap-type: x mandatory;
+    -webkit-overflow-scrolling: touch;
+}
+
+.novedades-slider::-webkit-scrollbar {
+    display: none;
+}
+
+.novedades-slider .categoria-card {
+    min-width: 200px;
+    scroll-snap-align: start;
+}
+
+/* FLECHAS PC */
+.flecha {
+    background: rgba(0,0,0,0.6);
+    color: white;
+    border: none;
+    font-size: 28px;
+    padding: 10px;
+    cursor: pointer;
+    border-radius: 50%;
+}
+
+/* 📱 MÓVIL: SIN FLECHAS + SWIPE NATURAL */
+@media (max-width: 768px) {
+    .flecha {
+        display: none !important;
+    }
+}
+
+/* AVISO */
+.aviso-overlay {
+    position: fixed;
+    inset: 0;
+    background: rgba(0,0,0,0.6);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    z-index: 99999;
+}
+
+.aviso-box {
+    background: white;
+    padding: 30px 50px;
+    border-radius: 12px;
+    font-size: 20px;
+    font-weight: bold;
+}
+
+/* CONTACTO */
+.social-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
+    gap: 15px;
+}
+
+.social-card {
+    background: white;
+    border-radius: 14px;
+    text-align: center;
+    padding: 15px;
+    text-decoration: none;
+    color: black;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+}
+
 /* ================= RESEÑAS ================= */
 
 #reseñas {
@@ -144,9 +215,9 @@ h2 {
 .reseñas-box {
     max-width: 600px;
     margin: auto;
-    height: 280px;
+    height: 300px;
     overflow-y: auto;
-    border: 2px solid #ddd;
+    border: 1px solid #ddd;
     border-radius: 12px;
     padding: 10px;
     background: #f9f9f9;
@@ -154,11 +225,12 @@ h2 {
 
 .reseña {
     background: white;
-    margin-bottom: 10px;
-    padding: 12px;
+    margin: 10px 0;
+    padding: 10px;
     border-radius: 10px;
 }
 
+/* BOTÓN */
 .btn-reseña {
     display: block;
     margin: 20px auto;
@@ -173,15 +245,12 @@ h2 {
 /* MODAL RESEÑA */
 .modal-reseña {
     position: fixed;
-    top: 0;
-    left: 0;
-    width: 100%;
-    height: 100%;
+    inset: 0;
     background: rgba(0,0,0,0.6);
     display: none;
     justify-content: center;
     align-items: center;
-    z-index: 9999;
+    z-index: 99999;
 }
 
 .modal-reseña.activo {
@@ -190,7 +259,7 @@ h2 {
 
 .modal-box {
     background: white;
-    padding: 25px;
+    padding: 20px;
     border-radius: 12px;
     width: 90%;
     max-width: 400px;
@@ -201,10 +270,12 @@ h2 {
     display: flex;
     flex-direction: row-reverse;
     justify-content: center;
-    font-size: 30px;
+    font-size: 28px;
 }
 
-.estrellas input { display: none; }
+.estrellas input {
+    display: none;
+}
 
 .estrellas label {
     color: lightgray;
@@ -221,15 +292,6 @@ textarea {
     width: 100%;
     margin-top: 10px;
     padding: 10px;
-}
-
-.modal-box button {
-    margin-top: 10px;
-    width: 100%;
-    padding: 10px;
-    background: #055160;
-    color: white;
-    border: none;
 }
 
 /* FOOTER */
@@ -253,15 +315,38 @@ footer {
 </header>
 
 <nav>
+<a href="#novedades">Novedades</a>
 <a href="#categorias">Categorías</a>
 <a href="#ropa">Ropa</a>
 <a href="#contacto">Contacto</a>
 <a href="#reseñas">Reseñas</a>
 </nav>
 
+<!-- NOVEDADES -->
+<section id="novedades">
+
+<h2>Novedades</h2>
+
+<div class="novedades-wrapper">
+<button class="flecha" onclick="move(-1)">‹</button>
+
+<div class="novedades-slider" id="slider">
+
+<a href="#r1" class="categoria-card"><img src="vestido1.jpg"><h3>Vestido</h3></a>
+<a href="#c1" class="categoria-card"><img src="bolso1.jpg"><h3>Bolso</h3></a>
+<a href="#z1" class="categoria-card"><img src="zapato1.jpg"><h3>Sandalia</h3></a>
+
+</div>
+
+<button class="flecha" onclick="move(1)">›</button>
+</div>
+
+</section>
+
 <!-- CATEGORÍAS -->
 <section id="categorias">
 <h2>Categorías</h2>
+
 <div class="categorias-grid">
 <a href="#ropa" class="categoria-card"><img src="ropa.jpg"><h3>Ropa</h3></a>
 <a href="#complementos" class="categoria-card"><img src="bolso.jpg"><h3>Complementos</h3></a>
@@ -279,13 +364,20 @@ footer {
 <!-- CONTACTO -->
 <section id="contacto">
 <h2>Contacto</h2>
-<p>Email y WhatsApp aquí</p>
+
+<div class="social-grid">
+
+<a href="mailto:soleraropaycomplementos@gmail.com" class="social-card">Gmail</a>
+
+<a href="https://api.whatsapp.com/send?phone=34643319232&text=Buenas%2C%20me%20gustar%C3%ADa%20obtener%20informaci%C3%B3n%20🌞🏖️" class="social-card">WhatsApp</a>
+
+</div>
 </section>
 
-<!-- ================= RESEÑAS ================= -->
-
+<!-- RESEÑAS -->
 <section id="reseñas">
-<h2>Opiniones de clientes</h2>
+
+<h2>Reseñas</h2>
 
 <button class="btn-reseña" onclick="abrir()">Dejar reseña</button>
 
@@ -297,8 +389,6 @@ footer {
 <div class="modal-reseña" id="modal">
 
 <div class="modal-box">
-
-<h3>Escribe tu reseña</h3>
 
 <div class="estrellas">
 <input type="radio" id="5" name="e" value="5"><label for="5">★</label>
@@ -323,42 +413,58 @@ footer {
 
 <script>
 
+/* NOVEDADES */
+function move(dir){
+    const slider = document.getElementById("slider");
+    const max = slider.scrollWidth - slider.clientWidth;
+    const next = slider.scrollLeft + dir * 220;
+
+    if(next < 0 || next > max){
+        const div = document.createElement("div");
+        div.className="aviso-overlay";
+        div.innerHTML="<div class='aviso-box'>No hay resultados</div>";
+        document.body.appendChild(div);
+        setTimeout(()=>div.remove(),1500);
+        return;
+    }
+
+    slider.scrollBy({left: dir*220, behavior:"smooth"});
+}
+
+/* RESEÑAS */
 function abrir(){ document.getElementById("modal").classList.add("activo"); }
 function cerrar(){ document.getElementById("modal").classList.remove("activo"); }
 
 function guardar(){
 
-    const est = document.querySelector('input[name="e"]:checked');
-    const txt = document.getElementById("txt").value;
+const est = document.querySelector('input[name="e"]:checked');
+const txt = document.getElementById("txt").value;
 
-    if(!est || txt === "") return alert("Completa todo");
+if(!est || txt==="") return;
 
-    let datos = JSON.parse(localStorage.getItem("r")) || [];
+let data = JSON.parse(localStorage.getItem("r"))||[];
 
-    datos.push({ estrellas: est.value, texto: txt });
+data.push({estrellas:est.value,texto:txt});
 
-    localStorage.setItem("r", JSON.stringify(datos));
+localStorage.setItem("r",JSON.stringify(data));
 
-    cerrar();
-    mostrar();
+cerrar();
+mostrar();
 }
 
 function mostrar(){
 
-    const cont = document.getElementById("lista");
-    cont.innerHTML = "";
+const c=document.getElementById("lista");
+c.innerHTML="";
 
-    let datos = JSON.parse(localStorage.getItem("r")) || [];
+let data=JSON.parse(localStorage.getItem("r"))||[];
 
-    datos.forEach(r => {
-
-        const div = document.createElement("div");
-        div.className = "reseña";
-
-        div.innerHTML = "⭐".repeat(r.estrellas) + "<p>" + r.texto + "</p>";
-
-        cont.appendChild(div);
-    });
+data.forEach(r=>{
+const d=document.createElement("div");
+d.className="reseña";
+d.innerHTML="⭐".repeat(r.estrellas)+"<p>"+r.texto+"</p>";
+c.appendChild(d);
+});
 
 }
 
