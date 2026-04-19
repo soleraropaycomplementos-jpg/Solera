@@ -108,6 +108,12 @@ color:black;
 box-shadow:0 4px 10px rgba(0,0,0,0.1);
 }
 
+.social-card i{
+font-size:22px;
+margin-bottom:5px;
+display:block;
+}
+
 /* RESEÑAS */
 .reseñas-box{
 max-width:600px;
@@ -127,7 +133,7 @@ padding:10px;
 border-radius:10px;
 }
 
-/* MODAL GENERAL */
+/* MODAL */
 .modal{
 position:fixed;
 inset:0;
@@ -184,7 +190,7 @@ margin-top:10px;
 padding:10px;
 }
 
-/* PRODUCTOS MODAL */
+/* PRODUCTO */
 #productBox img{
 width:100%;
 border-radius:10px;
@@ -244,17 +250,12 @@ padding:20px;
 <h2>Ropa</h2>
 
 <div class="grid">
-<div class="card" onclick="openProduct('vestido')">
-<img src="vestido.jpg">
-<h3>Vestido playa</h3>
-<p>19,99€</p>
-</div>
+<div class="card"><img src="vestido.jpg"><h3>Vestido playa</h3></div>
 </div>
 </section>
 
 <!-- CONTACTO -->
 <section id="contacto">
-
 <h2>Contacto</h2>
 
 <div class="social-grid">
@@ -264,7 +265,6 @@ padding:20px;
 <a class="social-card" href="#"><i class="fa-brands fa-facebook"></i>Facebook</a>
 <a class="social-card" href="#"><i class="fa-brands fa-tiktok"></i>TikTok</a>
 </div>
-
 </section>
 
 <!-- RESEÑAS -->
@@ -273,6 +273,10 @@ padding:20px;
 <h2>Reseñas</h2>
 
 <button class="btn" onclick="openM()">Dejar reseña</button>
+
+<button class="btn" onclick="adminLogin()" style="background:#222;">
+Modo admin
+</button>
 
 <div class="reseñas-box" id="list"></div>
 
@@ -299,7 +303,7 @@ padding:20px;
 </div>
 </div>
 
-<!-- MODAL PRODUCTO -->
+<!-- PRODUCTO -->
 <div class="modal" id="productModal">
 <div class="box" id="productBox"></div>
 </div>
@@ -310,8 +314,26 @@ padding:20px;
 
 <script>
 
-/* RESEÑAS */
+/* ===== USUARIO SIMULADO ===== */
+let currentUser = "";
+let admin = false;
+
+/* ===== ADMIN ===== */
+function adminLogin(){
+let pass = prompt("Contraseña admin:");
+if(pass==="solera2026"){
+admin = true;
+alert("Modo admin activado");
+load();
+}else{
+alert("Incorrecto");
+}
+}
+
+/* ===== RESEÑAS ===== */
 function openM(){
+currentUser = prompt("Tu nombre:");
+if(!currentUser) return;
 document.getElementById("modal").classList.add("activo");
 }
 
@@ -323,51 +345,62 @@ function save(){
 
 let e=document.querySelector('input[name="e"]:checked');
 let t=document.getElementById("txt").value;
+
 if(!e||t==="")return;
 
 let d=JSON.parse(localStorage.getItem("r"))||[];
-d.push({estrellas:e.value,texto:t});
+
+d.push({
+id:Date.now(),
+user:currentUser,
+estrellas:e.value,
+texto:t
+});
+
 localStorage.setItem("r",JSON.stringify(d));
+
 load();
 closeM();
 }
 
+function del(id){
+let d=JSON.parse(localStorage.getItem("r"))||[];
+d=d.filter(r=>r.id!==id);
+localStorage.setItem("r",JSON.stringify(d));
+load();
+}
+
 function load(){
+
 let c=document.getElementById("list");
 c.innerHTML="";
+
 let d=JSON.parse(localStorage.getItem("r"))||[];
 
 d.forEach(r=>{
+
+let canDelete = admin || r.user === currentUser;
+
 let x=document.createElement("div");
 x.className="reseña";
-x.innerHTML="⭐".repeat(r.estrellas)+"<p>"+r.texto+"</p>";
+
+x.innerHTML=`
+<div style="display:flex;justify-content:space-between;align-items:center;">
+<div>
+<strong>${r.user}</strong><br>
+${"⭐".repeat(r.estrellas)}<br>
+<p>${r.texto}</p>
+</div>
+
+${canDelete ? `<button onclick="del(${r.id})" style="background:red;color:white;border:none;border-radius:5px;padding:5px 8px;cursor:pointer">✕</button>` : ""}
+</div>
+`;
+
 c.appendChild(x);
 });
 }
+
 load();
-
-/* PRODUCTOS */
-function openProduct(id){
-
-const p={
-vestido:{img:"vestido.jpg",title:"Vestido playa",price:"19,99€",desc:"Vestido de verano ligero."}
-};
-
-let x=p[id];
-
-document.getElementById("productBox").innerHTML=`
-<img src="${x.img}">
-<h2>${x.title}</h2>
-<h3>${x.price}</h3>
-<p>${x.desc}</p>
-`;
-
-document.getElementById("productModal").classList.add("activo");
-}
-
-document.getElementById("productModal").onclick=function(){
-this.classList.remove("activo");
-};
 
 </script>
 
