@@ -39,7 +39,6 @@ font-weight:600;
 header{
 height:340px;
 position:relative;
-cursor:pointer;
 }
 
 header img{
@@ -56,6 +55,10 @@ left:50%;
 transform:translate(-50%,-50%);
 color:white;
 text-align:center;
+}
+
+#logo{
+cursor:pointer;
 }
 
 /* GRID */
@@ -79,7 +82,7 @@ height:160px;
 object-fit:cover;
 }
 
-/* BOTONES */
+/* BOTÓN */
 .btn{
 display:block;
 margin:15px auto;
@@ -201,8 +204,9 @@ padding:20px;
 
 <header>
 <img src="playa.jpg">
+
 <div class="texto">
-<h1>Solera</h1>
+<h1 id="logo">Solera</h1>
 <p>Moda verano</p>
 </div>
 </header>
@@ -218,6 +222,7 @@ padding:20px;
 <!-- NOVEDADES -->
 <section id="novedades">
 <h2>Novedades</h2>
+
 <div class="grid">
 <div class="card"><img src="vestido.jpg"><h3>Vestido</h3></div>
 <div class="card"><img src="bolso.jpg"><h3>Bolso</h3></div>
@@ -228,6 +233,7 @@ padding:20px;
 <!-- CATEGORÍAS -->
 <section id="categorias">
 <h2>Categorías</h2>
+
 <div class="grid">
 <div class="card"><img src="ropa.jpg"><h3>Ropa</h3></div>
 <div class="card"><img src="bolso.jpg"><h3>Complementos</h3></div>
@@ -240,6 +246,7 @@ padding:20px;
 <h2>Contacto</h2>
 
 <div class="social-grid">
+
 <a class="social-card" href="mailto:soleraropaycomplementos@gmail.com">
 <i class="fa-solid fa-envelope"></i>Gmail
 </a>
@@ -259,6 +266,7 @@ padding:20px;
 <a class="social-card" href="#">
 <i class="fa-brands fa-tiktok"></i>TikTok
 </a>
+
 </div>
 </section>
 
@@ -275,6 +283,7 @@ padding:20px;
 
 <!-- MODAL -->
 <div class="modal" id="modal">
+
 <div class="box">
 
 <div class="close" onclick="closeM()">✕</div>
@@ -304,8 +313,8 @@ let admin=false;
 let currentUser="";
 let taps=0;
 
-/* 🔐 5 TOQUES HEADER (MÓVIL) */
-document.querySelector("header").addEventListener("click",function(){
+/* 🔐 5 TOQUES EN “SOLERA” */
+document.getElementById("logo").addEventListener("click",function(){
 
 taps++;
 setTimeout(()=>taps=0,2000);
