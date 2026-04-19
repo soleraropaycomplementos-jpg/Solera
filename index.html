@@ -372,6 +372,7 @@ updateCart();
 toast();
 }
 
+/* 🔥 AQUÍ ESTÁ EL CAMBIO IMPORTANTE: MINIATURAS */
 function updateCart(){
 cartCount.innerText=cart.length;
 
@@ -382,8 +383,15 @@ cart.forEach((p,i)=>{
 total+=p.precio;
 
 cartList.innerHTML+=`
-<div style="display:flex;justify-content:space-between;">
-${p.nombre} - ${p.precio}€
+<div style="display:flex;justify-content:space-between;align-items:center;gap:10px;margin:8px 0;">
+<div style="display:flex;align-items:center;gap:10px;">
+<img src="${p.img}" style="width:40px;height:40px;object-fit:cover;border-radius:8px;">
+<div>
+<div>${p.nombre}</div>
+<small>${p.precio}€</small>
+</div>
+</div>
+
 <button onclick="cart.splice(${i},1);updateCart()">❌</button>
 </div>`;
 });
