@@ -17,7 +17,6 @@ background:#eaf6f6;
 padding-top:60px;
 }
 
-/* NAV */
 nav{
 background:#055160;
 position:fixed;
@@ -32,6 +31,12 @@ nav a{
 color:white;
 margin:0 12px;
 text-decoration:none;
+font-weight:600;
+}
+
+#userTag{
+color:white;
+margin-left:10px;
 font-weight:600;
 }
 
@@ -59,14 +64,13 @@ text-align:center;
 
 #logo{cursor:pointer;}
 
-/* GRID GENERAL */
+/* GRID */
 .grid{
 display:grid;
 grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
 gap:20px;
 }
 
-/* CATEGORÍAS */
 .card{
 background:white;
 border-radius:15px;
@@ -82,7 +86,7 @@ height:160px;
 object-fit:cover;
 }
 
-/* 🔥 PRODUCTOS GRID NUEVO */
+/* PRODUCTOS */
 #productGrid{
 display:grid;
 grid-template-columns:repeat(auto-fill, minmax(180px, 1fr));
@@ -90,41 +94,23 @@ gap:18px;
 margin-top:20px;
 }
 
-/* PRODUCTO CARD NUEVO */
 .producto-card{
 background:white;
 border-radius:16px;
 overflow:hidden;
 box-shadow:0 6px 18px rgba(0,0,0,0.12);
 cursor:pointer;
-transition:transform .2s ease, box-shadow .2s ease;
-display:flex;
-flex-direction:column;
-justify-content:space-between;
+transition:.2s;
 }
 
 .producto-card:hover{
 transform:translateY(-4px);
-box-shadow:0 10px 25px rgba(0,0,0,0.18);
 }
 
 .producto-card img{
 width:100%;
 height:190px;
 object-fit:cover;
-}
-
-.producto-card h3{
-margin:10px 0 5px;
-font-size:15px;
-font-weight:600;
-}
-
-.producto-card p{
-margin:0 0 12px;
-font-weight:600;
-color:#055160;
-text-align:center;
 }
 
 /* BOTÓN */
@@ -154,12 +140,6 @@ text-align:center;
 text-decoration:none;
 color:black;
 box-shadow:0 4px 10px rgba(0,0,0,0.1);
-}
-
-.social-card i{
-font-size:22px;
-margin-bottom:5px;
-display:block;
 }
 
 /* RESEÑAS */
@@ -212,7 +192,6 @@ font-size:22px;
 cursor:pointer;
 }
 
-/* COMENTARIOS SCROLL */
 #comments{
 max-height:220px;
 overflow-y:auto;
@@ -221,37 +200,6 @@ border:1px solid #ddd;
 border-radius:10px;
 background:#fafafa;
 margin-bottom:10px;
-}
-
-/* ESTRELLAS */
-.estrellas{
-display:flex;
-flex-direction:row-reverse;
-justify-content:center;
-font-size:34px;
-margin-bottom:15px;
-}
-
-.estrellas input{display:none;}
-.estrellas label{color:lightgray;cursor:pointer;}
-
-.estrellas input:checked ~ label,
-.estrellas label:hover,
-.estrellas label:hover ~ label{
-color:gold;
-}
-
-textarea{
-width:100%;
-margin-top:10px;
-padding:10px;
-}
-
-footer{
-background:#055160;
-color:white;
-text-align:center;
-padding:20px;
 }
 </style>
 </head>
@@ -271,6 +219,9 @@ padding:20px;
 <a href="#categorias">Categorías</a>
 <a href="#contacto">Contacto</a>
 <a href="#reseñas">Reseñas</a>
+
+<a href="#" onclick="openLogin()">Iniciar sesión</a>
+<span id="userTag"></span>
 </nav>
 
 <!-- NOVEDADES -->
@@ -301,9 +252,7 @@ padding:20px;
 </div>
 </div>
 
-<!-- PRODUCTOS GRID -->
 <div id="productGrid"></div>
-
 </section>
 
 <!-- CONTACTO -->
@@ -311,27 +260,11 @@ padding:20px;
 <h2>Contacto</h2>
 
 <div class="social-grid">
-
-<a class="social-card" href="mailto:soleraropaycomplementos@gmail.com">
-<i class="fa-solid fa-envelope"></i>Gmail
-</a>
-
-<a class="social-card" href="https://wa.me/34643319232">
-<i class="fa-brands fa-whatsapp"></i>WhatsApp
-</a>
-
-<a class="social-card" href="https://www.instagram.com/solerashopp" target="_blank">
-<i class="fa-brands fa-instagram"></i>Instagram
-</a>
-
-<a class="social-card" href="https://www.facebook.com/share/18feHPTPbK/" target="_blank">
-<i class="fa-brands fa-facebook"></i>Facebook
-</a>
-
-<a class="social-card" href="https://www.tiktok.com/@solerashop8" target="_blank">
-<i class="fa-brands fa-tiktok"></i>TikTok
-</a>
-
+<a class="social-card" href="mailto:soleraropaycomplementos@gmail.com"><i class="fa-solid fa-envelope"></i>Gmail</a>
+<a class="social-card" href="https://wa.me/34643319232"><i class="fa-brands fa-whatsapp"></i>WhatsApp</a>
+<a class="social-card" href="https://www.instagram.com/solerashopp"><i class="fa-brands fa-instagram"></i>Instagram</a>
+<a class="social-card" href="https://www.facebook.com/share/18feHPTPbK/"><i class="fa-brands fa-facebook"></i>Facebook</a>
+<a class="social-card" href="https://www.tiktok.com/@solerashop8"><i class="fa-brands fa-tiktok"></i>TikTok</a>
 </div>
 </section>
 
@@ -342,7 +275,18 @@ padding:20px;
 <div class="reseñas-box" id="list"></div>
 </section>
 
-<!-- MODAL PRODUCTO -->
+<!-- LOGIN -->
+<div class="modal" id="loginModal">
+<div class="box">
+<div class="close-left" onclick="closeLogin()">✕</div>
+<h2>Iniciar sesión</h2>
+<button class="btn" onclick="login('Google')">Google</button>
+<button class="btn" onclick="login('Facebook')">Facebook</button>
+<button class="btn" onclick="login('Apple')">Apple ID</button>
+</div>
+</div>
+
+<!-- PRODUCTO -->
 <div class="modal" id="productModal">
 <div class="box">
 
@@ -359,17 +303,39 @@ padding:20px;
 </div>
 </div>
 
-<footer>
-<p>© 2026 Solera</p>
-</footer>
-
 <script>
 
-/* ADMIN */
+/* ADMIN FIX */
 let admin=false;
-let currentUser="";
 let taps=0;
 
+/* LOGIN */
+let user=localStorage.getItem("user")||"";
+
+function openLogin(){
+document.getElementById("loginModal").classList.add("activo");
+}
+
+function closeLogin(){
+document.getElementById("loginModal").classList.remove("activo");
+}
+
+function login(type){
+let name=prompt("Nombre de usuario");
+if(!name)return;
+
+user=name;
+localStorage.setItem("user",user);
+document.getElementById("userTag").innerText="👤 "+user;
+closeLogin();
+}
+
+/* mostrar user */
+if(user){
+document.getElementById("userTag").innerText="👤 "+user;
+}
+
+/* ADMIN 5 CLICS FIJO */
 document.getElementById("logo").addEventListener("click",()=>{
 taps++;
 setTimeout(()=>taps=0,2000);
@@ -420,14 +386,12 @@ let currentProduct=null;
 
 function openProduct(p){
 currentProduct=p;
-
 document.getElementById("productModal").classList.add("activo");
 
 document.getElementById("productContent").innerHTML=`
-<img src="${p.img}" style="width:100%;max-height:420px;object-fit:contain;background:#f5f5f5;border-radius:12px;">
+<img src="${p.img}" style="width:100%;max-height:400px;object-fit:contain;">
 <h3>${p.nombre}</h3>
 <p>${p.precio}</p>
-
 <button class="btn" onclick="shareProduct()">Compartir</button>
 `;
 
@@ -440,19 +404,14 @@ document.getElementById("productModal").classList.remove("activo");
 
 /* SHARE NATIVO */
 function shareProduct(){
-
-const text = `Mira este producto de Solera: ${currentProduct.nombre} - ${currentProduct.precio}`;
-const url = window.location.href;
-
 if(navigator.share){
 navigator.share({
 title:"Solera",
-text:text,
-url:url
+text:`${currentProduct.nombre} - ${currentProduct.precio}`,
+url:window.location.href
 });
 }else{
-navigator.clipboard.writeText(text+" "+url);
-alert("Copiado 📋");
+alert("No compatible");
 }
 }
 
@@ -470,7 +429,7 @@ let text=document.getElementById("commentText").value;
 if(!text)return;
 
 let c=getComments();
-c.push({id:Date.now(),user:currentUser||"user",text:text,date:new Date().toLocaleDateString()});
+c.push({user:user||"user",text:text,date:new Date().toLocaleDateString()});
 
 saveComments(c);
 document.getElementById("commentText").value="";
