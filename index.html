@@ -347,10 +347,40 @@ padding:4px 8px;
 </div>
 
 <script>
+let cart = [];
+let currentProduct = null;
+let stars = 0;
 
-let cart=[];
-let currentProduct=null;
-let stars=0;
+function addToCart(name, price) {
+  cart.push({
+    name: name,
+    price: Number(price)
+  });
+
+  updateCart();
+}
+
+function updateCart() {
+  let total = 0;
+
+  const cartList = document.getElementById("cartList");
+  const totalEl = document.getElementById("total");
+
+  cartList.innerHTML = "";
+
+  cart.forEach(item => {
+    total += item.price;
+
+    cartList.innerHTML += `
+      <div style="margin-bottom:10px;">
+        ${item.name} - ${item.price}€
+      </div>
+    `;
+  });
+
+  totalEl.textContent = "Total: " + total + "€";
+}
+</script>
 
 /* ESTRELLAS */
 function setStars(n){
