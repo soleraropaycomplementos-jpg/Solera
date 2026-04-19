@@ -221,7 +221,6 @@ cursor:pointer;
 z-index:99999;
 }
 
-/* 🔔 TOAST */
 #toast{
 position:fixed;
 bottom:20px;
@@ -229,13 +228,12 @@ left:50%;
 transform:translateX(-50%);
 background:#055160;
 color:white;
-padding:18px 22px;
-border-radius:12px;
+padding:14px 22px;
+border-radius:10px;
 display:none;
 z-index:99999;
-font-weight:700;
+font-weight:600;
 font-size:18px;
-text-align:center;
 }
 
 </style>
@@ -258,10 +256,12 @@ text-align:center;
 <a href="#reseñas">Reseñas</a>
 </nav>
 
+<!-- CARRITO -->
 <div id="cartIcon" onclick="openCart()">
 🛒 <span id="cartCount">0</span>
 </div>
 
+<!-- NOVEDADES -->
 <section id="novedades">
 <h2>Novedades</h2>
 <div class="grid">
@@ -271,6 +271,7 @@ text-align:center;
 </div>
 </section>
 
+<!-- CATEGORÍAS -->
 <section id="categorias">
 <h2>Categorías</h2>
 
@@ -283,6 +284,7 @@ text-align:center;
 <div id="productGrid"></div>
 </section>
 
+<!-- CONTACTO -->
 <section id="contacto">
 <h2>Contacto</h2>
 
@@ -295,74 +297,60 @@ text-align:center;
 </div>
 </section>
 
+<!-- RESEÑAS -->
 <section id="reseñas">
 <h2>Reseñas</h2>
 <button class="btn" onclick="openM()">Dejar reseña</button>
 <div class="reseñas-box" id="list"></div>
 </section>
 
-<!-- MODALES -->
+<!-- PRODUCTO POPUP -->
 <div class="modal" id="productModal">
 <div class="box">
 <div class="close-left" onclick="closeProduct()">✕</div>
+
 <div id="productContent"></div>
+
+<button class="btn" onclick="addFromModal()">Añadir al carrito</button>
+<button class="btn" onclick="shareProduct()">Compartir</button>
+
 </div>
 </div>
 
-<div class="modal" id="modal">
-<div class="box">
-<div class="close-left" onclick="modal.classList.remove('activo')">✕</div>
-<div class="estrellas">
-<input type="radio" id="5" name="e" value="5"><label for="5">★</label>
-<input type="radio" id="4" name="e" value="4"><label for="4">★</label>
-<input type="radio" id="3" name="e" value="3"><label for="3">★</label>
-<input type="radio" id="2" name="e" value="2"><label for="2">★</label>
-<input type="radio" id="1" name="e" value="1"><label for="1">★</label>
-</div>
-<textarea id="txt"></textarea>
-<button class="btn" onclick="saveReview()">Enviar</button>
-</div>
-</div>
-
+<!-- CARRITO -->
 <div class="modal" id="cartModal">
 <div class="box">
+
 <div class="close-left" onclick="closeCart()">✕</div>
 
-<h2>Tu carrito</h2>
+<h2>Carrito</h2>
 <div id="cartList"></div>
 
 <h3 id="total">Total: 0€</h3>
 
 <hr>
 
-<input id="cname" placeholder="Nombre"><br><br>
-<input id="caddress" placeholder="Dirección"><br><br>
-<input id="cphone" placeholder="Teléfono"><br><br>
+<input id="name" placeholder="Nombre">
+<input id="address" placeholder="Dirección">
+<input id="phone" placeholder="Teléfono">
 
-<!-- MÉTODO DE PAGO -->
-<h3>Método de pago</h3>
-<button class="btn" onclick="setPay('Bizum')">Bizum</button>
-<button class="btn" onclick="setPay('Transferencia')">Transferencia</button>
-<button class="btn" onclick="setPay('Contra reembolso')">Contra reembolso</button>
+<select id="payment">
+<option>Bizum</option>
+<option>Transferencia</option>
+<option>Contra reembolso</option>
+</select>
 
-<p>Seleccionado: <b id="paySelected">Bizum</b></p>
-
-<button class="btn" onclick="checkout()">Confirmar pedido</button>
+<button class="btn" onclick="checkout()">Finalizar pedido</button>
 
 </div>
 </div>
 
-<div id="toast">✔ Añadido al carrito</div>
+<div id="toast">Añadido al carrito ✔</div>
 
 <script>
 
 let cart=[];
-let paymentMethod="Bizum";
-
-function setPay(p){
-paymentMethod=p;
-document.getElementById("paySelected").innerText=p;
-}
+let currentProduct=null;
 
 const productos=[
 {cat:"ropa",img:"vestido1.jpg",nombre:"Vestido verano",precio:19.99},
@@ -372,11 +360,13 @@ const productos=[
 
 document.querySelectorAll('.card[data-cat]').forEach(card=>{
 card.onclick=()=>{
+
 let cat=card.dataset.cat;
 let grid=document.getElementById("productGrid");
 grid.innerHTML="";
 
 productos.filter(p=>p.cat===cat).forEach(p=>{
+
 let div=document.createElement("div");
 div.className="producto-card";
 
@@ -384,34 +374,35 @@ div.innerHTML=`
 <img src="${p.img}">
 <h3>${p.nombre}</h3>
 <p>${p.precio}€</p>
-<button class="btn" onclick='addFromModal("${p.nombre}",${p.precio})'>Añadir</button>
+<button class="btn">Añadir</button>
 `;
 
 div.onclick=()=>openProduct(p);
 
+div.querySelector("button").onclick=(e)=>{
+e.stopPropagation();
+cart.push({...p});
+updateCart();
+showToast();
+};
+
 grid.appendChild(div);
+
 });
+
 };
 });
 
-function addFromModal(n,p){
-cart.push({nombre:n,precio:p,cantidad:1});
-updateCart();
-toast();
-}
-
 function updateCart(){
-document.getElementById("cartCount").innerText=cart.length;
+cartCount.innerText=cart.length;
 
-let list=document.getElementById("cartList");
 let total=0;
-
-list.innerHTML="";
+cartList.innerHTML="";
 
 cart.forEach((p,i)=>{
 total+=p.precio;
 
-list.innerHTML+=`
+cartList.innerHTML+=`
 <div>
 ${p.nombre} - ${p.precio}€
 <button onclick="cart.splice(${i},1);updateCart()">❌</button>
@@ -419,41 +410,66 @@ ${p.nombre} - ${p.precio}€
 `;
 });
 
-document.getElementById("total").innerText="Total: "+total.toFixed(2)+"€";
+totalEl.innerText="Total: "+total.toFixed(2)+"€";
 }
 
-function openCart(){cartModal.classList.add("activo");}
-function closeCart(){cartModal.classList.remove("activo");}
+function openCart(){
+cartModal.classList.add("activo");
+}
 
-function toast(){
-let t=document.getElementById("toast");
-t.style.display="block";
-setTimeout(()=>t.style.display="none",1500);
+function closeCart(){
+cartModal.classList.remove("activo");
+}
+
+function openProduct(p){
+currentProduct=p;
+productModal.classList.add("activo");
+
+productContent.innerHTML=`
+<img src="${p.img}" style="width:100%">
+<h2>${p.nombre}</h2>
+<p>${p.precio}€</p>
+`;
+}
+
+function closeProduct(){
+productModal.classList.remove("activo");
+}
+
+function addFromModal(){
+cart.push({...currentProduct});
+updateCart();
+showToast();
+}
+
+function shareProduct(){
+navigator.share?.({
+title:"Solera",
+text:currentProduct.nombre,
+url:location.href
+});
+}
+
+function showToast(){
+toast.style.display="block";
+setTimeout(()=>toast.style.display="none",1500);
 }
 
 function checkout(){
 
-let name=cname.value;
-let address=caddress.value;
-let phone=cphone.value;
-
-let text="🛍️ PEDIDO SOLERA\n\n";
-
-text+="Nombre: "+name+"\n";
-text+="Dirección: "+address+"\n";
-text+="Teléfono: "+phone+"\n";
-text+="Pago: "+paymentMethod+"\n\n";
-
-let total=0;
+let msg="🛍 Pedido Solera\n\n";
 
 cart.forEach(p=>{
-text+="- "+p.nombre+" x1\n";
-total+=p.precio;
+msg+=`- ${p.nombre} ${p.precio}€\n`;
 });
 
-text+="\nTOTAL: "+total.toFixed(2)+"€";
+msg+=`\nNombre: ${name.value}
+Dirección: ${address.value}
+Tel: ${phone.value}
+Pago: ${payment.value}`;
 
-window.open("https://wa.me/34643319232?text="+encodeURIComponent(text),"_blank");
+window.open("https://wa.me/34643319232?text="+encodeURIComponent(msg),"_blank");
+
 }
 
 </script>
