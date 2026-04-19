@@ -347,39 +347,86 @@ padding:4px 8px;
 </div>
 
 <script>
+
 let cart = [];
 let currentProduct = null;
 let stars = 0;
 
-function addToCart(name, price) {
+/* AÑADIR DESDE BOTÓN */
+function addToCart(e, name, price, img){
+  e.stopPropagation();
+
   cart.push({
-    name: name,
-    price: Number(price)
+    nombre: name,
+    precio: Number(price),
+    img: img || "",
+    cantidad: 1
   });
 
   updateCart();
 }
 
-function updateCart() {
+/* AÑADIR DESDE MODAL */
+function addFromModal(){
+  cart.push({
+    nombre: currentProduct.nombre,
+    precio: Number(currentProduct.precio),
+    img: currentProduct.img,
+    cantidad: 1
+  });
+
+  updateCart();
+}
+
+/* ACTUALIZAR CARRITO */
+function updateCart(){
+
+  cartCount.innerText = cart.length;
+
+  let list = document.getElementById("cartList");
+  list.innerHTML = "";
+
   let total = 0;
 
-  const cartList = document.getElementById("cartList");
-  const totalEl = document.getElementById("total");
+  cart.forEach((p, i) => {
 
-  cartList.innerHTML = "";
+    let qty = p.cantidad || 1;
 
-  cart.forEach(item => {
-    total += item.price;
+    let precio = Number(p.precio) || 0;
 
-    cartList.innerHTML += `
-      <div style="margin-bottom:10px;">
-        ${item.name} - ${item.price}€
+    total += precio * qty;
+
+    list.innerHTML += `
+      <div class="cart-item">
+        <img src="${p.img || ''}">
+        <div>${p.nombre}</div>
+
+        <div class="qty">
+          <button onclick="changeQty(${i},-1)">-</button>
+          ${qty}
+          <button onclick="changeQty(${i},1)">+</button>
+        </div>
+
+        <div>${(precio * qty).toFixed(2)}€</div>
       </div>
     `;
   });
 
-  totalEl.textContent = "Total: " + total + "€";
+  document.getElementById("total").innerText =
+    "Total: " + total.toFixed(2) + "€";
 }
+
+/* CAMBIAR CANTIDAD */
+function changeQty(i, v){
+  cart[i].cantidad = (cart[i].cantidad || 1) + v;
+
+  if(cart[i].cantidad <= 0){
+    cart.splice(i, 1);
+  }
+
+  updateCart();
+}
+
 </script>
 
 <script>
