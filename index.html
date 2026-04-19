@@ -8,7 +8,7 @@
 
 <style>
 
-html, body{
+html,body{
 margin:0;
 font-family:Poppins,sans-serif;
 background:#eaf6f6;
@@ -55,6 +55,7 @@ text-align:center;
 
 #logo{
 cursor:pointer;
+user-select:none;
 }
 
 .grid{
@@ -85,7 +86,6 @@ overflow:hidden;
 box-shadow:0 6px 18px rgba(0,0,0,0.12);
 text-align:center;
 padding-bottom:10px;
-position:relative;
 }
 
 .producto-card img{
@@ -105,33 +105,40 @@ border-radius:8px;
 cursor:pointer;
 }
 
-.small-btns{
-display:flex;
-justify-content:center;
-gap:8px;
-margin-top:5px;
-}
-
-.small-btns button{
-font-size:12px;
-padding:6px 10px;
+/* CART ICON */
+#cartIcon{
+position:fixed;
+top:15px;
+right:15px;
+background:#055160;
+color:white;
+padding:10px 14px;
+border-radius:50px;
 cursor:pointer;
+z-index:9999;
 }
 
-/* SOCIAL */
-.social-grid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
-gap:15px;
+/* MODAL */
+.modal{
+position:fixed;
+inset:0;
+background:rgba(0,0,0,0.7);
+display:none;
+justify-content:center;
+align-items:center;
+z-index:9999;
 }
 
-.social-card{
+.modal.activo{display:flex;}
+
+.box{
 background:white;
-padding:15px;
-border-radius:12px;
+padding:25px;
+border-radius:14px;
+width:95%;
+max-width:800px;
 text-align:center;
-text-decoration:none;
-color:black;
+position:relative;
 }
 
 /* RESEÑAS */
@@ -153,41 +160,6 @@ padding:10px;
 border-radius:10px;
 }
 
-/* MODAL */
-.modal{
-position:fixed;
-inset:0;
-background:rgba(0,0,0,0.7);
-display:none;
-justify-content:center;
-align-items:center;
-z-index:9999;
-}
-
-.modal.activo{display:flex;}
-
-.box{
-background:white;
-padding:30px;
-border-radius:16px;
-width:95%;
-max-width:850px;
-text-align:center;
-position:relative;
-}
-
-/* CART ICON */
-#cartIcon{
-position:fixed;
-top:15px;
-right:15px;
-background:#055160;
-color:white;
-padding:10px 14px;
-border-radius:50px;
-cursor:pointer;
-}
-
 /* TOAST */
 #toast{
 position:fixed;
@@ -196,20 +168,9 @@ left:50%;
 transform:translateX(-50%);
 background:#055160;
 color:white;
-padding:12px 18px;
+padding:12px;
 border-radius:10px;
 display:none;
-}
-
-/* SHARE */
-.share-btn{
-background:#444;
-color:white;
-border:none;
-padding:8px;
-border-radius:8px;
-margin-top:5px;
-cursor:pointer;
 }
 
 </style>
@@ -230,10 +191,8 @@ cursor:pointer;
 <a href="#categorias">Categorías</a>
 <a href="#contacto">Contacto</a>
 <a href="#reseñas">Reseñas</a>
-<a href="#" onclick="openAdmin()">Solera Admin</a>
 </nav>
 
-<!-- CARRITO -->
 <div id="cartIcon" onclick="openCart()">🛒 <span id="cartCount">0</span></div>
 
 <!-- NOVEDADES -->
@@ -249,35 +208,32 @@ cursor:pointer;
 <!-- CATEGORÍAS -->
 <section id="categorias">
 <h2>Categorías</h2>
-
 <div class="grid">
 <div class="card" data-cat="ropa"><img src="ropa.jpg"><h3>Ropa</h3></div>
 <div class="card" data-cat="complementos"><img src="complementos.jpg"><h3>Complementos</h3></div>
 <div class="card" data-cat="zapatos"><img src="zapatos.jpg"><h3>Zapatos</h3></div>
 </div>
-
 <div id="productGrid"></div>
 </section>
 
 <!-- CONTACTO -->
 <section id="contacto">
 <h2>Contacto</h2>
-
-<div class="social-grid">
-<a class="social-card" href="mailto:soleraropaycomplementos@gmail.com">Gmail</a>
-<a class="social-card" href="https://wa.me/34643319232">WhatsApp</a>
-<a class="social-card" href="https://instagram.com/solerashopp">Instagram</a>
+<div class="grid">
+<a class="card" href="mailto:soleraropaycomplementos@gmail.com">Gmail</a>
+<a class="card" href="https://wa.me/34643319232">WhatsApp</a>
+<a class="card" href="https://instagram.com/solerashopp">Instagram</a>
 </div>
 </section>
 
 <!-- RESEÑAS -->
 <section id="reseñas">
 <h2>Reseñas</h2>
-<button class="btn" onclick="openM()">Dejar reseña</button>
+<button class="btn" onclick="openReview()">Dejar reseña</button>
 <div class="reseñas-box" id="list"></div>
 </section>
 
-<!-- PRODUCTO MODAL -->
+<!-- MODALS -->
 <div class="modal" id="productModal">
 <div class="box">
 <div onclick="closeProduct()">✕</div>
@@ -285,23 +241,20 @@ cursor:pointer;
 </div>
 </div>
 
-<!-- RESEÑA -->
-<div class="modal" id="modal">
+<div class="modal" id="reviewModal">
 <div class="box">
-<div onclick="modal.classList.remove('activo')">✕</div>
+<div onclick="reviewModal.classList.remove('activo')">✕</div>
 <textarea id="txt"></textarea>
 <button class="btn" onclick="saveReview()">Enviar</button>
 </div>
 </div>
 
-<!-- CARRITO -->
 <div class="modal" id="cartModal">
 <div class="box">
 <div onclick="closeCart()">✕</div>
 
 <h2>Carrito</h2>
 <div id="cartList"></div>
-
 <h3 id="total"></h3>
 
 <input id="cname" placeholder="Nombre">
@@ -315,6 +268,7 @@ cursor:pointer;
 </select>
 
 <button class="btn" onclick="checkout()">Comprar</button>
+
 </div>
 </div>
 
@@ -323,6 +277,21 @@ cursor:pointer;
 <script>
 
 let cart=[];
+let clickCount=0;
+let ADMIN=false;
+
+/* ADMIN MODE (5 CLICS EN LOGO) */
+document.getElementById("logo").onclick=()=>{
+clickCount++;
+if(clickCount>=5){
+let pass=prompt("Contraseña admin:");
+if(pass==="1234"){
+ADMIN=true;
+alert("Modo admin activado");
+}
+clickCount=0;
+}
+};
 
 /* PRODUCTOS */
 const productos=[
@@ -331,15 +300,13 @@ const productos=[
 {cat:"zapatos",img:"sandalia1.jpg",nombre:"Sandalia cómoda",precio:24.99}
 ];
 
-/* CATEGORÍAS */
-document.querySelectorAll('.card[data-cat]').forEach(card=>{
-card.onclick=()=>{
+document.querySelectorAll(".card[data-cat]").forEach(c=>{
+c.onclick=()=>{
 
-let cat=card.dataset.cat;
 let grid=document.getElementById("productGrid");
 grid.innerHTML="";
 
-productos.filter(p=>p.cat===cat).forEach(p=>{
+productos.filter(p=>p.cat===c.dataset.cat).forEach(p=>{
 
 let div=document.createElement("div");
 div.className="producto-card";
@@ -350,13 +317,11 @@ div.innerHTML=`
 <p>${p.precio}€</p>
 
 <button class="btn" onclick="add('${p.nombre}',${p.precio},'${p.img}')">Añadir</button>
-
-<button class="share-btn" onclick="share('${p.nombre}')">Compartir</button>
+<button class="btn" style="background:#444" onclick="share('${p.nombre}')">Compartir</button>
 `;
 
 grid.appendChild(div);
 });
-
 };
 });
 
@@ -372,7 +337,6 @@ document.getElementById("cartCount").innerText=cart.length;
 
 let list=document.getElementById("cartList");
 let total=0;
-
 list.innerHTML="";
 
 cart.forEach((p,i)=>{
@@ -381,10 +345,10 @@ total+=p.precio*p.cantidad;
 list.innerHTML+=`
 <div>
 <img src="${p.img}" style="width:50px;height:50px;object-fit:cover">
-${p.nombre} - ${p.precio}€ x${p.cantidad}
+${p.nombre} x${p.cantidad} = ${p.precio*p.cantidad}€
 
-<button onclick="p.cantidad++ ; updateCart()">+</button>
-<button onclick="p.cantidad-- ; updateCart()">-</button>
+<button onclick="p.cantidad++;updateCart()">+</button>
+<button onclick="p.cantidad--;updateCart()">-</button>
 <button onclick="cart.splice(${i},1);updateCart()">❌</button>
 </div>
 `;
@@ -395,16 +359,16 @@ document.getElementById("total").innerText="Total: "+total.toFixed(2)+"€";
 
 /* SHARE */
 function share(name){
-navigator.share?.({title:name,text:"Mira este producto de Solera"});
+navigator.share?.({title:name,text:"Producto de Solera"});
 }
 
-/* CHECKOUT */
+/* CHECKOUT WHATSAPP */
 function checkout(){
 
-let text="🛍 PEDIDO\n";
+let text="🛍 PEDIDO SOLERA\n\n";
 text+="Nombre: "+cname.value+"\n";
 text+="Dirección: "+caddress.value+"\n";
-text+="Tel: "+cphone.value+"\n";
+text+="Teléfono: "+cphone.value+"\n";
 text+="Pago: "+cpayment.value+"\n\n";
 
 let total=0;
@@ -414,20 +378,32 @@ text+=`${p.nombre} x${p.cantidad} = ${p.precio*p.cantidad}€\n`;
 total+=p.precio*p.cantidad;
 });
 
-text+="TOTAL: "+total+"€";
+text+="\nTOTAL: "+total+"€";
 
 window.open("https://wa.me/34643319232?text="+encodeURIComponent(text));
 }
 
 /* RESEÑAS */
-function openM(){modal.classList.add("activo");}
+function openReview(){
+reviewModal.classList.add("activo");
+}
 
 function saveReview(){
-let d=JSON.parse(localStorage.getItem("r")||"[]");
-d.push(txt.value);
-localStorage.setItem("r",JSON.stringify(d));
-modal.classList.remove("activo");
+let data=JSON.parse(localStorage.getItem("r")||"[]");
+data.push(txt.value);
+localStorage.setItem("r",JSON.stringify(data));
+reviewModal.classList.remove("activo");
+loadReviews();
 }
+
+function loadReviews(){
+list.innerHTML="";
+(JSON.parse(localStorage.getItem("r")||"[]")).forEach(r=>{
+list.innerHTML+=`<div class="reseña">${r}</div>`;
+});
+}
+
+loadReviews();
 
 </script>
 
