@@ -57,6 +57,42 @@ header .texto {
     text-align: center;
 }
 
+/* SECCIONES */
+section {
+    padding: 40px 25px;
+}
+
+h2 {
+    text-align: center;
+}
+
+/* CATEGORÍAS */
+.categorias-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
+    gap: 20px;
+}
+
+.categoria-card {
+    background: white;
+    border-radius: 15px;
+    overflow: hidden;
+    text-decoration: none;
+    color: black;
+    box-shadow: 0 4px 14px rgba(0,0,0,0.1);
+}
+
+.categoria-card img {
+    width: 100%;
+    height: 160px;
+    object-fit: cover;
+}
+
+.categoria-card h3 {
+    text-align: center;
+    padding: 10px;
+}
+
 /* PRODUCTOS */
 .caja {
     background: white;
@@ -68,37 +104,61 @@ header .texto {
     text-align: center;
 }
 
-/* =========================
-   RESEÑAS (CUADRO SCROLL)
-========================= */
+/* MODAL PRODUCTOS */
+.modal {
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: rgba(0,0,0,0.6);
+    display: none;
+    justify-content: center;
+    align-items: center;
+    z-index: 9999;
+}
+
+.modal:target {
+    display: flex;
+}
+
+.modal-contenido {
+    background: white;
+    padding: 20px;
+    border-radius: 12px;
+    text-align: center;
+}
+
+.cerrar {
+    display: block;
+    text-align: right;
+}
+
+/* ================= RESEÑAS ================= */
 
 #reseñas {
-    background: #fff;
+    background: white;
     padding: 40px 20px;
 }
 
 .reseñas-box {
     max-width: 600px;
     margin: auto;
-
-    height: 300px;           /* 🔥 clave */
-    overflow-y: auto;        /* scroll interno */
+    height: 280px;
+    overflow-y: auto;
     border: 2px solid #ddd;
     border-radius: 12px;
     padding: 10px;
     background: #f9f9f9;
 }
 
-/* cada reseña */
 .reseña {
     background: white;
     margin-bottom: 10px;
     padding: 12px;
     border-radius: 10px;
-    box-shadow: 0 2px 6px rgba(0,0,0,0.05);
 }
 
-/* botón */
 .btn-reseña {
     display: block;
     margin: 20px auto;
@@ -110,10 +170,7 @@ header .texto {
     cursor: pointer;
 }
 
-/* =========================
-   MODAL RESEÑA
-========================= */
-
+/* MODAL RESEÑA */
 .modal-reseña {
     position: fixed;
     top: 0;
@@ -196,14 +253,33 @@ footer {
 </header>
 
 <nav>
+<a href="#categorias">Categorías</a>
 <a href="#ropa">Ropa</a>
+<a href="#contacto">Contacto</a>
 <a href="#reseñas">Reseñas</a>
 </nav>
+
+<!-- CATEGORÍAS -->
+<section id="categorias">
+<h2>Categorías</h2>
+<div class="categorias-grid">
+<a href="#ropa" class="categoria-card"><img src="ropa.jpg"><h3>Ropa</h3></a>
+<a href="#complementos" class="categoria-card"><img src="bolso.jpg"><h3>Complementos</h3></a>
+<a href="#zapatos" class="categoria-card"><img src="zapato.jpg"><h3>Zapatos</h3></a>
+</div>
+</section>
 
 <!-- ROPA -->
 <section id="ropa">
 <h2>Ropa</h2>
-<div class="caja">Vestido ejemplo</div>
+<div class="caja">Vestido 1</div>
+<div class="caja">Vestido 2</div>
+</section>
+
+<!-- CONTACTO -->
+<section id="contacto">
+<h2>Contacto</h2>
+<p>Email y WhatsApp aquí</p>
 </section>
 
 <!-- ================= RESEÑAS ================= -->
@@ -217,7 +293,7 @@ footer {
 
 </section>
 
-<!-- MODAL -->
+<!-- MODAL RESEÑA -->
 <div class="modal-reseña" id="modal">
 
 <div class="modal-box">
@@ -241,20 +317,14 @@ footer {
 
 </div>
 
-<!-- FOOTER -->
 <footer>
 <p>© 2026 Solera</p>
 </footer>
 
 <script>
 
-function abrir(){
-    document.getElementById("modal").classList.add("activo");
-}
-
-function cerrar(){
-    document.getElementById("modal").classList.remove("activo");
-}
+function abrir(){ document.getElementById("modal").classList.add("activo"); }
+function cerrar(){ document.getElementById("modal").classList.remove("activo"); }
 
 function guardar(){
 
@@ -265,10 +335,7 @@ function guardar(){
 
     let datos = JSON.parse(localStorage.getItem("r")) || [];
 
-    datos.push({
-        estrellas: est.value,
-        texto: txt
-    });
+    datos.push({ estrellas: est.value, texto: txt });
 
     localStorage.setItem("r", JSON.stringify(datos));
 
@@ -288,9 +355,7 @@ function mostrar(){
         const div = document.createElement("div");
         div.className = "reseña";
 
-        div.innerHTML =
-        "⭐".repeat(r.estrellas) +
-        "<p>" + r.texto + "</p>";
+        div.innerHTML = "⭐".repeat(r.estrellas) + "<p>" + r.texto + "</p>";
 
         cont.appendChild(div);
     });
