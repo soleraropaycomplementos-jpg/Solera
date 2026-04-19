@@ -393,7 +393,6 @@ productos.filter(p=>p.cat===cat).forEach(p=>{
 let div=document.createElement("div");
 div.className="producto-card";
 
-/* CLICK SOLO EN IMAGEN/TARJETA */
 div.addEventListener("click",()=>openProduct(p));
 
 div.innerHTML=`
@@ -405,7 +404,7 @@ div.innerHTML=`
 
 div.querySelector(".addBtn").addEventListener("click",(e)=>{
 e.stopPropagation();
-cart.push({nombre:p.nombre,precio:p.precio,cantidad:1});
+cart.push({nombre:p.nombre,precio:p.precio,cantidad:1,img:p.img});
 updateCart();
 showToast();
 });
@@ -424,7 +423,7 @@ t.style.display="block";
 setTimeout(()=>t.style.display="none",1200);
 }
 
-/* CARRITO */
+/* CART */
 function updateCart(){
 
 document.getElementById("cartCount").innerText=cart.length;
@@ -435,13 +434,28 @@ list.innerHTML="";
 let total=0;
 
 cart.forEach((p,i)=>{
-total+=p.precio;
+
+let qty=p.cantidad||1;
+total+=p.precio*qty;
 
 list.innerHTML+=`
-<div style="display:flex;justify-content:space-between;">
-<span>${p.nombre}</span>
-<span>${p.precio}€</span>
+<div style="display:flex;align-items:center;justify-content:space-between;gap:10px;margin-bottom:10px;padding:8px;border-bottom:1px solid #eee;">
+
+<img src="${p.img}" style="width:55px;height:55px;object-fit:cover;border-radius:8px;">
+
+<div style="flex:1;text-align:left;">
+<strong>${p.nombre}</strong><br>
+<small>${p.precio}€</small>
+</div>
+
+<div style="display:flex;align-items:center;gap:6px;">
+<button onclick="changeQty(${i},-1)">−</button>
+<span>${qty}</span>
+<button onclick="changeQty(${i},1)">+</button>
+</div>
+
 <button onclick="cart.splice(${i},1);updateCart()">❌</button>
+
 </div>
 `;
 });
@@ -449,14 +463,15 @@ list.innerHTML+=`
 document.getElementById("total").innerText="Total: "+total.toFixed(2)+"€";
 }
 
-/* CARRITO MODAL */
-function openCart(){
-document.getElementById("cartModal").classList.add("activo");
+function changeQty(i,val){
+cart[i].cantidad=(cart[i].cantidad||1)+val;
+if(cart[i].cantidad<=0) cart.splice(i,1);
+updateCart();
 }
 
-function closeCart(){
-document.getElementById("cartModal").classList.remove("activo");
-}
+/* CART MODAL */
+function openCart(){document.getElementById("cartModal").classList.add("activo");}
+function closeCart(){document.getElementById("cartModal").classList.remove("activo");}
 
 /* CHECKOUT */
 function checkout(){
@@ -467,20 +482,18 @@ let phone=cphone.value;
 let payment=cpayment.value;
 
 let text="🛍️ Pedido Solera\n\n";
-
 text+="Nombre: "+name+"\nDirección: "+address+"\nTeléfono: "+phone+"\nPago: "+payment+"\n\n";
 
 cart.forEach(p=>{
-text+="- "+p.nombre+"\n";
+text+="- "+p.nombre+" x"+p.cantidad+" = "+(p.precio*p.cantidad).toFixed(2)+"€\n";
 });
 
 window.open("https://wa.me/34643319232?text="+encodeURIComponent(text),"_blank");
 }
 
-/* PRODUCTO */
+/* PRODUCT */
 function openProduct(p){
 currentProduct=p;
-
 document.getElementById("productModal").classList.add("activo");
 
 document.getElementById("productContent").innerHTML=`
@@ -488,7 +501,6 @@ document.getElementById("productContent").innerHTML=`
 <h2>${p.nombre}</h2>
 <p>${p.precio}€</p>
 
-<button class="btn" onclick="shareProduct('${p.nombre}')">Compartir</button>
 <button class="btn" onclick="addFromModal('${p.nombre}',${p.precio})">Añadir al carrito</button>
 `;
 }
@@ -497,18 +509,10 @@ function closeProduct(){
 document.getElementById("productModal").classList.remove("activo");
 }
 
-/* MODAL ADD */
 function addFromModal(nombre,precio){
-cart.push({nombre,precio,cantidad:1});
+cart.push({nombre,precio,cantidad:1,img:""});
 updateCart();
 showToast();
-}
-
-/* SHARE */
-function shareProduct(name){
-if(navigator.share){
-navigator.share({title:"Solera",text:name,url:location.href});
-}
 }
 
 /* RESEÑAS */
