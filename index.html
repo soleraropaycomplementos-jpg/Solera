@@ -307,11 +307,26 @@ padding:4px 8px;
 <div class="box">
 <div class="close-left" onclick="closeReview()">✕</div>
 
-<textarea id="txt"></textarea>
-<button class="btn" onclick="saveReview()">Enviar</button>
-</div>
+<h3>Dejar reseña</h3>
+
+<input id="reviewName" placeholder="Tu nombre"><br><br>
+
+<div>
+<span class="star" onclick="setStars(1)">★</span>
+<span class="star" onclick="setStars(2)">★</span>
+<span class="star" onclick="setStars(3)">★</span>
+<span class="star" onclick="setStars(4)">★</span>
+<span class="star" onclick="setStars(5)">★</span>
 </div>
 
+<br>
+
+<textarea id="txt" placeholder="Escribe tu opinión"></textarea><br><br>
+
+<button class="btn" onclick="saveReview()">Enviar reseña</button>
+
+</div>
+</div>
 <!-- CARRITO -->
 <div class="modal" id="cartModal">
 <div class="box">
