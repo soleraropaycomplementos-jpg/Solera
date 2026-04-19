@@ -66,7 +66,8 @@ h2 {
     text-align: center;
 }
 
-/* CATEGORÍAS */
+/* ================= CATEGORÍAS ================= */
+
 .categorias-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -88,7 +89,8 @@ h2 {
     object-fit: cover;
 }
 
-/* PRODUCTOS */
+/* ================= PRODUCTOS ================= */
+
 .caja {
     background: white;
     padding: 15px;
@@ -99,7 +101,7 @@ h2 {
     box-shadow: 0 3px 10px rgba(0,0,0,0.08);
 }
 
-/* MODAL PRODUCTOS */
+/* MODAL PRODUCTO */
 .modal {
     position: fixed;
     inset: 0;
@@ -118,12 +120,6 @@ h2 {
     background: white;
     padding: 20px;
     border-radius: 12px;
-    text-align: center;
-}
-
-.cerrar {
-    display: block;
-    text-align: right;
 }
 
 /* ================= NOVEDADES ================= */
@@ -151,155 +147,145 @@ h2 {
     scroll-snap-align: start;
 }
 
-/* FLECHAS PC */
+/* flechas PC */
 .flecha {
     background: rgba(0,0,0,0.6);
     color: white;
     border: none;
     font-size: 28px;
     padding: 10px;
-    cursor: pointer;
     border-radius: 50%;
+    cursor: pointer;
 }
 
-/* 📱 MÓVIL: SIN FLECHAS + SWIPE NATURAL */
-@media (max-width: 768px) {
-    .flecha {
-        display: none !important;
-    }
+/* móvil sin flechas */
+@media (max-width:768px){
+    .flecha{ display:none; }
 }
 
-/* AVISO */
+/* aviso */
 .aviso-overlay {
     position: fixed;
     inset: 0;
     background: rgba(0,0,0,0.6);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    z-index: 99999;
+    display:flex;
+    justify-content:center;
+    align-items:center;
+    z-index:99999;
 }
 
 .aviso-box {
-    background: white;
-    padding: 30px 50px;
-    border-radius: 12px;
-    font-size: 20px;
-    font-weight: bold;
+    background:white;
+    padding:30px 50px;
+    border-radius:12px;
+    font-size:20px;
+    font-weight:bold;
 }
 
-/* CONTACTO */
+/* ================= CONTACTO ================= */
+
 .social-grid {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(130px, 1fr));
-    gap: 15px;
+    display:grid;
+    grid-template-columns:repeat(auto-fit,minmax(130px,1fr));
+    gap:15px;
 }
 
 .social-card {
-    background: white;
-    border-radius: 14px;
-    text-align: center;
-    padding: 15px;
-    text-decoration: none;
-    color: black;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    background:white;
+    padding:15px;
+    border-radius:12px;
+    text-align:center;
+    text-decoration:none;
+    color:black;
+    box-shadow:0 4px 10px rgba(0,0,0,0.1);
 }
 
 /* ================= RESEÑAS ================= */
 
 #reseñas {
-    background: white;
-    padding: 40px 20px;
+    background:white;
+    padding:40px 20px;
 }
 
 .reseñas-box {
-    max-width: 600px;
-    margin: auto;
-    height: 300px;
-    overflow-y: auto;
-    border: 1px solid #ddd;
-    border-radius: 12px;
-    padding: 10px;
-    background: #f9f9f9;
+    max-width:600px;
+    margin:auto;
+    height:300px;
+    overflow-y:auto;
+    border:1px solid #ddd;
+    border-radius:12px;
+    padding:10px;
 }
 
 .reseña {
-    background: white;
-    margin: 10px 0;
-    padding: 10px;
-    border-radius: 10px;
+    background:#f7f7f7;
+    margin:10px 0;
+    padding:10px;
+    border-radius:10px;
 }
 
-/* BOTÓN */
 .btn-reseña {
-    display: block;
-    margin: 20px auto;
-    padding: 12px 20px;
-    background: #055160;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    cursor: pointer;
+    display:block;
+    margin:20px auto;
+    padding:12px 20px;
+    background:#055160;
+    color:white;
+    border:none;
+    border-radius:8px;
 }
 
-/* MODAL RESEÑA */
+/* modal reseñas */
 .modal-reseña {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.6);
-    display: none;
-    justify-content: center;
-    align-items: center;
-    z-index: 99999;
+    position:fixed;
+    inset:0;
+    background:rgba(0,0,0,0.6);
+    display:none;
+    justify-content:center;
+    align-items:center;
 }
 
 .modal-reseña.activo {
-    display: flex;
+    display:flex;
 }
 
 .modal-box {
-    background: white;
-    padding: 20px;
-    border-radius: 12px;
-    width: 90%;
-    max-width: 400px;
+    background:white;
+    padding:20px;
+    border-radius:12px;
+    width:90%;
+    max-width:400px;
 }
 
-/* ESTRELLAS */
+/* estrellas */
 .estrellas {
-    display: flex;
-    flex-direction: row-reverse;
-    justify-content: center;
-    font-size: 28px;
+    display:flex;
+    flex-direction:row-reverse;
+    justify-content:center;
+    font-size:28px;
 }
 
-.estrellas input {
-    display: none;
-}
+.estrellas input{display:none;}
 
-.estrellas label {
-    color: lightgray;
-    cursor: pointer;
-}
+.estrellas label{color:lightgray;cursor:pointer;}
 
 .estrellas input:checked ~ label,
 .estrellas label:hover,
 .estrellas label:hover ~ label {
-    color: gold;
+    color:gold;
 }
 
 textarea {
-    width: 100%;
-    margin-top: 10px;
-    padding: 10px;
+    width:100%;
+    margin-top:10px;
+    padding:10px;
 }
 
-/* FOOTER */
+/* footer */
 footer {
-    background: #055160;
-    color: white;
-    text-align: center;
-    padding: 20px;
+    background:#055160;
+    color:white;
+    text-align:center;
+    padding:20px;
 }
 </style>
 </head>
@@ -328,30 +314,36 @@ footer {
 <h2>Novedades</h2>
 
 <div class="novedades-wrapper">
+
 <button class="flecha" onclick="move(-1)">‹</button>
 
 <div class="novedades-slider" id="slider">
 
-<a href="#r1" class="categoria-card"><img src="vestido1.jpg"><h3>Vestido</h3></a>
-<a href="#c1" class="categoria-card"><img src="bolso1.jpg"><h3>Bolso</h3></a>
-<a href="#z1" class="categoria-card"><img src="zapato1.jpg"><h3>Sandalia</h3></a>
+<a href="#p1" class="categoria-card"><img src="vestido1.jpg"><h3>Vestido</h3></a>
+<a href="#p2" class="categoria-card"><img src="bolso1.jpg"><h3>Bolso</h3></a>
+<a href="#p3" class="categoria-card"><img src="zapato1.jpg"><h3>Sandalia</h3></a>
 
 </div>
 
 <button class="flecha" onclick="move(1)">›</button>
+
 </div>
 
 </section>
 
 <!-- CATEGORÍAS -->
 <section id="categorias">
+
 <h2>Categorías</h2>
 
 <div class="categorias-grid">
-<a href="#ropa" class="categoria-card"><img src="ropa.jpg"><h3>Ropa</h3></a>
-<a href="#complementos" class="categoria-card"><img src="bolso.jpg"><h3>Complementos</h3></a>
-<a href="#zapatos" class="categoria-card"><img src="zapato.jpg"><h3>Zapatos</h3></a>
+
+<a class="categoria-card"><img src="ropa.jpg"><h3>Ropa</h3></a>
+<a class="categoria-card"><img src="bolso.jpg"><h3>Complementos</h3></a>
+<a class="categoria-card"><img src="zapato.jpg"><h3>Zapatos</h3></a>
+
 </div>
+
 </section>
 
 <!-- ROPA -->
@@ -363,15 +355,23 @@ footer {
 
 <!-- CONTACTO -->
 <section id="contacto">
+
 <h2>Contacto</h2>
 
 <div class="social-grid">
 
 <a href="mailto:soleraropaycomplementos@gmail.com" class="social-card">Gmail</a>
 
-<a href="https://api.whatsapp.com/send?phone=34643319232&text=Buenas%2C%20me%20gustar%C3%ADa%20obtener%20informaci%C3%B3n%20🌞🏖️" class="social-card">WhatsApp</a>
+<a href="https://api.whatsapp.com/send?phone=34643319232&text=Buenas%2C%20quiero%20información%20🌞🏖️" class="social-card">WhatsApp</a>
+
+<a href="https://instagram.com" class="social-card">Instagram</a>
+
+<a href="https://facebook.com" class="social-card">Facebook</a>
+
+<a href="https://tiktok.com" class="social-card">TikTok</a>
 
 </div>
+
 </section>
 
 <!-- RESEÑAS -->
@@ -385,7 +385,7 @@ footer {
 
 </section>
 
-<!-- MODAL RESEÑA -->
+<!-- MODAL -->
 <div class="modal-reseña" id="modal">
 
 <div class="modal-box">
@@ -413,57 +413,55 @@ footer {
 
 <script>
 
-/* NOVEDADES */
 function move(dir){
-    const slider = document.getElementById("slider");
-    const max = slider.scrollWidth - slider.clientWidth;
-    const next = slider.scrollLeft + dir * 220;
+    const s=document.getElementById("slider");
+    const max=s.scrollWidth-s.clientWidth;
+    const next=s.scrollLeft+dir*220;
 
-    if(next < 0 || next > max){
-        const div = document.createElement("div");
-        div.className="aviso-overlay";
-        div.innerHTML="<div class='aviso-box'>No hay resultados</div>";
-        document.body.appendChild(div);
-        setTimeout(()=>div.remove(),1500);
+    if(next<0||next>max){
+        const a=document.createElement("div");
+        a.className="aviso-overlay";
+        a.innerHTML="<div class='aviso-box'>No hay resultados</div>";
+        document.body.appendChild(a);
+        setTimeout(()=>a.remove(),1500);
         return;
     }
 
-    slider.scrollBy({left: dir*220, behavior:"smooth"});
+    s.scrollBy({left:dir*220,behavior:"smooth"});
 }
 
-/* RESEÑAS */
-function abrir(){ document.getElementById("modal").classList.add("activo"); }
-function cerrar(){ document.getElementById("modal").classList.remove("activo"); }
+/* reseñas */
+function abrir(){document.getElementById("modal").classList.add("activo");}
+function cerrar(){document.getElementById("modal").classList.remove("activo");}
 
 function guardar(){
 
-const est = document.querySelector('input[name="e"]:checked');
-const txt = document.getElementById("txt").value;
+let e=document.querySelector('input[name="e"]:checked');
+let t=document.getElementById("txt").value;
 
-if(!est || txt==="") return;
+if(!e||t==="")return;
 
-let data = JSON.parse(localStorage.getItem("r"))||[];
+let d=JSON.parse(localStorage.getItem("r"))||[];
 
-data.push({estrellas:est.value,texto:txt});
+d.push({estrellas:e.value,texto:t});
 
-localStorage.setItem("r",JSON.stringify(data));
+localStorage.setItem("r",JSON.stringify(d));
 
-cerrar();
-mostrar();
+cerrar();mostrar();
 }
 
 function mostrar(){
 
-const c=document.getElementById("lista");
+let c=document.getElementById("lista");
 c.innerHTML="";
 
-let data=JSON.parse(localStorage.getItem("r"))||[];
+let d=JSON.parse(localStorage.getItem("r"))||[];
 
-data.forEach(r=>{
-const d=document.createElement("div");
-d.className="reseña";
-d.innerHTML="⭐".repeat(r.estrellas)+"<p>"+r.texto+"</p>";
-c.appendChild(d);
+d.forEach(r=>{
+let x=document.createElement("div");
+x.className="reseña";
+x.innerHTML="⭐".repeat(r.estrellas)+"<p>"+r.texto+"</p>";
+c.appendChild(x);
 });
 
 }
