@@ -577,7 +577,7 @@ ${qty}
 });
 
 document.getElementById("total").innerText =
-function changeQty(i,v){
+  "Total: " + total.toFixed(2) + "€";
 cart[i].cantidad=(cart[i].cantidad||1)+v;
 if(cart[i].cantidad<=0)cart.splice(i,1);
 updateCart();
