@@ -59,6 +59,7 @@ text-align:center;
 #logo{
 cursor:pointer;
 user-select:none;
+touch-action:manipulation;
 }
 
 .grid{
@@ -183,7 +184,7 @@ font-size:22px;
 cursor:pointer;
 }
 
-/* 🛒 CARRITO */
+/* 🛒 */
 #cartIcon{
 position:fixed;
 top:15px;
@@ -196,7 +197,7 @@ cursor:pointer;
 z-index:99999;
 }
 
-/* 🔔 TOAST */
+/* 🔔 */
 #toast{
 position:fixed;
 bottom:20px;
@@ -307,9 +308,28 @@ font-weight:600;
 
 <script>
 
+/* ADMIN */
+let admin=false;
+let taps=0;
+
+document.getElementById("logo").addEventListener("click",(e)=>{
+e.preventDefault();
+taps++;
+setTimeout(()=>taps=0,2000);
+
+if(taps===5){
+let pass=prompt("Contraseña admin:");
+if(pass==="solera2026"){
+admin=true;
+alert("Modo admin activado");
+}
+}
+});
+
+/* RESTO DEL CÓDIGO IGUAL QUE YA TENÍAS + mejoras carrito + compartir */
+
 let cart=[];
 
-/* PRODUCTOS */
 const productos=[
 {cat:"ropa",img:"vestido1.jpg",nombre:"Vestido verano",precio:19.99},
 {cat:"complementos",img:"bolso2.jpg",nombre:"Bolso playa",precio:14.99},
@@ -346,7 +366,10 @@ updateCart();
 showToast();
 };
 
-div.onclick=()=>openProduct(p);
+div.onclick=(e)=>{
+if(e.target.tagName==="BUTTON") return;
+openProduct(p);
+};
 
 grid.appendChild(div);
 
@@ -354,11 +377,11 @@ grid.appendChild(div);
 };
 });
 
-/* MODAL PRODUCTO */
+/* PRODUCTO */
 function openProduct(p){
-document.getElementById("productModal").classList.add("activo");
+productModal.classList.add("activo");
 
-document.getElementById("productContent").innerHTML=`
+productContent.innerHTML=`
 <img src="${p.img}" style="width:100%">
 <h2>${p.nombre}</h2>
 <p>${p.precio}€</p>
@@ -369,23 +392,58 @@ document.getElementById("productContent").innerHTML=`
 }
 
 function closeProduct(){
-document.getElementById("productModal").classList.remove("activo");
+productModal.classList.remove("activo");
 }
 
 /* COMPARTIR */
 function shareProduct(name){
 if(navigator.share){
-navigator.share({
-title:"Solera",
-text:"Mira este producto: "+name,
-url:window.location.href
-});
+navigator.share({title:"Solera",text:name,url:location.href});
 }else{
 alert("No compatible");
 }
 }
 
-/* CARRITO */
+/* CARRITO MEJORADO */
+function updateCart(){
+
+cartCount.innerText=cart.reduce((a,b)=>a+b.cantidad,0);
+
+let html="";
+let total=0;
+
+cart.forEach((p,i)=>{
+total+=p.precio*p.cantidad;
+
+html+=`
+<div style="display:flex;justify-content:space-between;align-items:center;margin-bottom:10px;">
+<img src="${p.img}" width="50">
+<div>${p.nombre}<br>${p.cantidad}</div>
+<div>
+<button onclick="changeQty(${i},1)">➕</button>
+<button onclick="changeQty(${i},-1)">➖</button>
+<button onclick="removeItem(${i})">❌</button>
+</div>
+</div>
+`;
+});
+
+cartList.innerHTML=html;
+total.innerText="Total: "+total.toFixed(2)+"€";
+}
+
+function changeQty(i,d){
+cart[i].cantidad+=d;
+if(cart[i].cantidad<=0) cart.splice(i,1);
+updateCart();
+}
+
+function removeItem(i){
+cart.splice(i,1);
+updateCart();
+}
+
+/* RESTO */
 function addFromModal(nombre,precio,img){
 let qty=parseInt(prompt("Cantidad:",1));
 if(!qty)return;
@@ -398,41 +456,15 @@ updateCart();
 showToast();
 }
 
-function updateCart(){
-document.getElementById("cartCount").innerText=cart.reduce((a,b)=>a+b.cantidad,0);
-
-let html="";
-let total=0;
-
-cart.forEach((p,i)=>{
-total+=p.precio*p.cantidad;
-html+=`
-<div>
-<img src="${p.img}" width="40">
-${p.nombre} x${p.cantidad}
-<button onclick="cart.splice(${i},1);updateCart()">❌</button>
-</div>`;
-});
-
-document.getElementById("cartList").innerHTML=html;
-document.getElementById("total").innerText="Total: "+total.toFixed(2)+"€";
-}
-
 function openCart(){cartModal.classList.add("activo");}
 function closeCart(){cartModal.classList.remove("activo");}
 
-/* CHECKOUT */
 function checkout(){
 let text="Pedido:\n";
-
-cart.forEach(p=>{
-text+=p.nombre+" x"+p.cantidad+"\n";
-});
-
+cart.forEach(p=> text+=p.nombre+" x"+p.cantidad+"\n");
 window.open("https://wa.me/34643319232?text="+encodeURIComponent(text));
 }
 
-/* TOAST */
 function showToast(){
 toast.style.display="block";
 setTimeout(()=>toast.style.display="none",1200);
