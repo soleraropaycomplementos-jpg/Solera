@@ -56,11 +56,9 @@ color:white;
 text-align:center;
 }
 
-#logo{
-cursor:pointer;
-user-select:none;
-}
+#logo{cursor:pointer;}
 
+/* GRID */
 .grid{
 display:grid;
 grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
@@ -82,6 +80,7 @@ height:160px;
 object-fit:cover;
 }
 
+/* PRODUCTS */
 #productGrid{
 display:grid;
 grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
@@ -133,25 +132,6 @@ color:black;
 box-shadow:0 4px 10px rgba(0,0,0,0.1);
 }
 
-/* RESEÑAS */
-.reseñas-box{
-max-width:600px;
-margin:auto;
-height:300px;
-overflow-y:auto;
-border:1px solid #ddd;
-border-radius:12px;
-padding:10px;
-background:white;
-}
-
-.reseña{
-background:#f7f7f7;
-margin:10px 0;
-padding:10px;
-border-radius:10px;
-}
-
 /* MODAL */
 .modal{
 position:fixed;
@@ -167,7 +147,7 @@ z-index:9999;
 
 .box{
 background:white;
-padding:30px;
+padding:25px;
 border-radius:16px;
 width:95%;
 max-width:850px;
@@ -183,32 +163,7 @@ font-size:22px;
 cursor:pointer;
 }
 
-/* ⭐ ESTRELLAS */
-.estrellas{
-display:flex;
-flex-direction:row-reverse;
-justify-content:center;
-font-size:40px;
-margin-bottom:15px;
-}
-
-.estrellas input{display:none;}
-
-.estrellas label{
-color:lightgray;
-cursor:pointer;
-}
-
-.estrellas label:hover,
-.estrellas label:hover ~ label{
-color:gold;
-}
-
-.estrellas input:checked ~ label{
-color:gold;
-}
-
-/* 🛒 CARRITO */
+/* CART */
 #cartIcon{
 position:fixed;
 top:15px;
@@ -228,12 +183,29 @@ left:50%;
 transform:translateX(-50%);
 background:#055160;
 color:white;
-padding:14px 22px;
+padding:14px 20px;
 border-radius:10px;
 display:none;
 z-index:99999;
 font-weight:600;
-font-size:18px;
+}
+
+.reseñas-box{
+max-width:600px;
+margin:auto;
+height:300px;
+overflow-y:auto;
+border:1px solid #ddd;
+border-radius:12px;
+padding:10px;
+background:white;
+}
+
+.reseña{
+background:#f7f7f7;
+margin:10px 0;
+padding:10px;
+border-radius:10px;
 }
 
 </style>
@@ -300,39 +272,31 @@ font-size:18px;
 <!-- RESEÑAS -->
 <section id="reseñas">
 <h2>Reseñas</h2>
-<button class="btn" onclick="openM()">Dejar reseña</button>
-<div class="reseñas-box" id="list"></div>
+<div class="reseñas-box" id="reviews"></div>
 </section>
 
-<!-- PRODUCTO POPUP -->
+<!-- PRODUCT MODAL -->
 <div class="modal" id="productModal">
 <div class="box">
 <div class="close-left" onclick="closeProduct()">✕</div>
-
 <div id="productContent"></div>
-
 <button class="btn" onclick="addFromModal()">Añadir al carrito</button>
 <button class="btn" onclick="shareProduct()">Compartir</button>
-
 </div>
 </div>
 
-<!-- CARRITO -->
+<!-- CART MODAL -->
 <div class="modal" id="cartModal">
 <div class="box">
-
 <div class="close-left" onclick="closeCart()">✕</div>
 
 <h2>Carrito</h2>
 <div id="cartList"></div>
+<h3 id="total"></h3>
 
-<h3 id="total">Total: 0€</h3>
-
-<hr>
-
-<input id="name" placeholder="Nombre">
-<input id="address" placeholder="Dirección">
-<input id="phone" placeholder="Teléfono">
+<input id="name" placeholder="Nombre"><br><br>
+<input id="address" placeholder="Dirección"><br><br>
+<input id="phone" placeholder="Teléfono"><br><br>
 
 <select id="payment">
 <option>Bizum</option>
@@ -340,8 +304,7 @@ font-size:18px;
 <option>Contra reembolso</option>
 </select>
 
-<button class="btn" onclick="checkout()">Finalizar pedido</button>
-
+<button class="btn" onclick="checkout()">Finalizar compra</button>
 </div>
 </div>
 
@@ -358,15 +321,28 @@ const productos=[
 {cat:"zapatos",img:"sandalia1.jpg",nombre:"Sandalia cómoda",precio:24.99}
 ];
 
-document.querySelectorAll('.card[data-cat]').forEach(card=>{
-card.onclick=()=>{
+const cartIcon=document.getElementById("cartIcon");
+const cartCount=document.getElementById("cartCount");
+const cartModal=document.getElementById("cartModal");
+const cartList=document.getElementById("cartList");
+const totalEl=document.getElementById("total");
 
+/* OPEN CART */
+function openCart(){
+cartModal.classList.add("activo");
+}
+function closeCart(){
+cartModal.classList.remove("activo");
+}
+
+/* PRODUCTS */
+document.querySelectorAll(".card[data-cat]").forEach(card=>{
+card.onclick=()=>{
 let cat=card.dataset.cat;
 let grid=document.getElementById("productGrid");
 grid.innerHTML="";
 
 productos.filter(p=>p.cat===cat).forEach(p=>{
-
 let div=document.createElement("div");
 div.className="producto-card";
 
@@ -381,17 +357,20 @@ div.onclick=()=>openProduct(p);
 
 div.querySelector("button").onclick=(e)=>{
 e.stopPropagation();
-cart.push({...p});
-updateCart();
-showToast();
+addToCart(p);
 };
 
 grid.appendChild(div);
-
 });
-
 };
 });
+
+/* CART */
+function addToCart(p){
+cart.push({...p,cantidad:1});
+updateCart();
+toast();
+}
 
 function updateCart(){
 cartCount.innerText=cart.length;
@@ -403,24 +382,16 @@ cart.forEach((p,i)=>{
 total+=p.precio;
 
 cartList.innerHTML+=`
-<div>
+<div style="display:flex;justify-content:space-between;">
 ${p.nombre} - ${p.precio}€
 <button onclick="cart.splice(${i},1);updateCart()">❌</button>
-</div>
-`;
+</div>`;
 });
 
 totalEl.innerText="Total: "+total.toFixed(2)+"€";
 }
 
-function openCart(){
-cartModal.classList.add("activo");
-}
-
-function closeCart(){
-cartModal.classList.remove("activo");
-}
-
+/* PRODUCT */
 function openProduct(p){
 currentProduct=p;
 productModal.classList.add("activo");
@@ -428,8 +399,7 @@ productModal.classList.add("activo");
 productContent.innerHTML=`
 <img src="${p.img}" style="width:100%">
 <h2>${p.nombre}</h2>
-<p>${p.precio}€</p>
-`;
+<p>${p.precio}€</p>`;
 }
 
 function closeProduct(){
@@ -437,22 +407,17 @@ productModal.classList.remove("activo");
 }
 
 function addFromModal(){
-cart.push({...currentProduct});
-updateCart();
-showToast();
+addToCart(currentProduct);
+toast();
 }
 
 function shareProduct(){
-navigator.share?.({
-title:"Solera",
-text:currentProduct.nombre,
-url:location.href
-});
+navigator.share?.({title:currentProduct.nombre,url:location.href});
 }
 
-function showToast(){
-toast.style.display="block";
-setTimeout(()=>toast.style.display="none",1500);
+function toast(){
+toastEl.style.display="block";
+setTimeout(()=>toastEl.style.display="none",1200);
 }
 
 function checkout(){
@@ -469,8 +434,9 @@ Tel: ${phone.value}
 Pago: ${payment.value}`;
 
 window.open("https://wa.me/34643319232?text="+encodeURIComponent(msg),"_blank");
-
 }
+
+const toastEl=document.getElementById("toast");
 
 </script>
 
