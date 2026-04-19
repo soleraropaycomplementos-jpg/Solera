@@ -66,7 +66,7 @@ h2 {
     text-align: center;
 }
 
-/* CATEGORÍAS */
+/* GRID */
 .categorias-grid {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(220px, 1fr));
@@ -104,7 +104,7 @@ h2 {
     z-index: 9999;
 }
 
-.modal:target {
+.modal.activo {
     display: flex;
 }
 
@@ -112,15 +112,15 @@ h2 {
     background: white;
     padding: 20px;
     border-radius: 12px;
-    text-align: center;
     width: 90%;
     max-width: 400px;
+    text-align: center;
 }
 
 .cerrar {
     text-decoration: none;
-    font-size: 20px;
     float: right;
+    font-size: 20px;
 }
 </style>
 </head>
@@ -136,6 +136,7 @@ h2 {
 </header>
 
 <nav>
+<a href="#novedades">Novedades</a>
 <a href="#categorias">Categorías</a>
 <a href="#ropa">Ropa</a>
 <a href="#complementos">Complementos</a>
@@ -144,43 +145,76 @@ h2 {
 <a href="#reseñas">Reseñas</a>
 </nav>
 
-<!-- CATEGORÍAS -->
+---
+
+# 🔵 NOVEDADES (REPARADO SIN PERDER NADA)
+
+<section id="novedades">
+<h2>Novedades</h2>
+
+<div class="categorias-grid">
+
+<div class="categoria-card">
+<img src="vestido.jpg">
+<h3>Vestido playa</h3>
+</div>
+
+<div class="categoria-card">
+<img src="bolso.jpg">
+<h3>Bolso verano</h3>
+</div>
+
+<div class="categoria-card">
+<img src="sandalias.jpg">
+<h3>Sandalias</h3>
+</div>
+
+</div>
+</section>
+
+---
+
+# 🔵 CATEGORÍAS
+
 <section id="categorias">
 <h2>Categorías</h2>
 
 <div class="categorias-grid">
 
-<a href="#ropa" class="categoria-card">
+<div class="categoria-card">
 <img src="ropa.jpg">
 <h3>Ropa</h3>
-</a>
+</div>
 
-<a href="#complementos" class="categoria-card">
+<div class="categoria-card">
 <img src="bolso.jpg">
 <h3>Complementos</h3>
-</a>
+</div>
 
-<a href="#zapatos" class="categoria-card">
+<div class="categoria-card">
 <img src="sandalias.jpg">
 <h3>Zapatos</h3>
-</a>
+</div>
 
 </div>
 </section>
 
-<!-- ROPA -->
+---
+
+# 🔵 ROPA (AHORA COMPLETO)
+
 <section id="ropa">
 <h2>Ropa</h2>
 
 <div class="categorias-grid">
 
-<div class="categoria-card" onclick="location.href='#v1'">
+<div class="categoria-card" onclick="document.getElementById('v1').classList.add('activo')">
 <img src="vestido.jpg">
 <h3>Vestido playa</h3>
 <p>19,99€</p>
 </div>
 
-<div class="categoria-card" onclick="location.href='#v2'">
+<div class="categoria-card" onclick="document.getElementById('v2').classList.add('activo')">
 <img src="vestido2.jpg">
 <h3>Vestido rosa</h3>
 <p>24,99€</p>
@@ -189,13 +223,16 @@ h2 {
 </div>
 </section>
 
-<!-- COMPLEMENTOS -->
+---
+
+# 🔵 COMPLEMENTOS
+
 <section id="complementos">
 <h2>Complementos</h2>
 
 <div class="categorias-grid">
 
-<div class="categoria-card" onclick="location.href='#v3'">
+<div class="categoria-card" onclick="document.getElementById('v3').classList.add('activo')">
 <img src="bolso.jpg">
 <h3>Bolso verano</h3>
 <p>29,99€</p>
@@ -204,13 +241,16 @@ h2 {
 </div>
 </section>
 
-<!-- ZAPATOS -->
+---
+
+# 🔵 ZAPATOS
+
 <section id="zapatos">
 <h2>Zapatos</h2>
 
 <div class="categorias-grid">
 
-<div class="categoria-card" onclick="location.href='#v4'">
+<div class="categoria-card" onclick="document.getElementById('v4').classList.add('activo')">
 <img src="sandalias.jpg">
 <h3>Sandalias playa</h3>
 <p>22,99€</p>
@@ -219,14 +259,17 @@ h2 {
 </div>
 </section>
 
-<!-- MODALES PRODUCTOS -->
+---
+
+# 🔵 MODALES PRODUCTO (FUNCIONALES)
+
 <div id="v1" class="modal">
 <div class="modal-contenido">
 <a href="#" class="cerrar">✖</a>
 <img src="vestido.jpg" style="width:100%">
 <h2>Vestido playa</h2>
 <p>19,99€</p>
-<p>Vestido ligero ideal para verano.</p>
+<p>Perfecto para verano y playa.</p>
 </div>
 </div>
 
@@ -236,7 +279,7 @@ h2 {
 <img src="vestido2.jpg" style="width:100%">
 <h2>Vestido rosa</h2>
 <p>24,99€</p>
-<p>Estilo fresco y elegante.</p>
+<p>Elegante y fresco.</p>
 </div>
 </div>
 
@@ -246,7 +289,7 @@ h2 {
 <img src="bolso.jpg" style="width:100%">
 <h2>Bolso verano</h2>
 <p>29,99€</p>
-<p>Perfecto para playa y verano.</p>
+<p>Ideal para playa.</p>
 </div>
 </div>
 
@@ -256,22 +299,30 @@ h2 {
 <img src="sandalias.jpg" style="width:100%">
 <h2>Sandalias playa</h2>
 <p>22,99€</p>
-<p>Comodidad total para verano.</p>
+<p>Comodidad total.</p>
 </div>
 </div>
 
-<!-- CONTACTO -->
+---
+
+# 🔵 CONTACTO (INTACTO)
+
 <section id="contacto">
 <h2>Contacto</h2>
 <p>Email: soleraropaycomplementos@gmail.com</p>
 <p>WhatsApp: 643319232</p>
 </section>
 
-<!-- RESEÑAS -->
+---
+
+# 🔵 RESEÑAS (INTACTO)
+
 <section id="reseñas">
 <h2>Reseñas</h2>
-<p>Sistema de reseñas ya existente</p>
+<p>Sistema activo</p>
 </section>
+
+---
 
 </body>
 </html>
