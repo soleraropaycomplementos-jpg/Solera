@@ -59,13 +59,14 @@ text-align:center;
 
 #logo{cursor:pointer;}
 
-/* GRID */
+/* GRID GENERAL */
 .grid{
 display:grid;
 grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
 gap:20px;
 }
 
+/* CATEGORÍAS */
 .card{
 background:white;
 border-radius:15px;
@@ -81,22 +82,49 @@ height:160px;
 object-fit:cover;
 }
 
-/* PRODUCTOS */
+/* 🔥 PRODUCTOS GRID NUEVO */
+#productGrid{
+display:grid;
+grid-template-columns:repeat(auto-fill, minmax(180px, 1fr));
+gap:18px;
+margin-top:20px;
+}
+
+/* PRODUCTO CARD NUEVO */
 .producto-card{
 background:white;
-border-radius:12px;
+border-radius:16px;
 overflow:hidden;
-box-shadow:0 4px 10px rgba(0,0,0,0.1);
+box-shadow:0 6px 18px rgba(0,0,0,0.12);
 cursor:pointer;
-text-align:center;
+transition:transform .2s ease, box-shadow .2s ease;
+display:flex;
+flex-direction:column;
+justify-content:space-between;
+}
+
+.producto-card:hover{
+transform:translateY(-4px);
+box-shadow:0 10px 25px rgba(0,0,0,0.18);
 }
 
 .producto-card img{
 width:100%;
-height:160px;
-object-fit:contain;
-background:#f5f5f5;
-padding:5px;
+height:190px;
+object-fit:cover;
+}
+
+.producto-card h3{
+margin:10px 0 5px;
+font-size:15px;
+font-weight:600;
+}
+
+.producto-card p{
+margin:0 0 12px;
+font-weight:600;
+color:#055160;
+text-align:center;
 }
 
 /* BOTÓN */
@@ -153,7 +181,7 @@ padding:10px;
 border-radius:10px;
 }
 
-/* MODAL GENERAL */
+/* MODAL */
 .modal{
 position:fixed;
 inset:0;
@@ -176,13 +204,23 @@ text-align:center;
 position:relative;
 }
 
-/* 🔴 CRUZ IZQUIERDA (PRODUCTO) */
 .close-left{
 position:absolute;
 top:10px;
 left:15px;
 font-size:22px;
 cursor:pointer;
+}
+
+/* COMENTARIOS SCROLL */
+#comments{
+max-height:220px;
+overflow-y:auto;
+padding:10px;
+border:1px solid #ddd;
+border-radius:10px;
+background:#fafafa;
+margin-bottom:10px;
 }
 
 /* ESTRELLAS */
@@ -209,17 +247,6 @@ margin-top:10px;
 padding:10px;
 }
 
-/* 🟢 SCROLL COMENTARIOS */
-#comments{
-max-height:220px;
-overflow-y:auto;
-padding:10px;
-border:1px solid #ddd;
-border-radius:10px;
-background:#fafafa;
-margin-bottom:10px;
-}
-
 footer{
 background:#055160;
 color:white;
@@ -233,7 +260,6 @@ padding:20px;
 
 <header>
 <img src="playa.jpg">
-
 <div class="texto">
 <h1 id="logo">Solera</h1>
 <p>Moda verano</p>
@@ -250,7 +276,6 @@ padding:20px;
 <!-- NOVEDADES -->
 <section id="novedades">
 <h2>Novedades</h2>
-
 <div class="grid">
 <div class="card"><img src="vestido1.jpg"><h3>Vestido</h3></div>
 <div class="card"><img src="bolso2.jpg"><h3>Bolso</h3></div>
@@ -263,7 +288,6 @@ padding:20px;
 <h2>Categorías</h2>
 
 <div class="grid">
-
 <div class="card" data-cat="ropa">
 <img src="ropa.jpg"><h3>Ropa</h3>
 </div>
@@ -275,10 +299,11 @@ padding:20px;
 <div class="card" data-cat="zapatos">
 <img src="zapatos.jpg"><h3>Zapatos</h3>
 </div>
-
 </div>
 
-<div class="grid" id="productGrid"></div>
+<!-- PRODUCTOS GRID -->
+<div id="productGrid"></div>
+
 </section>
 
 <!-- CONTACTO -->
@@ -312,34 +337,10 @@ padding:20px;
 
 <!-- RESEÑAS -->
 <section id="reseñas">
-
 <h2>Reseñas</h2>
-
 <button class="btn" onclick="openM()">Dejar reseña</button>
-
 <div class="reseñas-box" id="list"></div>
-
 </section>
-
-<!-- MODAL RESEÑAS -->
-<div class="modal" id="modal">
-<div class="box">
-
-<div class="close-left" onclick="closeM()">✕</div>
-
-<div class="estrellas">
-<input type="radio" id="5" name="e" value="5"><label for="5">★</label>
-<input type="radio" id="4" name="e" value="4"><label for="4">★</label>
-<input type="radio" id="3" name="e" value="3"><label for="3">★</label>
-<input type="radio" id="2" name="e" value="2"><label for="2">★</label>
-<input type="radio" id="1" name="e" value="1"><label for="1">★</label>
-</div>
-
-<textarea id="txt"></textarea>
-<button class="btn" onclick="save()">Enviar</button>
-
-</div>
-</div>
 
 <!-- MODAL PRODUCTO -->
 <div class="modal" id="productModal">
@@ -378,61 +379,9 @@ let pass=prompt("Contraseña admin:");
 if(pass==="solera2026"){
 admin=true;
 alert("Modo admin activado");
-load();
 }else alert("Incorrecto");
 }
 });
-
-/* RESEÑAS */
-function openM(){
-currentUser=prompt("Tu nombre:");
-if(!currentUser)return;
-document.getElementById("modal").classList.add("activo");
-}
-
-function closeM(){
-document.getElementById("modal").classList.remove("activo");
-}
-
-function save(){
-let e=document.querySelector('input[name="e"]:checked');
-let t=document.getElementById("txt").value;
-if(!e||t==="")return;
-
-let d=JSON.parse(localStorage.getItem("r"))||[];
-d.push({id:Date.now(),user:currentUser,estrellas:e.value,texto:t});
-localStorage.setItem("r",JSON.stringify(d));
-load();
-closeM();
-}
-
-function del(id){
-let d=JSON.parse(localStorage.getItem("r"))||[];
-d=d.filter(r=>r.id!==id);
-localStorage.setItem("r",JSON.stringify(d));
-load();
-}
-
-function load(){
-let c=document.getElementById("list");
-c.innerHTML="";
-let d=JSON.parse(localStorage.getItem("r"))||[];
-
-d.forEach(r=>{
-let canDelete=admin||r.user===currentUser;
-
-let x=document.createElement("div");
-x.className="reseña";
-x.innerHTML=`
-<strong>${r.user}</strong><br>
-${"⭐".repeat(r.estrellas)}<br>
-<p>${r.texto}</p>
-${canDelete?`<button onclick="del(${r.id})" style="background:red;color:white;border:none">✕</button>`:""}
-`;
-c.appendChild(x);
-});
-}
-load();
 
 /* PRODUCTOS */
 const productos=[
@@ -446,7 +395,6 @@ card.addEventListener('click',()=>{
 
 let cat=card.dataset.cat;
 let grid=document.getElementById("productGrid");
-
 grid.innerHTML="";
 
 productos.filter(p=>p.cat===cat).forEach(p=>{
@@ -480,7 +428,7 @@ document.getElementById("productContent").innerHTML=`
 <h3>${p.nombre}</h3>
 <p>${p.precio}</p>
 
-<button class="btn" onclick="shareProduct()">📤 Compartir producto</button>
+<button class="btn" onclick="shareProduct()">Compartir</button>
 `;
 
 loadComments();
@@ -490,16 +438,22 @@ function closeProduct(){
 document.getElementById("productModal").classList.remove("activo");
 }
 
-/* SHARE */
+/* SHARE NATIVO */
 function shareProduct(){
-let text=`Mira este producto de Solera: ${currentProduct.nombre} - ${currentProduct.precio}`;
-let url=window.location.href;
 
-let full=encodeURIComponent(text+" "+url);
+const text = `Mira este producto de Solera: ${currentProduct.nombre} - ${currentProduct.precio}`;
+const url = window.location.href;
 
-window.open(`https://wa.me/?text=${full}`,"_blank");
+if(navigator.share){
+navigator.share({
+title:"Solera",
+text:text,
+url:url
+});
+}else{
 navigator.clipboard.writeText(text+" "+url);
-alert("Enlace copiado 📋");
+alert("Copiado 📋");
+}
 }
 
 /* COMENTARIOS */
@@ -531,12 +485,7 @@ let data=getComments();
 data.forEach(cm=>{
 let div=document.createElement("div");
 div.className="reseña";
-
-div.innerHTML=`
-<strong>${cm.user}</strong> · ${cm.date}
-<p>${cm.text}</p>
-`;
-
+div.innerHTML=`<strong>${cm.user}</strong> · ${cm.date}<p>${cm.text}</p>`;
 c.appendChild(div);
 });
 }
