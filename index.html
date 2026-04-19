@@ -72,23 +72,14 @@ overflow:hidden;
 text-decoration:none;
 color:black;
 box-shadow:0 4px 12px rgba(0,0,0,0.1);
+padding-bottom:10px;
+text-align:center;
 }
 
 .categoria-card img{
 width:100%;
 height:160px;
 object-fit:cover;
-}
-
-/* PRODUCTOS */
-.caja{
-background:white;
-padding:15px;
-margin:10px auto;
-max-width:500px;
-border-radius:12px;
-text-align:center;
-box-shadow:0 3px 10px rgba(0,0,0,0.08);
 }
 
 /* NOVEDADES */
@@ -216,24 +207,6 @@ color:white;
 text-align:center;
 padding:20px;
 }
-
-/* AVISO */
-.aviso-overlay{
-position:fixed;
-inset:0;
-background:rgba(0,0,0,0.6);
-display:flex;
-justify-content:center;
-align-items:center;
-z-index:9999;
-}
-
-.aviso-box{
-background:white;
-padding:25px 40px;
-border-radius:12px;
-font-weight:bold;
-}
 </style>
 </head>
 
@@ -315,13 +288,59 @@ font-weight:bold;
 
 </section>
 
-<!-- ROPA -->
+<!-- ROPA (CORREGIDO) -->
 <section id="ropa">
 <h2>Ropa</h2>
 
-<div class="caja">Vestido blanco playa</div>
-<div class="caja">Vestido rosa verano</div>
+<div class="categorias-grid">
 
+<div class="categoria-card">
+<img src="vestido.jpg">
+<h3>Vestido playa</h3>
+<p>19,99€</p>
+<p>Vestido ligero ideal para verano.</p>
+</div>
+
+<div class="categoria-card">
+<img src="vestido2.jpg">
+<h3>Vestido rosa verano</h3>
+<p>24,99€</p>
+<p>Elegante y fresco para playa.</p>
+</div>
+
+</div>
+</section>
+
+<!-- COMPLEMENTOS -->
+<section id="complementos">
+<h2>Complementos</h2>
+
+<div class="categorias-grid">
+
+<div class="categoria-card">
+<img src="bolso.jpg">
+<h3>Bolso verano</h3>
+<p>29,99€</p>
+<p>Perfecto para playa y verano.</p>
+</div>
+
+</div>
+</section>
+
+<!-- ZAPATOS -->
+<section id="zapatos">
+<h2>Zapatos</h2>
+
+<div class="categorias-grid">
+
+<div class="categoria-card">
+<img src="sandalias.jpg">
+<h3>Sandalias playa</h3>
+<p>22,99€</p>
+<p>Comodidad total para verano.</p>
+</div>
+
+</div>
 </section>
 
 <!-- CONTACTO -->
@@ -335,7 +354,7 @@ font-weight:bold;
 <i class="fa-solid fa-envelope"></i><br>Gmail
 </a>
 
-<a href="https://api.whatsapp.com/send?phone=34643319232&text=Buenas%2C%20quiero%20informaci%C3%B3n%20🌞🏖️" class="social-card">
+<a href="https://api.whatsapp.com/send?phone=34643319232&text=Buenas,%20me%20gustar%C3%ADa%20obtener%20informaci%C3%B3n%20sobre%20los%20productos%20de%20Flamenca%20🌞🏖️👗👜" class="social-card">
 <i class="fa-brands fa-whatsapp"></i><br>WhatsApp
 </a>
 
@@ -357,18 +376,12 @@ font-weight:bold;
 
 <!-- RESEÑAS -->
 <section id="reseñas">
-
 <h2>Reseñas</h2>
-
 <button class="btn" onclick="openM()">Dejar reseña</button>
-
 <div class="reseñas-box" id="list"></div>
-
 </section>
 
-<!-- MODAL -->
 <div class="modal" id="modal">
-
 <div class="box">
 
 <div class="estrellas">
@@ -384,7 +397,6 @@ font-weight:bold;
 <button onclick="save()">Enviar</button>
 
 </div>
-
 </div>
 
 <footer>
@@ -395,18 +407,6 @@ font-weight:bold;
 
 function move(dir){
 const s=document.getElementById("slider");
-const max=s.scrollWidth-s.clientWidth;
-const next=s.scrollLeft+dir*220;
-
-if(next<0||next>max){
-const a=document.createElement("div");
-a.className="aviso-overlay";
-a.innerHTML="<div class='aviso-box'>No hay resultados</div>";
-document.body.appendChild(a);
-setTimeout(()=>a.remove(),1500);
-return;
-}
-
 s.scrollBy({left:dir*220,behavior:"smooth"});
 }
 
