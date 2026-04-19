@@ -59,7 +59,6 @@ text-align:center;
 #logo{
 cursor:pointer;
 user-select:none;
-touch-action:manipulation;
 }
 
 .grid{
@@ -193,7 +192,7 @@ background:#fafafa;
 margin-bottom:10px;
 }
 
-/* ⭐ ESTRELLAS RESTAURADAS (ORIGINAL BONITO) */
+/* ⭐ ESTRELLAS */
 .estrellas{
 display:flex;
 flex-direction:row-reverse;
@@ -202,14 +201,11 @@ font-size:40px;
 margin-bottom:15px;
 }
 
-.estrellas input{
-display:none;
-}
+.estrellas input{display:none;}
 
 .estrellas label{
 color:lightgray;
 cursor:pointer;
-transition:0.2s;
 }
 
 .estrellas label:hover,
@@ -278,25 +274,11 @@ color:gold;
 
 <div class="social-grid">
 
-<a class="social-card" href="mailto:soleraropaycomplementos@gmail.com">
-<i class="fa-solid fa-envelope"></i> Gmail
-</a>
-
-<a class="social-card" href="https://wa.me/34643319232" target="_blank">
-<i class="fa-brands fa-whatsapp"></i> WhatsApp
-</a>
-
-<a class="social-card" href="https://www.instagram.com/solerashopp" target="_blank">
-<i class="fa-brands fa-instagram"></i> Instagram
-</a>
-
-<a class="social-card" href="https://www.facebook.com/share/18feHPTPbK/" target="_blank">
-<i class="fa-brands fa-facebook"></i> Facebook
-</a>
-
-<a class="social-card" href="https://www.tiktok.com/@solerashop8" target="_blank">
-<i class="fa-brands fa-tiktok"></i> TikTok
-</a>
+<a class="social-card" href="mailto:soleraropaycomplementos@gmail.com"><i class="fa-solid fa-envelope"></i> Gmail</a>
+<a class="social-card" href="https://wa.me/34643319232"><i class="fa-brands fa-whatsapp"></i> WhatsApp</a>
+<a class="social-card" href="https://www.instagram.com/solerashopp"><i class="fa-brands fa-instagram"></i> Instagram</a>
+<a class="social-card" href="https://www.facebook.com/share/18feHPTPbK/"><i class="fa-brands fa-facebook"></i> Facebook</a>
+<a class="social-card" href="https://www.tiktok.com/@solerashop8"><i class="fa-brands fa-tiktok"></i> TikTok</a>
 
 </div>
 </section>
@@ -347,7 +329,198 @@ color:gold;
 
 <script>
 
-/* (TODO TU JS YA ESTABA BIEN, NO LO HE TOCADO SALVO LO VISUAL) */
+let admin=false;
+let taps=0;
+let currentUser=localStorage.getItem("user")||"user";
+let currentProduct=null;
+
+function askUser(){
+if(!currentUser || currentUser==="user"){
+let n=prompt("Nombre:");
+if(n){
+currentUser=n;
+localStorage.setItem("user",n);
+}
+}
+}
+
+/* ADMIN */
+document.getElementById("logo").addEventListener("click",()=>{
+
+taps++;
+setTimeout(()=>taps=0,2000);
+
+if(taps===5){
+let pass=prompt("Contraseña admin:");
+if(pass==="solera2026"){
+admin=true;
+alert("Modo admin activado");
+loadReviews();
+loadComments();
+}
+}
+});
+
+/* PRODUCTOS */
+const productos=[
+{cat:"ropa",img:"vestido1.jpg",nombre:"Vestido verano",precio:"19,99€"},
+{cat:"complementos",img:"bolso2.jpg",nombre:"Bolso playa",precio:"14,99€"},
+{cat:"zapatos",img:"sandalia1.jpg",nombre:"Sandalia cómoda",precio:"24,99€"}
+];
+
+document.querySelectorAll('.card[data-cat]').forEach(card=>{
+card.addEventListener('click',()=>{
+
+let cat=card.dataset.cat;
+let grid=document.getElementById("productGrid");
+grid.innerHTML="";
+
+productos.filter(p=>p.cat===cat).forEach(p=>{
+
+let div=document.createElement("div");
+div.className="producto-card";
+
+div.innerHTML=`
+<img src="${p.img}">
+<h3>${p.nombre}</h3>
+<p>${p.precio}</p>
+`;
+
+div.onclick=()=>openProduct(p);
+grid.appendChild(div);
+
+});
+});
+});
+
+/* PRODUCTO */
+function openProduct(p){
+currentProduct=p;
+document.getElementById("productModal").classList.add("activo");
+
+document.getElementById("productContent").innerHTML=`
+<img src="${p.img}" style="width:100%;max-height:400px;object-fit:contain;">
+<h3>${p.nombre}</h3>
+<p>${p.precio}</p>
+
+<button class="btn" onclick="shareProduct('${p.nombre}')">Compartir</button>
+`;
+
+loadComments();
+}
+
+function closeProduct(){
+document.getElementById("productModal").classList.remove("activo");
+}
+
+function shareProduct(name){
+if(navigator.share){
+navigator.share({
+title:"Solera",
+text:"Mira este producto: "+name,
+url:window.location.href
+});
+}else{
+alert("No compatible");
+}
+}
+
+/* COMENTARIOS */
+function getComments(){
+return JSON.parse(localStorage.getItem("comments_"+currentProduct.nombre))||[];
+}
+
+function saveComments(c){
+localStorage.setItem("comments_"+currentProduct.nombre,JSON.stringify(c));
+}
+
+function addComment(){
+askUser();
+
+let text=document.getElementById("commentText").value;
+if(!text)return;
+
+let c=getComments();
+
+c.push({
+id:Date.now(),
+user:currentUser,
+text:text,
+date:new Date().toLocaleDateString(),
+replies:[]
+});
+
+saveComments(c);
+document.getElementById("commentText").value="";
+loadComments();
+}
+
+function loadComments(){
+
+let c=document.getElementById("comments");
+if(!c || !currentProduct) return;
+
+c.innerHTML="";
+
+let data=getComments();
+
+data.forEach(cm=>{
+
+let div=document.createElement("div");
+div.className="reseña";
+
+div.innerHTML=`
+<strong>${cm.user}</strong> · ${cm.date}
+<p>${cm.text}</p>
+`;
+
+c.appendChild(div);
+});
+}
+
+/* RESEÑAS */
+function openM(){
+askUser();
+document.getElementById("modal").classList.add("activo");
+}
+
+function saveReview(){
+
+let e=document.querySelector('input[name="e"]:checked');
+let t=document.getElementById("txt").value;
+
+if(!e||!t)return;
+
+let data=JSON.parse(localStorage.getItem("r"))||[];
+
+data.push({
+id:Date.now(),
+user:currentUser,
+estrellas:e.value,
+texto:t
+});
+
+localStorage.setItem("r",JSON.stringify(data));
+document.getElementById("modal").classList.remove("activo");
+loadReviews();
+}
+
+function loadReviews(){
+
+let c=document.getElementById("list");
+c.innerHTML="";
+
+let data=JSON.parse(localStorage.getItem("r"))||[];
+
+data.forEach(r=>{
+let div=document.createElement("div");
+div.className="reseña";
+div.innerHTML=`<strong>${r.user}</strong><br>${"⭐".repeat(r.estrellas)}<p>${r.texto}</p>`;
+c.appendChild(div);
+});
+}
+
+loadReviews();
 
 </script>
 
