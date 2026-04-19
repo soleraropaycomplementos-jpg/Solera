@@ -61,7 +61,7 @@ text-align:center;
 section{padding:40px 25px;}
 h2{text-align:center;}
 
-/* GRID GENERAL */
+/* GRID */
 .grid{
 display:grid;
 grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
@@ -75,14 +75,12 @@ overflow:hidden;
 text-align:center;
 box-shadow:0 4px 12px rgba(0,0,0,0.1);
 cursor:pointer;
-transition:.2s;
 }
 
 .card img{
 width:100%;
 height:160px;
 object-fit:cover;
-background:#ddd;
 }
 
 /* NOVEDADES */
@@ -100,7 +98,7 @@ min-width:200px;
 scroll-snap-align:start;
 }
 
-/* BOTÓN RESEÑA */
+/* BOTÓN */
 .btn{
 display:block;
 margin:15px auto;
@@ -110,7 +108,6 @@ color:white;
 border:none;
 border-radius:8px;
 cursor:pointer;
-transition:.3s;
 }
 
 /* CONTACTO */
@@ -128,12 +125,6 @@ text-align:center;
 text-decoration:none;
 color:black;
 box-shadow:0 4px 10px rgba(0,0,0,0.1);
-}
-
-.social-card i{
-font-size:22px;
-margin-bottom:5px;
-display:block;
 }
 
 /* RESEÑAS */
@@ -177,7 +168,6 @@ max-width:650px;
 text-align:center;
 }
 
-/* ESTRELLAS */
 .estrellas{
 display:flex;
 flex-direction:row-reverse;
@@ -201,12 +191,6 @@ margin-top:10px;
 padding:10px;
 }
 
-/* IMAGEN FALLBACK */
-img.error{
-content:url("https://via.placeholder.com/300x200?text=Imagen+no+disponible");
-}
-
-/* FOOTER */
 footer{
 background:#055160;
 color:white;
@@ -218,14 +202,16 @@ padding:20px;
 
 <body>
 
+<!-- PORTADA -->
 <header>
-<img src="/playa.jpg">
+<img src="playa.jpg">
 <div class="texto">
 <h1>Solera</h1>
 <p>Moda verano</p>
 </div>
 </header>
 
+<!-- NAV -->
 <nav>
 <a href="#novedades">Novedades</a>
 <a href="#categorias">Categorías</a>
@@ -241,17 +227,17 @@ padding:20px;
 <div class="slider">
 
 <div class="card">
-<img src="/vestido.jpg">
+<img src="vestido.jpg">
 <h3>Vestido playa</h3>
 </div>
 
 <div class="card">
-<img src="/bolso.jpg">
+<img src="bolso.jpg">
 <h3>Bolso verano</h3>
 </div>
 
 <div class="card">
-<img src="/sandalias.jpg">
+<img src="sandalias.jpg">
 <h3>Sandalias</h3>
 </div>
 
@@ -265,17 +251,17 @@ padding:20px;
 <div class="grid">
 
 <div class="card">
-<img src="/ropa.jpg">
+<img src="ropa.jpg">
 <h3>Ropa</h3>
 </div>
 
 <div class="card">
-<img src="/bolso.jpg">
+<img src="bolso.jpg">
 <h3>Complementos</h3>
 </div>
 
 <div class="card">
-<img src="/sandalias.jpg">
+<img src="sandalias.jpg">
 <h3>Zapatos</h3>
 </div>
 
@@ -289,12 +275,12 @@ padding:20px;
 <div class="grid">
 
 <div class="card">
-<img src="/vestido.jpg">
+<img src="vestido.jpg">
 <h3>Vestido playa</h3>
 </div>
 
 <div class="card">
-<img src="/vestido2.jpg">
+<img src="vestido2.jpg">
 <h3>Vestido rosa</h3>
 </div>
 
@@ -313,7 +299,7 @@ padding:20px;
 Gmail
 </a>
 
-<a href="https://api.whatsapp.com/send?phone=34643319232&text=Buenas,%20me%20gustaría%20información%20de%20Solera%20🌞🏖️👜" class="social-card">
+<a href="https://api.whatsapp.com/send?phone=34643319232&text=Buenas,%20quiero%20información%20de%20Solera%20🌞🏖️" class="social-card">
 <i class="fa-brands fa-whatsapp"></i>
 WhatsApp
 </a>
@@ -375,7 +361,6 @@ TikTok
 
 <script>
 
-/* RESEÑAS */
 function openM(){
 document.getElementById("modal").classList.add("activo");
 }
@@ -413,13 +398,6 @@ c.appendChild(x);
 }
 
 load();
-
-/* IMAGENES ROTAS */
-document.querySelectorAll("img").forEach(img=>{
-img.onerror=function(){
-this.classList.add("error");
-};
-});
 
 </script>
 
