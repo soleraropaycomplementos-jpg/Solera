@@ -5,7 +5,6 @@
 <title>Solera</title>
 
 <link href="https://fonts.googleapis.com/css2?family=Poppins:wght@300;400;600&display=swap" rel="stylesheet">
-<link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.0/css/all.min.css">
 
 <style>
 
@@ -14,10 +13,9 @@ margin:0;
 font-family:Poppins,sans-serif;
 background:#eaf6f6;
 padding-top:60px;
--webkit-text-size-adjust:100%;
-touch-action:manipulation;
 }
 
+/* NAV */
 nav{
 background:#055160;
 position:fixed;
@@ -35,6 +33,7 @@ text-decoration:none;
 font-weight:600;
 }
 
+/* HEADER */
 header{
 height:340px;
 position:relative;
@@ -58,6 +57,7 @@ text-align:center;
 
 #logo{cursor:pointer;}
 
+/* GRID */
 .grid{
 display:grid;
 grid-template-columns:repeat(auto-fit,minmax(220px,1fr));
@@ -79,6 +79,7 @@ height:160px;
 object-fit:cover;
 }
 
+/* PRODUCTS */
 #productGrid{
 display:grid;
 grid-template-columns:repeat(auto-fill,minmax(180px,1fr));
@@ -94,6 +95,7 @@ box-shadow:0 6px 18px rgba(0,0,0,0.12);
 cursor:pointer;
 text-align:center;
 padding-bottom:10px;
+position:relative;
 }
 
 .producto-card img{
@@ -113,41 +115,47 @@ border-radius:8px;
 cursor:pointer;
 }
 
-/* SOCIAL */
-.social-grid{
-display:grid;
-grid-template-columns:repeat(auto-fit,minmax(120px,1fr));
-gap:15px;
+/* ❤️ FAVORITO BUTTON */
+.heart-btn{
+position:absolute;
+top:10px;
+right:10px;
+width:28px;
+height:28px;
+cursor:pointer;
+z-index:5;
 }
 
-.social-card{
-background:white;
-padding:15px;
-border-radius:12px;
-text-align:center;
-text-decoration:none;
-color:black;
-box-shadow:0 4px 10px rgba(0,0,0,0.1);
+.heart-btn svg{
+width:100%;
+height:100%;
+stroke:#fff;
+stroke-width:2;
+fill:transparent;
+filter:drop-shadow(0 1px 2px rgba(0,0,0,0.6));
+transition:0.25s;
 }
 
-/* RESEÑAS */
-.reseñas-box{
-max-width:600px;
-margin:auto;
-height:300px;
-overflow-y:auto;
-border:1px solid #ddd;
-border-radius:12px;
-padding:10px;
-background:white;
+.heart-btn.active svg{
+fill:red;
+stroke:red;
+transform:scale(1.1);
 }
 
-.reseña{
-background:#f7f7f7;
-margin:10px 0;
-padding:10px;
-border-radius:10px;
+/* ICONOS */
+#cartIcon, #favIcon{
+position:fixed;
+top:15px;
+background:#055160;
+color:white;
+padding:10px 14px;
+border-radius:50px;
+cursor:pointer;
+z-index:99999;
 }
+
+#cartIcon{right:15px;}
+#favIcon{right:80px;}
 
 /* MODAL */
 .modal{
@@ -164,7 +172,7 @@ z-index:9999;
 
 .box{
 background:white;
-padding:30px;
+padding:25px;
 border-radius:16px;
 width:95%;
 max-width:850px;
@@ -180,31 +188,46 @@ font-size:22px;
 cursor:pointer;
 }
 
-/* CART */
-#cartIcon{
+/* TOASTS */
+#toast, #favToast{
 position:fixed;
-top:15px;
-right:15px;
-background:#055160;
-color:white;
-padding:10px 14px;
-border-radius:50px;
-cursor:pointer;
-z-index:99999;
-}
-
-#toast{
-position:fixed;
-bottom:20px;
 left:50%;
 transform:translateX(-50%);
-background:#055160;
-color:white;
-padding:14px 20px;
+padding:12px 18px;
 border-radius:10px;
 display:none;
 z-index:99999;
 font-weight:600;
+color:white;
+}
+
+#toast{
+bottom:20px;
+background:#055160;
+}
+
+#favToast{
+bottom:70px;
+background:#b30000;
+}
+
+/* LISTAS */
+.reseñas-box{
+max-width:600px;
+margin:auto;
+height:300px;
+overflow-y:auto;
+border:1px solid #ddd;
+border-radius:12px;
+padding:10px;
+background:white;
+}
+
+.reseña{
+background:#f7f7f7;
+margin:10px 0;
+padding:10px;
+border-radius:10px;
 }
 
 </style>
@@ -227,21 +250,13 @@ font-weight:600;
 <a href="#reseñas">Reseñas</a>
 </nav>
 
-<!-- CARRITO -->
-<div id="cartIcon" onclick="openCart()">
-🛒 <span id="cartCount">0</span>
-</div>
+<!-- ICONOS -->
+<div id="cartIcon" onclick="openCart()">🛒 <span id="cartCount">0</span></div>
+<div id="favIcon" onclick="openFav()">❤️ <span id="favCount">0</span></div>
 
-<section id="novedades">
-<h2>Novedades</h2>
-<div class="grid">
-<div class="card"><img src="vestido1.jpg"><h3>Vestido</h3></div>
-<div class="card"><img src="bolso2.jpg"><h3>Bolso</h3></div>
-<div class="card"><img src="sandalia1.jpg"><h3>Sandalias</h3></div>
-</div>
-</section>
-
+<!-- CATEGORÍAS -->
 <section id="categorias">
+
 <h2>Categorías</h2>
 
 <div class="grid">
@@ -253,179 +268,220 @@ font-weight:600;
 <div id="productGrid"></div>
 </section>
 
-<section id="contacto">
-<h2>Contacto</h2>
-
-<div class="social-grid">
-<a class="social-card" href="mailto:soleraropaycomplementos@gmail.com">Gmail</a>
-<a class="social-card" href="https://wa.me/34643319232">WhatsApp</a>
-<a class="social-card" href="https://www.instagram.com/solerashopp">Instagram</a>
-<a class="social-card" href="https://www.facebook.com/share/18feHPTPbK/">Facebook</a>
-<a class="social-card" href="https://www.tiktok.com/@solerashop8">TikTok</a>
-</div>
-</section>
-
-<section id="reseñas">
-<h2>Reseñas</h2>
-<button class="btn" onclick="openM()">Dejar reseña</button>
-<div class="reseñas-box" id="reviews"></div>
-</section>
-
-<!-- PRODUCT MODAL -->
+<!-- MODAL PRODUCTO -->
 <div class="modal" id="productModal">
 <div class="box">
 <div class="close-left" onclick="closeProduct()">✕</div>
 <div id="productContent"></div>
 <button class="btn" onclick="addFromModal()">Añadir al carrito</button>
-<button class="btn" onclick="shareProduct()">Compartir</button>
 </div>
 </div>
 
-<!-- CART MODAL -->
+<!-- MODAL CARRITO -->
 <div class="modal" id="cartModal">
 <div class="box">
 <div class="close-left" onclick="closeCart()">✕</div>
-
 <h2>Carrito</h2>
 <div id="cartList"></div>
 <h3 id="total"></h3>
-
-<input id="name" placeholder="Nombre"><br><br>
-<input id="address" placeholder="Dirección"><br><br>
-<input id="phone" placeholder="Teléfono"><br><br>
-
-<select id="payment">
-<option>Bizum</option>
-<option>Transferencia</option>
-<option>Contra reembolso</option>
-</select>
-
-<button class="btn" onclick="checkout()">Finalizar compra</button>
 </div>
 </div>
 
-<div id="toast">Añadido al carrito ✔</div>
+<!-- MODAL FAVORITOS -->
+<div class="modal" id="favModal">
+<div class="box">
+<div class="close-left" onclick="closeFav()">✕</div>
+<h2>Favoritos</h2>
+<div id="favList"></div>
+</div>
+</div>
+
+<!-- TOASTS -->
+<div id="toast">Añadido ✔</div>
+<div id="favToast">Añadido a favoritos ❤️</div>
 
 <script>
 
-let cart=[];
+let cart = JSON.parse(localStorage.getItem("cart")) || [];
+let favs = JSON.parse(localStorage.getItem("favs")) || [];
 let currentProduct=null;
 
-/* FIX CLICK CATEGORÍAS */
-document.querySelectorAll(".card[data-cat]").forEach(card=>{
-card.addEventListener("click",()=>{
-
-let cat=card.dataset.cat;
-let grid=document.getElementById("productGrid");
-grid.innerHTML="";
-
-productos.filter(p=>p.cat===cat).forEach(p=>{
-
-let div=document.createElement("div");
-div.className="producto-card";
-
-div.innerHTML=`
-<img src="${p.img}">
-<h3>${p.nombre}</h3>
-<p>${p.precio}€</p>
-<button class="btn">Añadir</button>
-`;
-
-div.addEventListener("click",()=>openProduct(p));
-
-div.querySelector("button").addEventListener("click",(e)=>{
-e.stopPropagation();
-addToCart(p);
-});
-
-grid.appendChild(div);
-});
-
-});
-});
-
-/* PRODUCTOS */
 const productos=[
 {cat:"ropa",img:"vestido1.jpg",nombre:"Vestido verano",precio:19.99},
 {cat:"complementos",img:"bolso2.jpg",nombre:"Bolso playa",precio:14.99},
 {cat:"zapatos",img:"sandalia1.jpg",nombre:"Sandalia cómoda",precio:24.99}
 ];
 
-function openProduct(p){
-currentProduct=p;
-document.getElementById("productModal").classList.add("activo");
-
-document.getElementById("productContent").innerHTML=`
-<img src="${p.img}" style="width:100%">
-<h2>${p.nombre}</h2>
-<p>${p.precio}€</p>`;
+/* SAVE */
+function save(){
+localStorage.setItem("cart",JSON.stringify(cart));
+localStorage.setItem("favs",JSON.stringify(favs));
 }
 
-function closeProduct(){
-document.getElementById("productModal").classList.remove("activo");
-}
+/* GRID */
+document.querySelectorAll(".card[data-cat]").forEach(card=>{
+card.onclick=()=>{
+let cat=card.dataset.cat;
+let grid=document.getElementById("productGrid");
+grid.innerHTML="";
 
-function addFromModal(){
-addToCart(currentProduct);
-toast();
-}
+productos.filter(p=>p.cat===cat).forEach(p=>{
 
+let liked = favs.some(f=>f.nombre===p.nombre);
+
+let div=document.createElement("div");
+div.className="producto-card";
+
+div.innerHTML=`
+<div class="heart-btn ${liked?'active':''}" onclick="toggleFav(event,'${p.nombre}')">
+<svg viewBox="0 0 24 24">
+<path d="M12 21s-7-4.6-9.5-9C.5 7.5 3 4 6.5 4c2 0 3.5 1 4.5 2.5C12 5 13.5 4 15.5 4 19 4 21.5 7.5 21.5 12c-2.5 4.4-9.5 9-9.5 9z"/>
+</svg>
+</div>
+
+<img src="${p.img}">
+<h3>${p.nombre}</h3>
+<p>${p.precio}€</p>
+<button class="btn">Añadir</button>
+`;
+
+div.onclick=()=>openProduct(p);
+
+div.querySelector("button").onclick=(e)=>{
+e.stopPropagation();
+addToCart(p);
+};
+
+grid.appendChild(div);
+});
+};
+});
+
+/* CART */
 function addToCart(p){
-cart.push(p);
+let item = cart.find(x=>x.nombre===p.nombre);
+if(item) item.cantidad++;
+else cart.push({...p,cantidad:1});
+
+save();
 updateCart();
 toast();
 }
 
 function updateCart(){
 document.getElementById("cartCount").innerText=cart.length;
+
 let list=document.getElementById("cartList");
-let total=0;
 list.innerHTML="";
 
+let total=0;
+
 cart.forEach((p,i)=>{
-total+=p.precio;
+total+=p.precio*p.cantidad;
+
 list.innerHTML+=`
 <div style="display:flex;justify-content:space-between;">
-${p.nombre} - ${p.precio}€
-<button onclick="cart.splice(${i},1);updateCart()">❌</button>
+${p.nombre} x${p.cantidad}
+<button onclick="cart.splice(${i},1);save();updateCart()">❌</button>
 </div>`;
 });
 
 document.getElementById("total").innerText="Total: "+total.toFixed(2)+"€";
 }
 
-function openCart(){
-document.getElementById("cartModal").classList.add("activo");
+/* FAVORITOS */
+function toggleFav(e,name){
+e.stopPropagation();
+
+let product = productos.find(p=>p.nombre===name);
+let exists = favs.find(f=>f.nombre===name);
+
+if(exists){
+favs = favs.filter(f=>f.nombre!==name);
+}else{
+favs.push(product);
+showFavToast();
 }
 
-function closeCart(){
-document.getElementById("cartModal").classList.remove("activo");
+save();
+updateFav();
+renderFavs();
 }
 
-function shareProduct(){
-navigator.share?.({title:currentProduct.nombre,url:location.href});
+function updateFav(){
+document.getElementById("favCount").innerText=favs.length;
 }
 
+function openFav(){
+document.getElementById("favModal").classList.add("activo");
+renderFavs();
+}
+
+function closeFav(){
+document.getElementById("favModal").classList.remove("activo");
+}
+
+function renderFavs(){
+let list=document.getElementById("favList");
+list.innerHTML="";
+
+favs.forEach((p,i)=>{
+
+list.innerHTML+=`
+<div style="display:flex;justify-content:space-between;align-items:center;margin:10px 0;padding:10px;background:#f4f4f4;border-radius:10px;">
+<img src="${p.img}" style="width:50px;height:50px;object-fit:cover;border-radius:8px;">
+<div style="flex:1;text-align:left;margin-left:10px;">
+<b>${p.nombre}</b><br>${p.precio}€
+</div>
+
+<button class="btn" onclick='addToCart(${JSON.stringify(p)})'>Carrito</button>
+<button class="btn" style="background:red;" onclick="removeFav(${i})">X</button>
+</div>`;
+});
+}
+
+function removeFav(i){
+favs.splice(i,1);
+save();
+updateFav();
+renderFavs();
+}
+
+/* PRODUCT */
+function openProduct(p){
+currentProduct=p;
+productModal.classList.add("activo");
+
+productContent.innerHTML=`
+<img src="${p.img}" style="width:100%">
+<h2>${p.nombre}</h2>
+<p>${p.precio}€</p>`;
+}
+
+function closeProduct(){productModal.classList.remove("activo");}
+
+function addFromModal(){addToCart(currentProduct);toast();}
+
+/* MODALS */
+function openCart(){cartModal.classList.add("activo");}
+function closeCart(){cartModal.classList.remove("activo");}
+
+/* TOAST */
 function toast(){
 let t=document.getElementById("toast");
 t.style.display="block";
 setTimeout(()=>t.style.display="none",1200);
 }
 
-function checkout(){
-let msg="🛍 Pedido Solera\n\n";
-
-cart.forEach(p=>{
-msg+=`- ${p.nombre} ${p.precio}€\n`;
-});
-
-msg+=`\nNombre: ${name.value}
-Dirección: ${address.value}
-Tel: ${phone.value}
-Pago: ${payment.value}`;
-
-window.open("https://wa.me/34643319232?text="+encodeURIComponent(msg),"_blank");
+function showFavToast(){
+let t=document.getElementById("favToast");
+t.style.display="block";
+setTimeout(()=>t.style.display="none",1200);
 }
+
+/* INIT */
+updateCart();
+updateFav();
 
 </script>
 
