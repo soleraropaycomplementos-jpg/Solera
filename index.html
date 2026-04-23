@@ -613,6 +613,57 @@ loadReviews();
     <button class="btn" onclick="checkAdmin()">Entrar</button>
   </div>
 </div>
+<script>
 
+/* ===== ADMIN MODE ===== */
+let adminMode = false;
+let clickCount = 0;
+let clickTimer = null;
+
+document.getElementById("logo").style.touchAction = "manipulation";
+
+function adminClick(){
+
+  clickCount++;
+
+  if(clickTimer) clearTimeout(clickTimer);
+
+  clickTimer = setTimeout(()=>{
+    clickCount = 0;
+  }, 1500);
+
+  if(clickCount >= 5){
+    clickCount = 0;
+    document.getElementById("adminModal").classList.add("activo");
+  }
+}
+
+function checkAdmin(){
+
+  let pass = document.getElementById("adminPass").value;
+
+  if(pass === "solera2026"){
+    adminMode = true;
+    alert("Modo admin activado");
+    closeAdmin();
+    loadReviews();
+  }else{
+    alert("Contraseña incorrecta");
+  }
+}
+
+function closeAdmin(){
+  document.getElementById("adminModal").classList.remove("activo");
+}
+
+/* BORRAR RESEÑAS */
+function deleteReview(index){
+  let data = JSON.parse(localStorage.getItem("r")) || [];
+  data.splice(index, 1);
+  localStorage.setItem("r", JSON.stringify(data));
+  loadReviews();
+}
+
+</script>
 </body>
 </html>
